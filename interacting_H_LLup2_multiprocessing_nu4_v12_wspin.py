@@ -46,41 +46,8 @@ def loopU(u):
     eigenvectorp = np.array([[1, 0, 0, 0], [0, 1, 0, 0]] + [[0, 0] + x for x in eigenvectorp2.tolist()])
     eigenvectorm = np.array([[1, 0, 0, 0], [0, 1, 0, 0]] + [[0, 0] + x for x in eigenvectorm2.tolist()])
 
-    # diff = 1;
 
-    # def hps(n, nprime):
-    #     if n == np:
-    #         tmp = Eh * deltatb
-    #     else:
-    #         tmp = 0
-    #     res = -sum(
-    #         [Xskp(n2, nprime, n, n1, eigenvectorp) * rho[idps(n2)][idps(n1)] for n1 in [0, 1] for n2 in [0, 1]] + [Xskp(n2, nprime, n, n1, eigenvectorp) * rho[idps(n2)][idps(n1)] for n1 in
-    #                                                                                                            [-2, 2] for n2 in [-2, 2]]) - tmp
-    #     return res
-    #
-    # def hms(n, nprime):
-    #     if n == np:
-    #         tmp = Eh * deltatb
-    #     else:
-    #         tmp = 0
-    #     res = -sum(
-    #         [Xskm(n2, nprime, n, n1, eigenvectorm) * rho[idms(n2)][idms(n1)] for n1 in [0, 1] for n2 in [0, 1]] + [Xskm(n2, nprime, n, n1, eigenvectorm) * rho[idms(n2)][idms(n1)] for n1 in
-    #                                                                                                            [-2, 2] for n2 in [-2, 2]]) + tmp
-    #     return res
-    #
-    # def hpms(n, nprime):
-    #     res = -sum(
-    #         [Xdkpm(n2, nprime, n, n1, eigenvectorp, eigenvectorm) * rho[idps(n2)][idms(n1)] for n1 in [0, 1] for n2 in [0, 1]] + [
-    #             Xdkpm(n2, nprime, n, n1, eigenvectorp, eigenvectorm) * rho[idps(n2)][idms(n1)] for n1 in [-2, 2] for n2 in [-2, 2]])
-    #     return res
-    #
-    # def hmps(n, nprime):
-    #     res = -sum(
-    #         [Xdkmp(n2, nprime, n, n1, eigenvectorm, eigenvectorp) * rho[idms(n2)][idps(n1)] for n1 in [0, 1] for n2 in [0, 1]] + [
-    #             Xdkmp(n2, nprime, n, n1, eigenvectorm, eigenvectorp) * rho[idms(n2)][idps(n1)] for n1 in [-2, 2] for n2 in [-2, 2]])
-    #     return res
     it = 1;
-    # while it < itmax:
     while it < itmax:
         deltatb = sum([rho[idp(n)][idp(n)] + rho[idps(n)][idps(n)] - rho[idm(n)][idm(n)] - rho[idms(n)][idms(n)] for n in setH])
 
@@ -89,8 +56,6 @@ def loopU(u):
         hphpm = [[hp(n, nprime, 1, 1) for nprime in setH] + [hpm(n, nprime, 1, 1) for nprime in setH] for n in setH]
         hmphm = [[hmp(n, nprime, 1, 1) for nprime in setH] + [hm(n, nprime, 1, 1) for nprime in setH] for n in setH]
 
-        # for el in hmphm:
-        #     hphpm.append(el)
         Hintup = np.vstack((hphpm, hmphm))
 
         hphpms = [[hp(n, nprime, -1, -1) for nprime in setH] + [hpm(n, nprime, -1, -1) for nprime in setH] for n in setH]
@@ -149,8 +114,6 @@ def loopU(u):
 
 a_pool = multiprocessing.Pool(processes=nprocesses)
 
-
-
 quantities = a_pool.map(loopU, frange(U0minD, U0maxD, dU0D))
 
 print(time.time() - t0)
@@ -173,7 +136,6 @@ energies_df.columns = ['u'] + bands
 energies_df.to_csv(aux_dir_path + namecsv, index=False)
 
 print(len(quantities_dict))
-
 
 observable_to_csv(quantities_dict, 'h0')
 observable_to_csv(quantities_dict, 'rhoU')
