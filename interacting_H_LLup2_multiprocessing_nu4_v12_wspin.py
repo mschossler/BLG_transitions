@@ -5,11 +5,11 @@ import time
 import pandas as pd
 from numpy import linalg as npla
 
-from config import aux_dir_path, namecsv, itmax, nprocesses, t0, title
+from config import aux_dir_path, namecsv, itmax, nprocesses, t0, title, bands
 from input.parameters import *
 from model.densities import rho0
 from model.hamiltonians import full_hp, full_hm, full_hpm, full_hmp, h0p2, h0m2, h0p, h0m, idp, idps, idm, idms
-from utils import eigen, frange, idxcalc, df_round, sort_dict, observable_to_csv
+from utils import eigen, frange, idxcalc, df_round, sort_dict, observable_to_csv, idxcalc_base
 
 
 # from model.exchange_int import *
@@ -440,7 +440,8 @@ def loopU(u):
                   }
     # quantities.append([u, (1000 * eigenvalue), eigenvector, 1000 * Et])
     # return u, (1000 * eigenvalue.real), eigenvector, 1000 * Et
-    return u, (1000 * eigenvalue), eigenvector, 1000 * Et, dict_quantities_u
+    # return u, (1000 * eigenvalue), eigenvector, 1000 * Et, dict_quantities_u
+    return dict_quantities_u
 
 
 a_pool = multiprocessing.Pool(processes=nprocesses)
@@ -488,11 +489,32 @@ print(time.time() - t0)
 
 quantities_dict = {}
 
-for el in quantities:
-    u,_,_,_,dict = el
+for dict in quantities:
+    # u,_,_,_,dict = el
     quantities_dict[dict['u']] = dict
 
 quantities_dict = sort_dict(quantities_dict)
+
+
+energies=[]
+for k,v in quantities_dict.items():
+    u_temp , eigenvalue_temp, eigenvector_temp = v['u'], v['eigenvalue'], v['eigenvector']
+    # idx = idxcalc(idx, eigenvector, eigensystemU[i + 1][2], eigensystemU[i + 1][0])
+    # idx = idxcalc(idx, eigensystemUminD[2][:, idx0], eigensystemU[i + 1][2], eigensystemU[i + 1][0])
+    idx = idxcalc_base(eigenvector_temp, u_temp)
+    # idx = idx0
+    # idx = npy.argsort(eigensystemU[i + 1][1]).tolist()
+    # print(idx)
+    # eigenU.append([eigensystemU[i + 1][0]] + eigensystemU[i + 1][1][idx].tolist())
+    # u_list.append(eigensystemU[i + 1][0])
+    energies.append([u_temp] + eigenvalue_temp[idx].tolist())
+    # eigenvector = eigensystemU[i + 1][2][:, idx]
+    # eigenU.append(sorted(eigensystemU[i + 1][1][idx].tolist()))
+    # eigenvector = eigensystemU[i][2][:, idx]
+
+df = pd.DataFrame(energies)
+df.columns = ['u'] + bands
+df.to_csv(aux_dir_path + 'test'+namecsv, index=False)
 
 print(len(quantities_dict))
 
@@ -511,42 +533,42 @@ observable_to_csv(quantities_dict, 'Hint')
 observable_to_csv(quantities_dict, 'Et')
 
 print(time.time() - t0)
-idx = np.argsort(quantities[0][1]).tolist()
-eigenU = [[quantities[0][0]] + quantities[0][1][idx].tolist()]
-eigenvector = quantities[0][2][:, idx]
+# idx = np.argsort(quantities[0][1]).tolist()
+# eigenU = [[quantities[0][0]] + quantities[0][1][idx].tolist()]
+# eigenvector = quantities[0][2][:, idx]
+#
+# for i in range(len(quantities) - 1):
+#     idx = idxcalc(idx, eigenvector, quantities[i + 1][2], quantities[i + 1][0])
+#     # idx = np.argsort(quantities[i + 1][1]).tolist()
+#     # print(idx)
+#     eigenU.append([quantities[i + 1][0]] + quantities[i + 1][1][idx].tolist())
+#     eigenvector = quantities[i + 1][2][:, idx]
+#
+# df = pd.DataFrame(eigenU)
+# # print(df)
+# df.to_csv(aux_dir_path + namecsv, index=False, header=False)
+#
+# eigenU = [[el.real for el in elU] for elU in eigenU]
+# # eigenU=np.array(eigenU).real.tolist
+#
+# df = pd.DataFrame(eigenU)
+# # print(df)
+# df.to_csv(aux_dir_path + namecsv, index=False, header=False)
 
-for i in range(len(quantities) - 1):
-    idx = idxcalc(idx, eigenvector, quantities[i + 1][2], quantities[i + 1][0])
-    # idx = np.argsort(quantities[i + 1][1]).tolist()
-    # print(idx)
-    eigenU.append([quantities[i + 1][0]] + quantities[i + 1][1][idx].tolist())
-    eigenvector = quantities[i + 1][2][:, idx]
-
-df = pd.DataFrame(eigenU)
-# print(df)
-df.to_csv(aux_dir_path + namecsv, index=False, header=False)
-
-eigenU = [[el.real for el in elU] for elU in eigenU]
-# eigenU=np.array(eigenU).real.tolist
-
-df = pd.DataFrame(eigenU)
-# print(df)
-df.to_csv(aux_dir_path + namecsv, index=False, header=False)
-
-eigenUimag = [[elU[0]] + [el.imag for el in elU[1:len(elU)]] for elU in eigenU]
-
-df = pd.DataFrame(eigenUimag)
-# print(df)
-df.to_csv(aux_dir_path + title + 'imag.csv', index=False, header=False)
-
-EtU = [[quantities[i][0], quantities[i][3].real] for i in range(len(quantities))]
-
-pd.DataFrame(EtU).to_csv(aux_dir_path + 'EtU' + namecsv, index=False, header=False)
-# print(df)
-
-EtU = [[quantities[i][0], quantities[i][3].imag] for i in range(len(quantities))]
-
-pd.DataFrame(EtU).to_csv(aux_dir_path + 'EtUimag' + namecsv, index=False, header=False)
+# eigenUimag = [[elU[0]] + [el.imag for el in elU[1:len(elU)]] for elU in eigenU]
+#
+# df = pd.DataFrame(eigenUimag)
+# # print(df)
+# df.to_csv(aux_dir_path + title + 'imag.csv', index=False, header=False)
+#
+# EtU = [[quantities[i][0], quantities[i][3].real] for i in range(len(quantities))]
+#
+# pd.DataFrame(EtU).to_csv(aux_dir_path + 'EtU' + namecsv, index=False, header=False)
+# # print(df)
+#
+# EtU = [[quantities[i][0], quantities[i][3].imag] for i in range(len(quantities))]
+#
+# pd.DataFrame(EtU).to_csv(aux_dir_path + 'EtUimag' + namecsv, index=False, header=False)
 # print(df)
 
 

@@ -19,6 +19,7 @@ nprocesses=40
 itmax = 3
 tol = 1e-8
 
+bands=['0p-','1p-','-2p-','2p-','0m-','1m-','-2m-','2m-','0p+','1p+','-2p+','2p+','0m+','1m+','-2m+','2m+']
 
 if os.path.isfile('screenlog.0'):
     os.remove(aux_dir_path + 'screenlog.0')

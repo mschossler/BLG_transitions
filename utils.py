@@ -56,3 +56,27 @@ def observable_to_csv(obeservables_dict, obeservable):
         obeservable_list.append([k, v[obeservable]])
     obeservable_df = pd.DataFrame(obeservable_list)
     obeservable_df.to_csv(aux_dir_path + obeservable + '_' + namecsv, index=False, header=False)
+
+
+
+base=np.identity(16)
+
+def idxcalc_base(vecs1, u):
+    lenth = len(base)
+    # idxtmp = idx.copy()
+    # idx=[x for x in range(4)].copy()
+    idx = []
+    for i in range(lenth):
+        # overlaptmp = npy.abs(npy.dot(vecs1[:, i], base[:, i]))
+        overlap= 0
+        for j in range(lenth):
+            overlaptmp  = np.abs(np.dot(base[i, :], vecs1[j, :]))
+            # print('here')
+            if overlaptmp > overlap:
+                idxtemp= j
+                overlap = overlaptmp
+        idx.append(idxtemp)
+                # print('u=%.3f' % (u), i, j)
+    # if idx != idxtmp:
+    #     print('crossing here', u * 10 ** 3)
+    return idx
