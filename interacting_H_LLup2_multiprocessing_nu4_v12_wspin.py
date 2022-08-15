@@ -116,7 +116,7 @@ a_pool = multiprocessing.Pool(processes=nprocesses)
 
 quantities = a_pool.map(loopU, frange(U0minD, U0maxD, dU0D))
 
-print(time.time() - t0)
+# print(time.time() - t0)
 
 quantities_dict = {}
 
@@ -135,7 +135,7 @@ energies_df = pd.DataFrame(energies)
 energies_df.columns = ['u'] + bands
 energies_df.to_csv(aux_dir_path + namecsv, index=False)
 
-print(len(quantities_dict))
+# print(len(quantities_dict))
 
 observable_to_csv(quantities_dict, 'h0')
 observable_to_csv(quantities_dict, 'rhoU')
