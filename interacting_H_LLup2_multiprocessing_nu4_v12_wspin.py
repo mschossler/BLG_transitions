@@ -429,7 +429,7 @@ def loopU(u):
                                                                                                             setH])
     Et = sum([eigenvalue[i] for i in range(nu)]) + ehf
 
-    dictionary = {'u': u * 1e3,
+    dict_quantities_u = {'u': u * 1e3,
                   'eigenvalue': 1e3 * eigenvalue,
                   'eigenvector': eigenvector,
                   'Et': 1e3 * Et,
@@ -438,19 +438,19 @@ def loopU(u):
                   'Eh_deltaU': 1e3 * k * Eh * deltatb,
                   'Hint': df_round(1e3 * Hint),
                   }
-    # eigensystemU.append([u, (1000 * eigenvalue), eigenvector, 1000 * Et])
+    # quantities.append([u, (1000 * eigenvalue), eigenvector, 1000 * Et])
     # return u, (1000 * eigenvalue.real), eigenvector, 1000 * Et
-    return u, (1000 * eigenvalue), eigenvector, 1000 * Et, dictionary
+    return u, (1000 * eigenvalue), eigenvector, 1000 * Et, dict_quantities_u
 
 
 a_pool = multiprocessing.Pool(processes=nprocesses)
 
 # calculates the function loopU over the range (U0minD, U0maxD, dU0D) using multiprocessing
 
-eigensystemU = a_pool.map(loopU, frange(U0minD, U0maxD, dU0D))
-# eigensystemU = a_pool.map(loopU, [-0.001,0])
+quantities = a_pool.map(loopU, frange(U0minD, U0maxD, dU0D))
+# quantities = a_pool.map(loopU, [-0.001,0])
 
-# print(eigensystemU[0][1])
+# print(quantities[0][1])
 print(time.time() - t0)
 
 # pd.read_csv(aux_dir_path + 'h0_tmp_' + namecsv, header=None).sort_values([0]).to_csv(aux_dir_path + 'h0_' + namecsv, index=False, header=False)
@@ -486,15 +486,15 @@ print(time.time() - t0)
 #     Eh_deltaU_tmp.append([k, v['Eh_deltaU_tmp']])
 #     HintU_tmp.append([k, v['HintU_tmp']])
 
-full_dict = {}
+quantities_dict = {}
 
-for el in eigensystemU:
+for el in quantities:
     u,_,_,_,dict = el
-    full_dict[dict['u']] = dict
+    quantities_dict[dict['u']] = dict
 
-tmp_obeservables = sort_dict(full_dict)
+quantities_dict = sort_dict(quantities_dict)
 
-print(len(tmp_obeservables))
+print(len(quantities_dict))
 
 # def observable_to_csv(obeservables_dict, obeservable):
 #     obeservable_list = []
@@ -504,23 +504,23 @@ print(len(tmp_obeservables))
 #     obeservable_df.to_csv(aux_dir_path + obeservable + '_' + namecsv, index=False, header=False)
 
 
-observable_to_csv(tmp_obeservables, 'h0')
-observable_to_csv(tmp_obeservables, 'rhoU')
-observable_to_csv(tmp_obeservables, 'Eh_deltaU')
-observable_to_csv(tmp_obeservables, 'Hint')
-observable_to_csv(tmp_obeservables, 'Et')
+observable_to_csv(quantities_dict, 'h0')
+observable_to_csv(quantities_dict, 'rhoU')
+observable_to_csv(quantities_dict, 'Eh_deltaU')
+observable_to_csv(quantities_dict, 'Hint')
+observable_to_csv(quantities_dict, 'Et')
 
 print(time.time() - t0)
-idx = np.argsort(eigensystemU[0][1]).tolist()
-eigenU = [[eigensystemU[0][0]] + eigensystemU[0][1][idx].tolist()]
-eigenvector = eigensystemU[0][2][:, idx]
+idx = np.argsort(quantities[0][1]).tolist()
+eigenU = [[quantities[0][0]] + quantities[0][1][idx].tolist()]
+eigenvector = quantities[0][2][:, idx]
 
-for i in range(len(eigensystemU) - 1):
-    idx = idxcalc(idx, eigenvector, eigensystemU[i + 1][2], eigensystemU[i + 1][0])
-    # idx = np.argsort(eigensystemU[i + 1][1]).tolist()
+for i in range(len(quantities) - 1):
+    idx = idxcalc(idx, eigenvector, quantities[i + 1][2], quantities[i + 1][0])
+    # idx = np.argsort(quantities[i + 1][1]).tolist()
     # print(idx)
-    eigenU.append([eigensystemU[i + 1][0]] + eigensystemU[i + 1][1][idx].tolist())
-    eigenvector = eigensystemU[i + 1][2][:, idx]
+    eigenU.append([quantities[i + 1][0]] + quantities[i + 1][1][idx].tolist())
+    eigenvector = quantities[i + 1][2][:, idx]
 
 df = pd.DataFrame(eigenU)
 # print(df)
@@ -539,12 +539,12 @@ df = pd.DataFrame(eigenUimag)
 # print(df)
 df.to_csv(aux_dir_path + title + 'imag.csv', index=False, header=False)
 
-EtU = [[eigensystemU[i][0], eigensystemU[i][3].real] for i in range(len(eigensystemU))]
+EtU = [[quantities[i][0], quantities[i][3].real] for i in range(len(quantities))]
 
 pd.DataFrame(EtU).to_csv(aux_dir_path + 'EtU' + namecsv, index=False, header=False)
 # print(df)
 
-EtU = [[eigensystemU[i][0], eigensystemU[i][3].imag] for i in range(len(eigensystemU))]
+EtU = [[quantities[i][0], quantities[i][3].imag] for i in range(len(quantities))]
 
 pd.DataFrame(EtU).to_csv(aux_dir_path + 'EtUimag' + namecsv, index=False, header=False)
 # print(df)

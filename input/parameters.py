@@ -34,7 +34,7 @@ k = (np.sqrt(np.pi / 2) * el) / (4 * np.pi * ep0 * epr * Lb)
 setH = [0, 1, -2, 2]
 
 U0minD = 20e-3
-U0maxD = 20e-3
+U0maxD = 20.5e-3
 dU0D = 0.25e-3
 
 
