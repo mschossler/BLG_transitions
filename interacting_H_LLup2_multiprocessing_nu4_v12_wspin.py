@@ -12,281 +12,6 @@ from model.hamiltonians import full_hp, full_hm, full_hpm, full_hmp, h0p2, h0m2,
 from utils import eigen, frange, idxcalc, df_round, sort_dict, observable_to_csv, idxcalc_base
 
 
-# from model.exchange_int import *
-
-# now = datetime.now()
-# current_time = now.strftime("%Y-%m-%d %H:%M:%S")
-# current_time_file = now.strftime("%d%m%Y%H%M%S")
-
-# dir_path = os.path.dirname(os.path.realpath(__file__))
-# cwd = os.getcwd()
-#
-# aux_dir_path = cwd + '/aux2/'
-# input_dir_path = cwd + '/input/'
-
-# if os.path.isfile('screenlog.0'):
-#     os.remove(aux_dir_path + 'screenlog.0')
-#
-# t0 = time.time()
-#
-# pd.set_option('display.max_columns', 300)
-# pd.set_option('display.width', 1000)
-# pd.set_option('display.max_rows', 500)
-# # np.set_printoptions(formatter={'float': '{: 0.3f}'.format})
-# # np.set_printoptions( threshold=20, edgeitems=10, linewidth=140, formatter = dict( float = lambda x: "%.3g" % x ))  # float arrays %.3g
-# np.set_printoptions( precision=5, suppress=True, threshold=20, edgeitems=10, linewidth=140, formatter={'float': '{: 0.3f}'.format})
-#
-# title = 'nu4_v12_wspin_random_rho0_hermitian_rho0phbroken_ep'+str(ep)+'_Zm' + str(Zm)  # copy v6
-# print(title)
-# # name=title+'.csv'
-# namecsv = title + '.csv'
-# # name = 'test.csv'
-#
-# machine=platform.node()
-# infos='\n'+' Starting this script ('+title+'.py) at date/time: ' + current_time+'. \n'+ ' This script is running at: '+machine+', directory: ' + cwd +'\n'
-#
-# print(infos)
-# with open(aux_dir_path + 'progress.txt', 'a') as f:
-#     print(infos, file=f)
-
-# idp_dic = {0:0,1:1,-2:2,2:3}
-# def idp(n):
-#     return idp_dic[n]
-#
-# idm_dic = {0:4,1:5,-2:6,2:7}
-# def idm(n):
-#     return idm_dic[n]
-#
-# idps_dic = {0:8,1:9,-2:10,2:11}
-# def idps(n):
-#     return idps_dic[n]
-#
-# idms_dic = {0:12,1:13,-2:14,2:15}
-# def idms(n):
-#     return idms_dic[n]
-
-# def frange(start, end, inc):
-#     return np.arange(start, end, inc).tolist()
-#
-#
-# def eigen(A):
-#     'returns eigenvalues and respective eigenvectors ordered by np.argsort'
-#     eigenValues, eigenVectors = npla.eig(A)
-#     #  eigenValuestmp=eigenValues
-#     #  eigenVectorstmp=eigenVectors
-#     idxfunc = np.argsort(eigenValues)
-#     eigenValues = eigenValues[idxfunc]
-#     eigenVectors = eigenVectors[:, idxfunc]
-#     # return eigenValues.real, np.transpose(eigenVectors)
-#     return eigenValues, np.transpose(eigenVectors)
-#
-# def idxcalc(idx, vecs1, vecs2, u):
-#     lenth = len(vecs1)
-#     idxtmp = idx.copy()
-#     # idx=[x for x in range(4)].copy()
-#     for i in range(lenth):
-#         overlaptmp = np.abs(np.dot(vecs1[:, i], vecs2[:, idxtmp[i]]))
-#         for j in range(lenth):
-#             overlap = np.abs(np.dot(vecs1[:, i], vecs2[:, idxtmp[j]]))
-#             # print('here')
-#             if overlap > overlaptmp:
-#                 idx[i] = idxtmp[j]
-#                 overlaptmp = overlap
-#                 print('u=%.3f' % (1000 * u),i,j)
-#     # if idx != idxtmp:
-#     #     print('crossing here', u * 10 ** 3)
-#     return idx
-#
-# def check_hermitian(a, tol):
-#     return np.all(np.abs(a - np.conjugate(a).T) < tol)
-#
-# def check_real(a, tol):
-#     return np.all(np.abs(a - np.conjugate(a)) < tol)
-
-# rho0rand = pd.read_csv(  aux_dir_path + 'rhoconstphbroken.csv', header=None).values.tolist()
-# # print(rho0rand)
-# rho = rho0rand
-
-# mat=[[0.1 for i in range(16)] for j in range(16)]
-# 0p-, 1p-, -2p-, 2p-, 0m-, 1m-, -2m-, 2m-,   0p+, 1p+, -2p+, 2p+, 0m+, 1m+, -2m+, 2m+
-# rho0phbroken = [[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#                 [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#                 [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#                 [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#                 [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-#                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-#                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-#                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
-#                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
-#
-# # 0p-, 1p-, -2p-, 2p-, 0m-, 1m-, -2m-, 2m-,   0p+, 1p+, -2p+, 2p+, 0m+, 1m+, -2m+, 2m+
-# rho0ph = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#           [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#           [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#           [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#           [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#           [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#           [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#           [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#           [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#           [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#           [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-#           [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#           [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-#           [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-#           [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
-#           [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
-#
-# # rho0rand = (1 - ep) * np.array(rho0phbroken) + ep * np.array(rho0ph)
-#
-#
-# # rho0rand = [[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# #        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# #        [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# #        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# #        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# #        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# #        [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# #        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# #        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# #        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# #        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# #        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# #        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# #        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# #        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-# #        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
-#
-# # randvec = [np.random.uniform(0, 1) for i in range(16)]
-# randvec = pd.read_csv(  input_dir_path + 'randvec.csv', header=None).values.tolist()[0]
-# # print(randvec)
-# randmatrix = np.outer(randvec, randvec)
-# randeigenvalue, randeigenvector = eigen(randmatrix)
-# rho0rand = sum(np.outer(randeigenvector[i, :], randeigenvector[i, :]) for i in range(nu))
-#
-# rho0 = (1 - ep) * np.array(rho0rand) + ep * np.array(rho0phbroken)
-#
-# res=check_hermitian(rho0, tol)
-# resreal=check_real(rho0, tol)
-#
-# if res:
-#     print('rho0 is hermitian')
-#     if resreal:
-#         print('rho0 is real')
-#         rho0=rho0.real
-#     else:
-#         print('rho0 is not real')
-#         exit()
-#
-# else:
-#     print('rho0rand is not hermitian')
-#     pd.DataFrame(rho0).to_csv( aux_dir_path + 'rho0_nsymmetric_' + namecsv, mode='w', index=False, header=False)
-#     exit()
-#
-# pd.DataFrame(rho0).to_csv( aux_dir_path +  'rho0' + namecsv , mode='w', index=False, header=False)
-# # # rho = sum(np.outer(np.absolute(np.array(randeigenvector[i])), np.absolute(np.array(randeigenvector[i]))) for i in
-# # #            range(len(randeigenvector)))
-# # # rho0rand = sum(np.outer(randeigenvector[i, :], randeigenvector[i, :]) for i in range(len(randeigenvector)))
-# # rho0rand = sum( np.outer(randeigenvector[i, :], randeigenvector[i, :]) for i in range( nu ) )
-# # # rho = sum(np.outer(eigenvector_loop[i, :], eigenvector_loop[i, :]) for i in range(nu));
-# # rho = rho0rand
-# # # pd.DataFrame(rho0rand).to_csv( aux_dir_path + 'rho0rand.csv', mode='w', index=False, header=False)
-#
-# eigenU = []
-# # rhoU=[]
-# rhoUdf = pd.DataFrame([])
-# rhoUdf.to_csv( aux_dir_path + 'rhoU_tmp_' + namecsv, mode='w', index=False, header=False)
-#
-#
-# def hp(n, nprime, s1, s2):
-#     if (n == nprime) and (s1 == s2):
-#         tmp = Eh * deltatb
-#     else:
-#         tmp = 0
-#
-#     def id1(n):
-#         idxfsu = round((1 + s1) / 2)
-#         idxfsd = round((1 - s1) / 2)
-#         return idxfsu * idp(n) + idxfsd * idps(n)
-#
-#     def id2(n):
-#         idxfsu = round((1 + s2) / 2)
-#         idxfsd = round((1 - s2) / 2)
-#         return idxfsu * idp(n) + idxfsd * idps(n)
-#
-#     res = -sum(
-#         [Xskp(n2, nprime, n, n1, eigenvectorp) * rho[id1(n2)][id2(n1)] for n1 in [0, 1] for n2 in [0, 1]] + [
-#             Xskp(n2, nprime, n, n1, eigenvectorp) * rho[id1(n2)][id2(n1)] for n1 in
-#             [-2, 2] for n2 in [-2, 2]]) - tmp
-#     return res
-#
-#
-# def hm(n, nprime, s1, s2):
-#     if (n == nprime) and (s1 == s2):
-#         tmp = Eh * deltatb
-#     else:
-#         tmp = 0
-#
-#     def id1(n):
-#         idxfsu = round((1 + s1) / 2)
-#         idxfsd = round((1 - s1) / 2)
-#         return idxfsu * idm(n) + idxfsd * idms(n)
-#
-#     def id2(n):
-#         idxfsu = round((1 + s2) / 2)
-#         idxfsd = round((1 - s2) / 2)
-#         return idxfsu * idm(n) + idxfsd * idms(n)
-#
-#     res = -sum(
-#         [Xskm(n2, nprime, n, n1, eigenvectorm) * rho[id1(n2)][id2(n1)] for n1 in [0, 1] for n2 in [0, 1]] + [
-#             Xskm(n2, nprime, n, n1, eigenvectorm) * rho[id1(n2)][id2(n1)] for n1 in
-#             [-2, 2] for n2 in [-2, 2]]) + tmp
-#     return res
-#
-#
-# def hpm(n, nprime, s1, s2):
-#     def id1(n):
-#         idxfsu = round((1 + s1) / 2)
-#         idxfsd = round((1 - s1) / 2)
-#         return idxfsu * idp(n) + idxfsd * idps(n)
-#
-#     def id2(n):
-#         idxfsu = round((1 + s2) / 2)
-#         idxfsd = round((1 - s2) / 2)
-#         return idxfsu * idm(n) + idxfsd * idms(n)
-#
-#     res = -sum(
-#         [Xdkpm(n2, nprime, n, n1, eigenvectorp, eigenvectorm) * rho[id1(n2)][id2(n1)] for n1 in [0, 1] for n2 in
-#          [0, 1]] + [
-#             Xdkpm(n2, nprime, n, n1, eigenvectorp, eigenvectorm) * rho[id1(n2)][id2(n1)] for n1 in [-2, 2] for n2 in
-#             [-2, 2]])
-#     return res
-#
-#
-# def hmp(n, nprime, s1, s2):
-#     def id1(n):
-#         idxfsu = round((1 + s1) / 2)
-#         idxfsd = round((1 - s1) / 2)
-#         return idxfsu * idm(n) + idxfsd * idms(n)
-#
-#     def id2(n):
-#         idxfsu = round((1 + s2) / 2)
-#         idxfsd = round((1 - s2) / 2)
-#         return idxfsu * idp(n) + idxfsd * idps(n)
-#
-#     res = -sum(
-#         [Xdkmp(n2, nprime, n, n1, eigenvectorm, eigenvectorp) * rho[id1(n2)][id2(n1)] for n1 in [0, 1] for n2 in
-#          [0, 1]] + [
-#             Xdkmp(n2, nprime, n, n1, eigenvectorm, eigenvectorp) * rho[id1(n2)][id2(n1)] for n1 in [-2, 2] for n2 in
-#             [-2, 2]])
-#     return res
 def hp(n, nprime, s1, s2):
     return full_hp(n, nprime, s1, s2, Eh, deltatb, eigenvectorp, rho)
 
@@ -303,9 +28,6 @@ def hmp(n, nprime, s1, s2):
     return full_hmp(n, nprime, s1, s2, eigenvectorp, eigenvectorm, rho)
 
 
-# tmp_obeservables = {}
-
-
 def loopU(u):
     global eigenvectorp, eigenvectorm, deltatb, rho
     print('u=%.2f' % (u * 1000))
@@ -319,11 +41,7 @@ def loopU(u):
     h0 = np.diag(eigenvaluep + eigenvaluem + eigenvaluep + eigenvaluem)
     # print('here')
     mZm = k * np.diag([-Zm for i in range(8)] + [Zm for i in range(8)])
-    # print(u * 1000, (1000 * np.diag(h0)).tolist())
-    # pd.DataFrame([[u * 1000, pd.DataFrame((1000 * h0).round(decimals=3))]]).to_csv(aux_dir_path + 'h0_tmp_' + namecsv, mode='a', index=False, header=False)
 
-    # eigenvectorp = np.transpose(np.array([[1, 0, 0, 0], [0, 1, 0, 0]] + [[0, 0] + x for x in eigenvectorp2.tolist()]))
-    # eigenvectorm = np.transpose(np.array([[1, 0, 0, 0], [0, 1, 0, 0]] + [[0, 0] + x for x in eigenvectorm2.tolist()]))
 
     eigenvectorp = np.array([[1, 0, 0, 0], [0, 1, 0, 0]] + [[0, 0] + x for x in eigenvectorp2.tolist()])
     eigenvectorm = np.array([[1, 0, 0, 0], [0, 1, 0, 0]] + [[0, 0] + x for x in eigenvectorm2.tolist()])
@@ -398,22 +116,10 @@ def loopU(u):
 
         it += 1
 
-    # df = pd.DataFrame(rho.round(decimals=3))
 
-    # .set_axis(['0', '1', '-2','2','0', '1', '-2','2'], axis=0).set_axis(['0', '1', '-2','2','0', '1', '-2','2'], axis=1)
-    # pd.DataFrame([[u * 1000, df]]).to_csv(aux_dir_path + 'rhoU_tmp_' + namecsv, mode='a', index=False, header=False)
-    # pd.DataFrame([[u, pd.DataFrame(rho )]]).to_csv( aux_dir_path + 'rhoU_tmp_'+namecsv, mode='a', index=False, header=False)
-
-    # pd.DataFrame([[u * 1000, 1000 * k * Eh * deltatb]]).to_csv(aux_dir_path + 'Eh-delta_tmp_' + namecsv, mode='a',
-    #                                                            index=False, header=False)
-
-    # pd.DataFrame([[u, pd.DataFrame(1000 * Hint ) ]]).to_csv( aux_dir_path + 'Hint_tmp_'+namecsv, mode='a', index=False, header=False)
-    # df = pd.DataFrame((1000 * Hint).round(decimals=3))  # .set_axis(['0', '1', '-2','2','0', '1', '-2','2'], axis=0).set_axis(['0', '1', '-2','2','0', '1', '-2','2'], axis=1)
-    # pd.DataFrame([[u * 1000, df]]).to_csv(aux_dir_path + 'Hint_tmp_' + namecsv, mode='a', index=False, header=False)
 
     eigenvalue, eigenvector = npla.eig(H)
-    #     #  eigenValuestmp=eigenValues
-    #     #  eigenVectorstmp=eigenVectors
+
     idxfunc = np.argsort(eigenvalue)
     #
     eigenvalue = eigenvalue[idxfunc]
@@ -438,92 +144,35 @@ def loopU(u):
                   'Eh_deltaU': 1e3 * k * Eh * deltatb,
                   'Hint': df_round(1e3 * Hint),
                   }
-    # quantities.append([u, (1000 * eigenvalue), eigenvector, 1000 * Et])
-    # return u, (1000 * eigenvalue.real), eigenvector, 1000 * Et
-    # return u, (1000 * eigenvalue), eigenvector, 1000 * Et, dict_quantities_u
-    return dict_quantities_u
 
+    return dict_quantities_u
 
 a_pool = multiprocessing.Pool(processes=nprocesses)
 
-# calculates the function loopU over the range (U0minD, U0maxD, dU0D) using multiprocessing
+
 
 quantities = a_pool.map(loopU, frange(U0minD, U0maxD, dU0D))
-# quantities = a_pool.map(loopU, [-0.001,0])
 
-# print(quantities[0][1])
 print(time.time() - t0)
-
-# pd.read_csv(aux_dir_path + 'h0_tmp_' + namecsv, header=None).sort_values([0]).to_csv(aux_dir_path + 'h0_' + namecsv, index=False, header=False)
-# os.remove(aux_dir_path + 'h0_tmp_' + namecsv)
-
-# pd.read_csv(aux_dir_path + 'rhoU_tmp_' + namecsv, header=None).sort_values([0]).to_csv(aux_dir_path + 'rhoU_' + namecsv, index=False, header=False)
-# os.remove(aux_dir_path + 'rhoU_tmp_' + namecsv)
-
-# pd.read_csv(aux_dir_path + 'Eh-delta_tmp_' + namecsv, header=None).sort_values([0]).to_csv(aux_dir_path + 'Eh-deltaU_' + namecsv, index=False, header=False)
-# os.remove(aux_dir_path + 'Eh-delta_tmp_' + namecsv)
-
-# pd.read_csv(aux_dir_path + 'Hint_tmp_' + namecsv, header=None).sort_values([0]).to_csv(aux_dir_path + 'HintU_' + namecsv, index=False, header=False)
-# os.remove(aux_dir_path + 'Hint_tmp_' + namecsv)
-
-# print(tmp_obeservables)
-# tmp_obeservables = sort_dict(tmp_obeservables)
-# h0_df = pd.DataFrame([])
-# rhoU_df = pd.DataFrame([])
-# Eh_deltaU_df = pd.DataFrame([])
-# HintU_df = pd.DataFrame([])
-#
-#
-# h0_tmp = []
-# rhoU_tmp = []
-# Eh_deltaU_tmp = []
-# HintU_tmp = []
-# print(tmp_obeservables)
-
-
-# for k,v in tmp_obeservables.items():
-#     h0_tmp.append([k, v['h0_tmp']])
-#     rhoU_tmp.append([k, v['rhoU_tmp']])
-#     Eh_deltaU_tmp.append([k, v['Eh_deltaU_tmp']])
-#     HintU_tmp.append([k, v['HintU_tmp']])
 
 quantities_dict = {}
 
 for dict in quantities:
-    # u,_,_,_,dict = el
     quantities_dict[dict['u']] = dict
 
 quantities_dict = sort_dict(quantities_dict)
 
-
 energies=[]
 for k,v in quantities_dict.items():
     u_temp , eigenvalue_temp, eigenvector_temp = v['u'], v['eigenvalue'], v['eigenvector']
-    # idx = idxcalc(idx, eigenvector, eigensystemU[i + 1][2], eigensystemU[i + 1][0])
-    # idx = idxcalc(idx, eigensystemUminD[2][:, idx0], eigensystemU[i + 1][2], eigensystemU[i + 1][0])
     idx = idxcalc_base(eigenvector_temp, u_temp)
-    # idx = idx0
-    # idx = npy.argsort(eigensystemU[i + 1][1]).tolist()
-    # print(idx)
-    # eigenU.append([eigensystemU[i + 1][0]] + eigensystemU[i + 1][1][idx].tolist())
-    # u_list.append(eigensystemU[i + 1][0])
     energies.append([u_temp] + eigenvalue_temp[idx].tolist())
-    # eigenvector = eigensystemU[i + 1][2][:, idx]
-    # eigenU.append(sorted(eigensystemU[i + 1][1][idx].tolist()))
-    # eigenvector = eigensystemU[i][2][:, idx]
 
-df = pd.DataFrame(energies)
-df.columns = ['u'] + bands
-df.to_csv(aux_dir_path + 'test'+namecsv, index=False)
+energies_df = pd.DataFrame(energies)
+energies_df.columns = ['u'] + bands
+energies_df.to_csv(aux_dir_path + namecsv, index=False)
 
 print(len(quantities_dict))
-
-# def observable_to_csv(obeservables_dict, obeservable):
-#     obeservable_list = []
-#     for k, v in obeservables_dict.items():
-#         obeservable_list.append([k, v[obeservable]])
-#     obeservable_df = pd.DataFrame(obeservable_list)
-#     obeservable_df.to_csv(aux_dir_path + obeservable + '_' + namecsv, index=False, header=False)
 
 
 observable_to_csv(quantities_dict, 'h0')
@@ -533,44 +182,6 @@ observable_to_csv(quantities_dict, 'Hint')
 observable_to_csv(quantities_dict, 'Et')
 
 print(time.time() - t0)
-# idx = np.argsort(quantities[0][1]).tolist()
-# eigenU = [[quantities[0][0]] + quantities[0][1][idx].tolist()]
-# eigenvector = quantities[0][2][:, idx]
-#
-# for i in range(len(quantities) - 1):
-#     idx = idxcalc(idx, eigenvector, quantities[i + 1][2], quantities[i + 1][0])
-#     # idx = np.argsort(quantities[i + 1][1]).tolist()
-#     # print(idx)
-#     eigenU.append([quantities[i + 1][0]] + quantities[i + 1][1][idx].tolist())
-#     eigenvector = quantities[i + 1][2][:, idx]
-#
-# df = pd.DataFrame(eigenU)
-# # print(df)
-# df.to_csv(aux_dir_path + namecsv, index=False, header=False)
-#
-# eigenU = [[el.real for el in elU] for elU in eigenU]
-# # eigenU=np.array(eigenU).real.tolist
-#
-# df = pd.DataFrame(eigenU)
-# # print(df)
-# df.to_csv(aux_dir_path + namecsv, index=False, header=False)
-
-# eigenUimag = [[elU[0]] + [el.imag for el in elU[1:len(elU)]] for elU in eigenU]
-#
-# df = pd.DataFrame(eigenUimag)
-# # print(df)
-# df.to_csv(aux_dir_path + title + 'imag.csv', index=False, header=False)
-#
-# EtU = [[quantities[i][0], quantities[i][3].real] for i in range(len(quantities))]
-#
-# pd.DataFrame(EtU).to_csv(aux_dir_path + 'EtU' + namecsv, index=False, header=False)
-# # print(df)
-#
-# EtU = [[quantities[i][0], quantities[i][3].imag] for i in range(len(quantities))]
-#
-# pd.DataFrame(EtU).to_csv(aux_dir_path + 'EtUimag' + namecsv, index=False, header=False)
-# print(df)
-
 
 print('file ' + namecsv + ' saved')
 # print('done')
