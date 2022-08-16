@@ -1,40 +1,19 @@
 import numpy as np
-from numpy import linalg as npla
 import pandas as pd
+from numpy import linalg as npla
 from config import aux_dir_path, namecsv
-# import collections
 
 def frange(start, end, inc):
     return np.arange(start, end, inc).tolist()
 
-
 def eigen(A):
     'returns eigenvalues and respective eigenvectors ordered by np.argsort'
     eigenValues, eigenVectors = npla.eig(A)
-    #  eigenValuestmp=eigenValues
-    #  eigenVectorstmp=eigenVectors
     idxfunc = np.argsort(eigenValues)
     eigenValues = eigenValues[idxfunc]
     eigenVectors = eigenVectors[:, idxfunc]
     # return eigenValues.real, np.transpose(eigenVectors)
     return eigenValues, np.transpose(eigenVectors)
-
-def idxcalc(idx, vecs1, vecs2, u):
-    lenth = len(vecs1)
-    idxtmp = idx.copy()
-    # idx=[x for x in range(4)].copy()
-    for i in range(lenth):
-        overlaptmp = np.abs(np.dot(vecs1[:, i], vecs2[:, idxtmp[i]]))
-        for j in range(lenth):
-            overlap = np.abs(np.dot(vecs1[:, i], vecs2[:, idxtmp[j]]))
-            # print('here')
-            if overlap > overlaptmp:
-                idx[i] = idxtmp[j]
-                overlaptmp = overlap
-                # print('u=%.3f' % (u), i, j)
-    # if idx != idxtmp:
-    #     print('crossing here', u * 10 ** 3)
-    return idx
 
 def check_hermitian(a, tol):
     return np.all(np.abs(a - np.conjugate(a).T) < tol)
@@ -49,7 +28,6 @@ def sort_dict(dict):
     sorted_dict = {k: v for k, v in sorted(dict.items())}
     return sorted_dict
 
-
 def observable_to_csv(obeservables_dict, obeservable):
     obeservable_list = []
     for k, v in obeservables_dict.items():
@@ -57,39 +35,26 @@ def observable_to_csv(obeservables_dict, obeservable):
     obeservable_df = pd.DataFrame(obeservable_list)
     obeservable_df.to_csv(aux_dir_path + obeservable + '_' + namecsv, index=False, header=False)
 
+base = np.identity(16)
 
-
-base=np.identity(16)
-
-def idxcalc_base(vecs1, u):
+def idxcalc(vecs1):
     lenth = len(base)
-    # idxtmp = idx.copy()
-    # idx=[x for x in range(4)].copy()
     idx = []
     for i in range(lenth):
-        # overlaptmp = npy.abs(npy.dot(vecs1[:, i], base[:, i]))
-        overlap= 0
+        overlap = 0
         for j in range(lenth):
-            overlaptmp  = np.abs(np.dot(base[i, :], vecs1[j, :]))
-            # print('here')
+            overlaptmp = np.abs(np.dot(base[i, :], vecs1[j, :]))
             if overlaptmp > overlap:
-                idxtemp= j
+                idxtemp = j
                 overlap = overlaptmp
         idx.append(idxtemp)
-                # print('u=%.3f' % (u), i, j)
-    # if idx != idxtmp:
-    #     print('crossing here', u * 10 ** 3)
     return idx
-
 
 def nonedimmerp(vectors):
     newvectors = []
     for x in vectors:
         tmp = [x[0], x[3]]
         newvectors.append((np.array(tmp) / npla.norm(tmp)).tolist())
-        # print(npyla.norm(tmp))
-    # print(npy.array(tmp))
-    # print(npyla.norm(tmp))
     return np.array(newvectors)
 
 def nonedimmerm(vectors):
@@ -97,20 +62,14 @@ def nonedimmerm(vectors):
     for x in vectors:
         tmp = [-x[3], x[0]]
         newvectors.append((np.array(tmp) / npla.norm(tmp)).tolist())
-        # print(npyla.norm(tmp))
-    # print(npy.array(tmp))
-    # print(npyla.norm(tmp))
     return np.array(newvectors)
 
 def tau_func(tau):
     tau = np.array(tau)
-    temp = np.zeros((8, 8), dtype='float_')  # ,dtype = 'complex_')
-
-    # for i in range(4):
+    temp = np.zeros((8, 8), dtype='float_')
     for i in range(2):
         temp[i, i] = tau[0, 0]
         temp[i, i + 4] = tau[0, 1]
         temp[i + 4, i] = tau[1, 0]
         temp[i + 4, i + 4] = tau[1, 1]
-
     return np.kron(np.eye(2, dtype=int), temp)

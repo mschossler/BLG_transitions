@@ -1,14 +1,15 @@
-from config import tol
-import pandas as pd
-import numpy as np
 import math
+
+import numpy as np
+import pandas as pd
+
+from config import tol
 from input.parameters import x
 
-
-xsFF = pd.read_csv('model/'+'xsFF.csv', names=['res', 'n2', 'np', 'n', 'n1'])
+xsFF = pd.read_csv('model/' + 'xsFF.csv', names=['res', 'n2', 'np', 'n', 'n1'])
 xsFF = xsFF.loc[(abs(xsFF['res']) > tol)].reset_index()
 
-xdFF = pd.read_csv('model/'+'xdFF.csv', names=['res', 'n2', 'np', 'n', 'n1'])
+xdFF = pd.read_csv('model/' + 'xdFF.csv', names=['res', 'n2', 'np', 'n', 'n1'])
 xdFF = xdFF.loc[(abs(xdFF['res']) > tol)].reset_index()
 
 
@@ -43,7 +44,6 @@ def vmnf(n, eigenvectorm):
         return eigenvectorm[2][3]
     elif n == 2:
         return eigenvectorm[3][3]
-    # return eigensystem[1][index(n)][2]
 
 
 def umnf(n, eigenvectorm):
@@ -76,7 +76,6 @@ def Xskp(n2, nprime, n, n1, eigenvectorp):
     absn = abs(n)
     absn1 = abs(n1)
 
-    # restmp = xsFFfunc[0][1]
     if abs((eigenvectorp[2][2]) ** 2 + (eigenvectorp[2][3]) ** 2 - 1) > tol:
         print('error with eigenvectorp', n2, nprime, n, n1)
         exit()
@@ -87,14 +86,14 @@ def Xskp(n2, nprime, n, n1, eigenvectorp):
     def upl(n):
         return uplf(n, eigenvectorp)
 
-    res = upl(n2) * upl(nprime) * upl(n) * upl(n1) * xsFFfunc(absn2, absnp, absn, absn1) + upl(n2) * upl(nprime) * vpl(n) * vpl(n1) * xsFFfunc(absn2, absnp, absn - 2, absn1 - 2) + vpl(
-        n2) * vpl(nprime) * upl(n) * upl(n1) * xsFFfunc(absn2 - 2, absnp - 2, absn, absn1) + vpl(n2) * vpl(nprime) * vpl(n) * vpl(n1) * xsFFfunc(absn2 - 2, absnp - 2, absn - 2, absn1 - 2)
+    res = upl(n2) * upl(nprime) * upl(n) * upl(n1) * xsFFfunc(absn2, absnp, absn, absn1) + \
+          upl(n2) * upl(nprime) * vpl(n) * vpl(n1) * xsFFfunc(absn2, absnp, absn - 2, absn1 - 2) + \
+          vpl(n2) * vpl(nprime) * upl(n) * upl(n1) * xsFFfunc(absn2 - 2, absnp - 2, absn, absn1) + \
+          vpl(n2) * vpl(nprime) * vpl(n) * vpl(n1) * xsFFfunc(absn2 - 2, absnp - 2, absn - 2, absn1 - 2)
 
     if abs(res) < tol:
         res = 0
     return res
-    # print(res)
-    # eigen( (h0p(u) )
 
 
 def Xskm(n2, nprime, n, n1, eigenvectorm):
@@ -109,19 +108,18 @@ def Xskm(n2, nprime, n, n1, eigenvectorm):
 
     def vmn(n):
         return vmnf(n, eigenvectorm)
-        # return eigensystem[1][index(n)][2]
 
     def umn(n):
         return umnf(n, eigenvectorm)
 
-    res = umn(n2) * umn(nprime) * umn(n) * umn(n1) * xsFFfunc(absn2, absnp, absn, absn1) + umn(n2) * umn(nprime) * vmn(n) * vmn(n1) * xsFFfunc(absn2, absnp, absn - 2, absn1 - 2) + vmn(
-        n2) * vmn(nprime) * umn(n) * umn(n1) * xsFFfunc(absn2 - 2, absnp - 2, absn, absn1) + vmn(n2) * vmn(nprime) * vmn(n) * vmn(n1) * xsFFfunc(absn2 - 2, absnp - 2, absn - 2, absn1 - 2)
+    res = umn(n2) * umn(nprime) * umn(n) * umn(n1) * xsFFfunc(absn2, absnp, absn, absn1) + \
+          umn(n2) * umn(nprime) * vmn(n) * vmn(n1) * xsFFfunc(absn2, absnp, absn - 2, absn1 - 2) + \
+          vmn(n2) * vmn(nprime) * umn(n) * umn(n1) * xsFFfunc(absn2 - 2, absnp - 2, absn, absn1) + \
+          vmn(n2) * vmn(nprime) * vmn(n) * vmn(n1) * xsFFfunc(absn2 - 2, absnp - 2, absn - 2, absn1 - 2)
 
     if abs(res) < tol:
         res = 0
     return res
-    # print(res)
-    # eigen( (h0p(u) )
 
 
 def xdFFfunc(n2, nprime, n, n1):
@@ -151,19 +149,18 @@ def Xdkpm(n2, nprime, n, n1, eigenvectorp, eigenvectorm):
 
     def vmn(n):
         return vmnf(n, eigenvectorm)
-        # return eigensystem[1][index(n)][2]
 
     def umn(n):
         return umnf(n, eigenvectorm)
 
-    res = upl(n2) * upl(nprime) * umn(n) * umn(n1) * xdFFfunc(absn2, absnp, absn, absn1) + upl(n2) * upl(nprime) * vmn(n) * vmn(n1) * xdFFfunc(absn2, absnp, absn - 2, absn1 - 2) + vpl(
-        n2) * vpl(nprime) * umn(n) * umn(n1) * xdFFfunc(absn2 - 2, absnp - 2, absn, absn1) + vpl(n2) * vpl(nprime) * vmn(n) * vmn(n1) * xdFFfunc(absn2 - 2, absnp - 2, absn - 2, absn1 - 2)
+    res = upl(n2) * upl(nprime) * umn(n) * umn(n1) * xdFFfunc(absn2, absnp, absn, absn1) + \
+          upl(n2) * upl(nprime) * vmn(n) * vmn(n1) * xdFFfunc(absn2, absnp, absn - 2, absn1 - 2) + \
+          vpl(n2) * vpl(nprime) * umn(n) * umn(n1) * xdFFfunc(absn2 - 2, absnp - 2, absn, absn1) + \
+          vpl(n2) * vpl(nprime) * vmn(n) * vmn(n1) * xdFFfunc(absn2 - 2, absnp - 2, absn - 2, absn1 - 2)
 
     if abs(res) < tol:
         res = 0
     return res
-    # print(res)
-    # eigen( (h0p(u) )
 
 
 def Xdkmp(n2, nprime, n, n1, eigenvectorm, eigenvectorp):
@@ -180,24 +177,22 @@ def Xdkmp(n2, nprime, n, n1, eigenvectorm, eigenvectorp):
 
     def vmn(n):
         return vmnf(n, eigenvectorm)
-        # return eigensystem[1][index(n)][2]
 
     def umn(n):
         return umnf(n, eigenvectorm)
 
-    res = umn(n2) * umn(nprime) * upl(n) * upl(n1) * xdFFfunc(absn2, absnp, absn, absn1) + umn(n2) * umn(nprime) * vpl(n) * vpl(
-        n1) * xdFFfunc(absn2, absnp, absn - 2, absn1 - 2) + vmn(n2) * vmn(nprime) * upl(n) * upl(n1) * xdFFfunc(absn2 - 2, absnp - 2, absn, absn1) + vmn(n2) * vmn(nprime) * vpl(n) * vpl(
-        n1) * xdFFfunc(absn2 - 2, absnp - 2, absn - 2, absn1 - 2)
+    res = umn(n2) * umn(nprime) * upl(n) * upl(n1) * xdFFfunc(absn2, absnp, absn, absn1) + \
+          umn(n2) * umn(nprime) * vpl(n) * vpl(n1) * xdFFfunc(absn2, absnp, absn - 2, absn1 - 2) + \
+          vmn(n2) * vmn(nprime) * upl(n) * upl(n1) * xdFFfunc(absn2 - 2, absnp - 2, absn, absn1) + \
+          vmn(n2) * vmn(nprime) * vpl(n) * vpl(n1) * xdFFfunc(absn2 - 2, absnp - 2, absn - 2, absn1 - 2)
 
     if abs(res) < tol:
         res = 0
     return res
-    # print(res)
-    # eigen( (h0p(u) )
+
 
 Xzs = 1;
 Xzd = np.exp((x ** 2) / 2) * math.erfc(x / (np.sqrt(2)));
-# print(np.exp((x**2)))
 Xos = 3 / 4;
 Xod = (1 / 8) * np.sqrt(2 / np.pi) * (-2 * x * (1 + x ** 2) + np.exp((x ** 2) / 2) * np.sqrt(2 * np.pi) * (3 + 2 * x ** 2 + x ** 4) * math.erfc(x / (np.sqrt(2))));
 Xfs = 1 / 2;

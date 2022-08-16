@@ -8,7 +8,7 @@ from config import aux_dir_path, namecsv, itmax, nprocesses, t0, bands
 from input.parameters import *
 from model.densities import rho0
 from model.hamiltonians import full_hp, full_hm, full_hpm, full_hmp, h0p2, h0m2, h0p, h0m, mZm, idp, idps, idm, idms
-from utils import eigen, frange, df_round, sort_dict, observable_to_csv, idxcalc_base
+from utils import eigen, frange, df_round, sort_dict, observable_to_csv, idxcalc
 
 
 def hp(n, nprime, s1, s2):
@@ -76,18 +76,17 @@ def loopU(u):
 
     eigenvalue, eigenvector = npla.eig(H)
     idxfunc = np.argsort(eigenvalue)
-    #
+
     eigenvalue = eigenvalue[idxfunc]
     eigenvector = eigenvector[:, idxfunc]
 
-    ehf = - sum(
-        [Hint[idp(n)][idp(nprime)] * rho[idp(nprime)][idp(n)] for n in setH for nprime in setH] + [Hint[idm(n)][idm(nprime)] * rho[idm(nprime)][idm(n)] for n in setH for nprime in
-                                                                                                   setH] + [
-            Hint[idps(n)][idps(nprime)] * rho[idps(nprime)][idps(n)] for n in setH for nprime in setH] + [Hint[idms(n)][idms(nprime)] * rho[idms(nprime)][idms(n)] for n in setH for
-                                                                                                          nprime in setH] + [
-            2 * Hint[idp(n)][idps(nprime)] * rho[idp(nprime)][idps(n)] for n in setH for nprime in setH] + [2 * Hint[idm(n)][idms(nprime)] * rho[idm(nprime)][idms(n)] for n in setH
-                                                                                                            for nprime in
-                                                                                                            setH])
+    ehf = - sum([Hint[idp(n)][idp(nprime)] * rho[idp(nprime)][idp(n)] for n in setH for nprime in setH] +
+                [Hint[idm(n)][idm(nprime)] * rho[idm(nprime)][idm(n)] for n in setH for nprime in setH] +
+                [Hint[idps(n)][idps(nprime)] * rho[idps(nprime)][idps(n)] for n in setH for nprime in setH] +
+                [Hint[idms(n)][idms(nprime)] * rho[idms(nprime)][idms(n)] for n in setH for nprime in setH] +
+                [2 * Hint[idp(n)][idps(nprime)] * rho[idp(nprime)][idps(n)] for n in setH for nprime in setH] +
+                [2 * Hint[idm(n)][idms(nprime)] * rho[idm(nprime)][idms(n)] for n in setH for nprime in setH]
+                )
     Et = sum([eigenvalue[i] for i in range(nu)]) + ehf
 
     dict_quantities_u = {'u': u * 1e3,
@@ -114,17 +113,14 @@ quantities_dict = sort_dict(quantities_dict)
 energies = []
 for k, v in quantities_dict.items():
     u_temp, eigenvalue_temp, eigenvector_temp = v['u'], v['eigenvalue'], v['eigenvector']
-    idx = idxcalc_base(eigenvector_temp, u_temp)
+    idx = idxcalc(eigenvector_temp)
     energies.append([u_temp] + eigenvalue_temp[idx].tolist())
 
 energies_df = pd.DataFrame(energies, columns=['u'] + bands)
 energies_df.to_csv(aux_dir_path + namecsv, index=False)
 
-observable_to_csv(quantities_dict, 'h0')
-observable_to_csv(quantities_dict, 'rhoU')
-observable_to_csv(quantities_dict, 'Eh_deltaU')
-observable_to_csv(quantities_dict, 'Hint')
-observable_to_csv(quantities_dict, 'Et')
+for quantity in ['h0', 'rhoU', 'Eh_deltaU', 'Hint', 'Et']:
+    observable_to_csv(quantities_dict, quantity)
 
 print(time.time() - t0)
 print('file ' + namecsv + ' saved')
