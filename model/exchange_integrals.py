@@ -1,5 +1,8 @@
 from config import tol
 import pandas as pd
+import numpy as np
+import math
+from input.parameters import x
 
 
 xsFF = pd.read_csv('model/'+'xsFF.csv', names=['res', 'n2', 'np', 'n', 'n1'])
@@ -191,3 +194,13 @@ def Xdkmp(n2, nprime, n, n1, eigenvectorm, eigenvectorp):
     return res
     # print(res)
     # eigen( (h0p(u) )
+
+Xzs = 1;
+Xzd = np.exp((x ** 2) / 2) * math.erfc(x / (np.sqrt(2)));
+# print(np.exp((x**2)))
+Xos = 3 / 4;
+Xod = (1 / 8) * np.sqrt(2 / np.pi) * (-2 * x * (1 + x ** 2) + np.exp((x ** 2) / 2) * np.sqrt(2 * np.pi) * (3 + 2 * x ** 2 + x ** 4) * math.erfc(x / (np.sqrt(2))));
+Xfs = 1 / 2;
+Xfd = (1 / 4) * np.sqrt(2 / np.pi) * (-2 * x + np.exp((x ** 2) / 2) * np.sqrt(2 * np.pi) * (1 + x ** 2) * math.erfc(x / (np.sqrt(2))));
+Xsts = 1 / 2;
+Xstd = (1 / 4) * np.sqrt(2 / np.pi) * (2 * x - np.exp((x ** 2) / 2) * np.sqrt(2 * np.pi) * (-1 + x ** 2) * math.erfc(x / (np.sqrt(2))));

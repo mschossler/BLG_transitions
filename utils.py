@@ -31,7 +31,7 @@ def idxcalc(idx, vecs1, vecs2, u):
             if overlap > overlaptmp:
                 idx[i] = idxtmp[j]
                 overlaptmp = overlap
-                print('u=%.3f' % (1000 * u),i,j)
+                # print('u=%.3f' % (u), i, j)
     # if idx != idxtmp:
     #     print('crossing here', u * 10 ** 3)
     return idx
@@ -80,3 +80,37 @@ def idxcalc_base(vecs1, u):
     # if idx != idxtmp:
     #     print('crossing here', u * 10 ** 3)
     return idx
+
+
+def nonedimmerp(vectors):
+    newvectors = []
+    for x in vectors:
+        tmp = [x[0], x[3]]
+        newvectors.append((np.array(tmp) / npla.norm(tmp)).tolist())
+        # print(npyla.norm(tmp))
+    # print(npy.array(tmp))
+    # print(npyla.norm(tmp))
+    return np.array(newvectors)
+
+def nonedimmerm(vectors):
+    newvectors = []
+    for x in vectors:
+        tmp = [-x[3], x[0]]
+        newvectors.append((np.array(tmp) / npla.norm(tmp)).tolist())
+        # print(npyla.norm(tmp))
+    # print(npy.array(tmp))
+    # print(npyla.norm(tmp))
+    return np.array(newvectors)
+
+def tau_func(tau):
+    tau = np.array(tau)
+    temp = np.zeros((8, 8), dtype='float_')  # ,dtype = 'complex_')
+
+    # for i in range(4):
+    for i in range(2):
+        temp[i, i] = tau[0, 0]
+        temp[i, i + 4] = tau[0, 1]
+        temp[i + 4, i] = tau[1, 0]
+        temp[i + 4, i + 4] = tau[1, 1]
+
+    return np.kron(np.eye(2, dtype=int), temp)

@@ -8,7 +8,7 @@ from numpy import linalg as npla
 from config import aux_dir_path, namecsv, itmax, nprocesses, t0, title, bands
 from input.parameters import *
 from model.densities import rho0
-from model.hamiltonians import full_hp, full_hm, full_hpm, full_hmp, h0p2, h0m2, h0p, h0m, idp, idps, idm, idms
+from model.hamiltonians import full_hp, full_hm, full_hpm, full_hmp, h0p2, h0m2, h0p, h0m, mZm, idp, idps, idm, idms
 from utils import eigen, frange, idxcalc, df_round, sort_dict, observable_to_csv, idxcalc_base
 
 
@@ -40,7 +40,7 @@ def loopU(u):
 
     h0 = np.diag(eigenvaluep + eigenvaluem + eigenvaluep + eigenvaluem)
     # print('here')
-    mZm = k * np.diag([-Zm for i in range(8)] + [Zm for i in range(8)])
+    # mZm = k * np.diag([-Zm for i in range(8)] + [Zm for i in range(8)])
 
 
     eigenvectorp = np.array([[1, 0, 0, 0], [0, 1, 0, 0]] + [[0, 0] + x for x in eigenvectorp2.tolist()])
