@@ -71,20 +71,21 @@ def plot_energies(energies):
 
 if __name__ == "__main__":
     energies_df = pd.read_csv(aux_dir_path + namecsv)
+    transitions_df = pd.read_csv(aux_dir_path + 'trans_' + namecsv)
     print(energies_df)
     plot_energies(energies_df)
 
-transitions_plot_dic = {'LL1_Kp_Sdown_to_LL2_Kp_Sdown': {'color': 'tab:blue', 'marker_shape': '2', 'line_shape': '-',
-                                                         'label': '$1\\mathrm{K}^{+}\\downarrow\\ \\longrightarrow\\ 2\\mathrm{K}^{+}\\downarrow$'},
-                        'LLm2_Kp_Sdown_to_LL1_Kp_Sdown': {'color': 'tab:orange', 'marker_shape': '1', 'line_shape': '-',
-                                                          'label': '$-2\\mathrm{K}^{+}\\downarrow\\ \\longrightarrow\\ 1\\mathrm{K}^{+}\\downarrow$'},
-                        'LL1_Km_Sdown_to_LL2_Km_Sdown': {'color': 'tab:red', 'marker_shape': '1', 'line_shape': '--',
-                                                         'label': '$1\\mathrm{K}^{-}\\downarrow\\ \\longrightarrow\\ 2\\mathrm{K}^{-}\\downarrow$'},
-                        'LLm2_Km_Sdown_to_LL1_Km_Sdown': {'color': 'tab:purple', 'marker_shape': '2', 'line_shape': '--',
-                                                          'label': '$-2\\mathrm{K}^{-}\\downarrow\\ \\longrightarrow\\ 1\\mathrm{K}^{-}\\downarrow$'},
-                        'LL1_Kp_Sup_to_LL2_Kp_Sup': {'color': 'tab:brown', 'marker_shape': '1', 'line_shape': '-',
-                                                     'label': '$1\\mathrm{K}^{+}\\uparrow\\ \\longrightarrow\\ 2\\mathrm{K}^{+}\\uparrow$'},
-                        'LLm2_Kp_Sup_to_LL1_Kp_Sup': {'color': 'tab:gray', 'marker_shape': '1', 'line_shape': '-',
+transitions_style_dic = {'LL1_Kp_Sdown_to_LL2_Kp_Sdown': {'color': 'tab:blue', 'marker_shape': '2', 'line_shape': '-',
+                                                          'label': '$1\\mathrm{K}^{+}\\downarrow\\ \\longrightarrow\\ 2\\mathrm{K}^{+}\\downarrow$'},
+                         'LLm2_Kp_Sdown_to_LL1_Kp_Sdown': {'color': 'tab:orange', 'marker_shape': '1', 'line_shape': '-',
+                                                           'label': '$-2\\mathrm{K}^{+}\\downarrow\\ \\longrightarrow\\ 1\\mathrm{K}^{+}\\downarrow$'},
+                         'LL1_Km_Sdown_to_LL2_Km_Sdown': {'color': 'tab:red', 'marker_shape': '1', 'line_shape': '--',
+                                                          'label': '$1\\mathrm{K}^{-}\\downarrow\\ \\longrightarrow\\ 2\\mathrm{K}^{-}\\downarrow$'},
+                         'LLm2_Km_Sdown_to_LL1_Km_Sdown': {'color': 'tab:purple', 'marker_shape': '2', 'line_shape': '--',
+                                                           'label': '$-2\\mathrm{K}^{-}\\downarrow\\ \\longrightarrow\\ 1\\mathrm{K}^{-}\\downarrow$'},
+                         'LL1_Kp_Sup_to_LL2_Kp_Sup': {'color': 'tab:brown', 'marker_shape': '1', 'line_shape': '-',
+                                                      'label': '$1\\mathrm{K}^{+}\\uparrow\\ \\longrightarrow\\ 2\\mathrm{K}^{+}\\uparrow$'},
+                         'LLm2_Kp_Sup_to_LL1_Kp_Sup': {'color': 'tab:gray', 'marker_shape': '1', 'line_shape': '-',
                                                       'label': '$-2\\mathrm{K}^{+}\\uparrow\\ \\longrightarrow\\ 1\\mathrm{K}^{+}\\uparrow$'},
                         'LL1_Km_Sup_to_LL2_Km_Sup': {'color': 'tab:olive', 'marker_shape': '2', 'line_shape': '--',
                                                      'label': '$1\\mathrm{K}^{-}\\uparrow\\ \\longrightarrow\\ 2\\mathrm{K}^{-}\\uparrow$'},
@@ -92,20 +93,21 @@ transitions_plot_dic = {'LL1_Kp_Sdown_to_LL2_Kp_Sdown': {'color': 'tab:blue', 'm
                                                       'label': '$-2\\mathrm{K}^{-}\\uparrow\\ \\longrightarrow\\ 1\\mathrm{K}^{-}\\uparrow$'}}
 
 
-def plot_transitions(energies):
+def plot_transitions(transitions_df):
     f = plt.figure()
     ax = plt.gca()
 
-    for band in bands:
-        styleX = style_dict.get(band)
+    for transition in transitions_style_dic:
+        style_transition = transitions_style_dic.get(transition)
         # energies.plot(x='u', y=band, color=styleX[0], style=styleX[1], markersize=3, linewidth=0.7, label=styleX[3], ax=ax)  # , marker='o')
-        energies.plot(x='u', y=band, color=styleX['color'], style=styleX['line_shape'], markersize=3, linewidth=0.7, label=styleX['label'], ax=ax)  # , marker='o')
-    plt.title('Energy bands  nu=' + str(nu) + ' as function of U with self-energy alpha 1')
+        transitions_df.plot(x='u', y=transition, color=style_transition['color'], style=style_transition['line_shape'], markersize=3, linewidth=0.7,
+                            label=style_transition['label'], ax=ax)  # , marker='o')
+    plt.title('Transition bands  nu=' + str(nu) + ' as function of U with self-energy alpha 1')
     plt.xlabel('U(meV)')
-    plt.ylabel('Energy bands(meV)')
+    plt.ylabel('transitions(meV)')
 
     # plt.legend(bbox_to_anchor=(1, 0.55))
-    plt.legend(loc='upper right', bbox_to_anchor=(1, 1))
+    plt.legend(loc='upper right', bbox_to_anchor=(.55, 1.020))
     plt.rcParams["figure.figsize"] = (10, 5)
     # plt.show()
-    f.savefig(aux_dir_path + "LL(U)_HF_interactions_w_SE_warping_alpha1_nu_" + str(nu) + ".pdf", bbox_inches='tight')
+    f.savefig(aux_dir_path + "Transition_nu_" + str(nu) + ".pdf", bbox_inches='tight')

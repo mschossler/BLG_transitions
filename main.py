@@ -12,8 +12,8 @@ a_pool = multiprocessing.Pool(processes=nprocesses)
 quantities = a_pool.map(loopU, frange(U0minD, U0maxD, dU0D))
 
 quantities_dict = {}
-for dict in quantities:
-    quantities_dict[dict['u']] = dict
+for dict_u in quantities:
+    quantities_dict[dict_u['u']] = dict_u
 
 quantities_dict = sort_dict(quantities_dict)
 
@@ -31,16 +31,22 @@ energies_df.to_csv(aux_dir_path + namecsv, index=False)
 for quantity in ['h0', 'rhoU', 'Eh_deltaU', 'Hint', 'Et', 'eigenvector', 'exciton_energy', 'regmatrix']:
     observable_to_csv(quantities_dict, quantity)
 
-from visualization.plots import plot_energies
+from visualization.plots import plot_energies, plot_transitions
 
-transition_energy_dic = {}
+transition_energy_all = pd.DataFrame([])
 for t in allowed_transitions:
-    transition_label, energy = transition_energy(energies_df, t)
-    transition_energy_dic[transition_label] = energy
-    print(energy)
+    transition_energy_df = transition_energy(energies_df, t)
+    transition_energy_all = pd.concat([transition_energy_all, transition_energy_df], axis=1)
+    # print(transition_energy_df)
 
+transition_energy_all['u'] = transition_energy_all.index
+transition_energy_all.to_csv(aux_dir_path + 'trans_' + namecsv, index=False)
+
+plot_transitions(transition_energy_all)
 print(energies_df)
 plot_energies(energies_df)
+
+print(transition_energy_all)
 
 print(time.time() - t0)
 print('file ' + namecsv + ' saved')

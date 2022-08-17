@@ -47,5 +47,5 @@ k = (np.sqrt(np.pi / 2) * el) / (4 * np.pi * ep0 * epr * Lb) * alpha_k
 # Zm = k * 0.0178
 
 U0minD = -2e-3
-U0maxD = -1.5e-3
-dU0D = 0.25e-3
+U0maxD = 2e-3
+dU0D = 0.5e-3

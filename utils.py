@@ -121,9 +121,12 @@ def transition_energy(energies, two_allowed_bands: (str, str), extra_terms=0):
     else:
         print('transition_energy: invalid format for energies, pandas.DataFrame is expected')
         exit()
-
-    transition_tuple = (from_band + '_to_' + to_band, energies[to_band] - energies[from_band])  # + extra_terms)
-    return transition_tuple
+    transtion_label = from_band + '_to_' + to_band
+    transition_energy_df = pd.DataFrame([])
+    transition_energy_df[transtion_label] = energies[to_band] - energies[from_band]
+    transition_energy_df.index = energies['u'].values
+    # transition_tuple = transition_energy_df  # + extra_terms)
+    return transition_energy_df
 
 
 bands_by_sector = [list(t) for t in zip(*[iter(bands)] * 4)]
