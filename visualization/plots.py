@@ -1,7 +1,8 @@
-import pandas as pd
-import time
-from matplotlib import pyplot as plt
 import sys
+
+import pandas as pd
+from matplotlib import pyplot as plt
+
 # from config import aux_dir_path, namecsv, title, t0, bands
 # from input.parameters import nu
 
@@ -12,7 +13,7 @@ if __name__ == "__main__":
     from input.parameters import  nu
 
 else:
-    from config import aux_dir_path, namecsv, title, t0, bands
+    from config import aux_dir_path, namecsv, bands
     from input.parameters import nu
 
 f = plt.figure()
@@ -52,7 +53,6 @@ def plot_energies(energies):
     plt.legend(loc='upper right', bbox_to_anchor=(1, 1))
     plt.rcParams["figure.figsize"] = (10, 5)
     # plt.show()
-
     f.savefig(aux_dir_path + "LL(U)_HF_interactions_w_SE_warping_alpha1_nu_" + str(nu) + ".pdf", bbox_inches='tight')
 
 if __name__ == "__main__":

@@ -1,8 +1,8 @@
-from numpy import linalg as npla
-from config import itmax,  setH
+from config import itmax, setH
 from input.parameters import *
 from model.densities_small_U import rho0constUp, rho0constUm
-from model.hamiltonians import full_hp, full_hm, full_hpm, full_hmp, idp, idps, idm, idms,  delta_e_regmatrix, mZm, h0p2, h0m2, h0p, h0m, hAp, hBp, hCp
+from model.exchange_integrals import Xskm, Xskp
+from model.hamiltonians import full_hp, full_hm, full_hpm, full_hmp, idp, idps, idm, idms, delta_e_regmatrix, mZm, h0p2, h0m2, h0p, h0m, hAp
 from utils import eigen, df_round, nonedimmerp, nonedimmerm
 
 
@@ -21,6 +21,19 @@ def hpm(n, nprime, s1, s2):
 def hmp(n, nprime, s1, s2):
     return full_hmp(n, nprime, s1, s2, eigenvectorp, eigenvectorm, rho)
 
+
+def exciton_j_to_n_km(n, j, eigenvectorm):
+    A_nj = Xskm(n, n, j, j, eigenvectorm) * k * alpha_k
+    nu_j = 1
+    nu_n = 0
+    return -(nu_j - nu_n) * A_nj
+
+
+def exciton_j_to_n_kp(n, j, eigenvectorp):
+    A_nj = Xskp(n, n, j, j, eigenvectorp) * k * alpha_k
+    nu_j = 1
+    nu_n = 0
+    return -(nu_j - nu_n) * A_nj
 
 
 def loopU(u):
@@ -50,7 +63,6 @@ def loopU(u):
 
     # print('here2')
     ######
-
 
     ###### regularization (self energy) U dependent
     regmatrix = delta_e_regmatrix(rho0, eigenvectorp, eigenvectorm) * k * alpha_reg
@@ -82,14 +94,13 @@ def loopU(u):
         Hintdownup = np.vstack((hphpmsdu, hmphmsdu))
 
         Hint = k * np.vstack((np.hstack((Hintup, Hintupdown)), np.hstack((Hintdownup, Hintdown))))
-        H = Hint + h0 + mZm + regmatrix # np.add(Hint, h0)
+        H = Hint + h0 + mZm + regmatrix  # np.add(Hint, h0)
         eigenvalue_loop, eigenvector_loop = eigen(H)
         rho = sum(np.outer(eigenvector_loop[i, :], eigenvector_loop[i, :]) for i in range(occupied_bands))
 
         regmatrix = delta_e_regmatrix(rho, eigenvectorp, eigenvectorm) * k * alpha_reg
 
         it += 1
-
 
     eigenvalue, eigenvector = eigen(H)
     # eigenvalue, eigenvector = npla.eig(H)
@@ -116,4 +127,22 @@ def loopU(u):
                          'Eh_deltaU': 1e3 * k * Eh * deltatb,
                          'Hint': df_round(1e3 * Hint),
                          }
+    ############################# exciton ####################
+    eigenvaluep2, eigenvectorp2 = eigen(hAp(u))[0][1:3], eigen(hAp(u))[1][1:3]
+    eigenvectorp2 = nonedimmerp(eigenvectorp2)
+
+    eigenvaluem2, eigenvectorm2 = eigen(hAp(-u))[0][1:3], eigen(hAp(-u))[1][1:3]
+    eigenvectorm2 = nonedimmerm(eigenvectorm2)
+
+    eigenvectorp = np.array([[1, 0, 0, 0], [0, 1, 0, 0]] + [[0, 0] + x for x in eigenvectorp2.tolist()])
+    eigenvectorm = np.array([[1, 0, 0, 0], [0, 1, 0, 0]] + [[0, 0] + x for x in eigenvectorm2.tolist()])
+
+    exciton = np.array([u, exciton_j_to_n_km(-2, 1, eigenvectorm), exciton_j_to_n_kp(-2, 1, eigenvectorp),
+                        exciton_j_to_n_km(1, 2, eigenvectorm), exciton_j_to_n_kp(1, 2, eigenvectorp)])
+    ##########################################################
+
+    dict_quantities_u['regmatrix'] = 1e3 * regmatrix
+    dict_quantities_u['exciton_energy'] = 1e3 * exciton
+    # dict_quantities_u['exciton'] = exciton
+
     return dict_quantities_u
