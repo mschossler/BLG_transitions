@@ -6,7 +6,7 @@ import pandas as pd
 from config import aux_dir_path, namecsv, nprocesses, t0, bands
 from input.parameters import U0minD, U0maxD, dU0D
 from model.hartree_fock_and_regularization import loopU
-from utils import frange, sort_dict, observable_to_csv, idxcalc
+from utils import frange, sort_dict, observable_to_csv, idxcalc, transition_energy, allowed_transitions
 
 a_pool = multiprocessing.Pool(processes=nprocesses)
 quantities = a_pool.map(loopU, frange(U0minD, U0maxD, dU0D))
@@ -32,6 +32,13 @@ for quantity in ['h0', 'rhoU', 'Eh_deltaU', 'Hint', 'Et', 'eigenvector', 'excito
     observable_to_csv(quantities_dict, quantity)
 
 from visualization.plots import plot_energies
+
+transition_energy_dic = {}
+for t in allowed_transitions:
+    transition_label, energy = transition_energy(energies_df, t)
+    transition_energy_dic[transition_label] = energy
+
+print(transition_energy_dic)
 
 print(energies_df)
 plot_energies(energies_df)

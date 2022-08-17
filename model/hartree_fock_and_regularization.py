@@ -144,4 +144,7 @@ def loopU(u):
     dict_quantities_u['exciton_energy'] = 1e3 * exciton
     # dict_quantities_u['exciton'] = exciton
 
+    # for t in allowed_transitions:
+    #     transition_energy()
+
     return dict_quantities_u
