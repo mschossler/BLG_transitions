@@ -26,7 +26,8 @@ Delta = 0.018 * asym
 Delta_ab = 0.001 * 0
 Delta_td = (2 * gamma1 * gamma4 / gamma0 + Delta)
 beta = (omega / gamma1) ** 2
-Zm = 57.9e-6 * B * alpha_Zm   # 57.9e-6 is from Zhang2011PRB below equation 17 #temperature: 4 K=4 * 0.0862=0.3448meV # k * 0.0178 #
+Zm = 57.9e-6 * B * alpha_Zm   # in eV,  57.9e-6 is from Zhang2011PRB below equation 17 #temperature: 4 K=4 * 0.0862=0.3448meV # k * 0.0178 #
+# print(Zm)
 # ep = 0.5
 nu = 4
 

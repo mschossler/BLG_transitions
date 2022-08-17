@@ -90,11 +90,13 @@ def loopU(u):
 
         it += 1
 
-    eigenvalue, eigenvector = npla.eig(H)
-    idxfunc = np.argsort(eigenvalue)
 
-    eigenvalue = eigenvalue[idxfunc]
-    eigenvector = eigenvector[:, idxfunc]
+    eigenvalue, eigenvector = eigen(H)
+    # eigenvalue, eigenvector = npla.eig(H)
+    # idxfunc = np.argsort(eigenvalue)
+    #
+    # eigenvalue = eigenvalue[idxfunc]
+    # eigenvector = eigenvector[:, idxfunc]
 
     ehf = - sum([Hint[idp(n)][idp(nprime)] * rho[idp(nprime)][idp(n)] for n in setH for nprime in setH] +
                 [Hint[idm(n)][idm(nprime)] * rho[idm(nprime)][idm(n)] for n in setH for nprime in setH] +

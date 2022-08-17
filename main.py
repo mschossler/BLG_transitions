@@ -21,8 +21,9 @@ energies = []
 for k, v in quantities_dict.items():
     u_temp, eigenvalue_temp, eigenvector_temp = v['u'], v['eigenvalue'], v['eigenvector']
     idx = idxcalc(eigenvector_temp)
+    v['eigenvalue'] = eigenvalue_temp[idx]
     v['eigenvector'] = eigenvector_temp[:, idx]
-    energies.append([u_temp] + eigenvalue_temp[idx].tolist())
+    energies.append([u_temp] + v['eigenvalue'].tolist())
 
 energies_df = pd.DataFrame(energies, columns=['u'] + bands)
 energies_df.to_csv(aux_dir_path + namecsv, index=False)

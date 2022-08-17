@@ -21,22 +21,22 @@ ax = plt.gca()
 plt.rcParams['figure.dpi'] = 150
 
 
-style_dict={'0p-':('lightblue','-','v',r'$\ \ \,0\mathrm{K}^{+}\downarrow$'),
-            '1p-':('salmon','-','v',r'$\ \ \,1\mathrm{K}^{+}\downarrow$'),
-            '-2p-':('gray','-','v',r'$-2\mathrm{K}^{+}\downarrow$'),
-            '2p-':('gray','-','v',r'$\ \ \,2\mathrm{K}^{+}\downarrow$'),
-            '0m-':('lightblue','--','v',r'$\ \ \,0\mathrm{K}^{-}\downarrow$'),
-            '1m-':('salmon','--','v',r'$\ \ \,1\mathrm{K}^{-}\downarrow$'),
-            '-2m-':('gray','--','v',r'$-2\mathrm{K}^{-}\downarrow$'),
-            '2m-':('gray','--','v',r'$\ \ \,2\mathrm{K}^{-}\downarrow$'),
-            '0p+':('blue','-','^',r'$\ \ \,0\mathrm{K}^{+}\uparrow$'),
-            '1p+':('red','-','^',r'$\ \ \,1\mathrm{K}^{+}\uparrow$'),
-            '-2p+':('black','-','^',r'$-2\mathrm{K}^{+}\uparrow$'),
-            '2p+':('black','-','^',r'$\ \ \,2\mathrm{K}^{+}\uparrow$'),
-            '0m+':('blue','--','^',r'$\ \ \,0\mathrm{K}^{-}\uparrow$'),
-            '1m+':('red','--','^',r'$\ \ \,1\mathrm{K}^{-}\uparrow$'),
-            '-2m+':('black','--','^',r'$-2\mathrm{K}^{-}\uparrow$'),
-            '2m+':('black','--','^',r'$\ \ \,2\mathrm{K}^{-}\uparrow$')}
+style_dict={'LL0_Kp_Sdown':('lightblue','-','v',r'$\ \ \,0\mathrm{K}^{+}\downarrow$'),
+            'LL1_Kp_Sdown':('salmon','-','v',r'$\ \ \,1\mathrm{K}^{+}\downarrow$'),
+            'LLm2_Kp_Sdown':('gray','-','v',r'$-2\mathrm{K}^{+}\downarrow$'),
+            'LL2_Kp_Sdown':('gray','-','v',r'$\ \ \,2\mathrm{K}^{+}\downarrow$'),
+            'LL0_Km_Sdown':('lightblue','--','v',r'$\ \ \,0\mathrm{K}^{-}\downarrow$'),
+            'LL1_Km_Sdown':('salmon','--','v',r'$\ \ \,1\mathrm{K}^{-}\downarrow$'),
+            'LLm2_Km_Sdown':('gray','--','v',r'$-2\mathrm{K}^{-}\downarrow$'),
+            'LL2_Km_Sdown':('gray','--','v',r'$\ \ \,2\mathrm{K}^{-}\downarrow$'),
+            'LL0_Kp_Sup':('blue','-','^',r'$\ \ \,0\mathrm{K}^{+}\uparrow$'),
+            'LL1_Kp_Sup':('red','-','^',r'$\ \ \,1\mathrm{K}^{+}\uparrow$'),
+            'LLm2_Kp_Sup':('black','-','^',r'$-2\mathrm{K}^{+}\uparrow$'),
+            'LL2_Kp_Sup':('black','-','^',r'$\ \ \,2\mathrm{K}^{+}\uparrow$'),
+            'LL0_Km_Sup':('blue','--','^',r'$\ \ \,0\mathrm{K}^{-}\uparrow$'),
+            'LL1_Km_Sup':('red','--','^',r'$\ \ \,1\mathrm{K}^{-}\uparrow$'),
+            'LLm2_Km_Sup':('black','--','^',r'$-2\mathrm{K}^{-}\uparrow$'),
+            'LL2_Km_Sup':('black','--','^',r'$\ \ \,2\mathrm{K}^{-}\uparrow$')}
 
 
 
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     energies_df = pd.read_csv(aux_dir_path + namecsv)
     print(energies_df)
     plot_energies(energies_df)
-# dfv0 = pd.read_csv(  aux_dir_path + 'nu4_v8_full_range_rho_v3_25itmax.csv', names=['u', 'band1', 'band2', 'band3', 'band4', 'band5', 'band6', 'band7', 'band8'])
+# dfv0 = pd.read_csv(  aux_dir_path + 'nu4_v8_fuLL_range_rho_v3_25itmax.csv', names=['u', 'band1', 'band2', 'band3', 'band4', 'band5', 'band6', 'band7', 'band8'])
 
 #
 # dfv0.plot(kind='line',x='u',y='band1', color='black', ax=ax, linestyle='--',legend=None)

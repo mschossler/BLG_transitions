@@ -35,8 +35,8 @@ def observable_to_csv(obeservables_dict, obeservable):
     obeservable_df = pd.DataFrame(obeservable_list)
     obeservable_df.to_csv(aux_dir_path + obeservable + '_' + namecsv, index=False, header=False)
 
+# ['0p-', '1p-', '-2p-', '2p-', '0m-', '1m-', '-2m-', '2m-', '0p+', '1p+', '-2p+', '2p+', '0m+', '1m+', '-2m+', '2m+']
 base = np.identity(16)
-
 def idxcalc(vecs1):
     lenth = len(base)
     # idxtmp = idx.copy()
