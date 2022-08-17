@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
 
-from config import aux_dir_path, namecsv, tol
-from input.parameters import ep, nu
+from config import aux_dir_path, namecsv, tol, alpha_rand
+from input.parameters import nu
 from utils import eigen, check_hermitian, check_real
 
 
@@ -38,7 +38,7 @@ randvec = pd.read_csv('input/' + 'randvec.csv', header=None).values.tolist()[0]
 randmatrix = np.outer(randvec, randvec)
 randeigenvalue, randeigenvector = eigen(randmatrix)
 rho0rand = sum(np.outer(randeigenvector[i, :], randeigenvector[i, :]) for i in range(nu))
-rho0 = (1 - ep) * np.array(rho0rand) + ep * np.array(rho0phbroken)
+rho0 = (1 - alpha_rand) * np.array(rho0rand) + alpha_rand * np.array(rho0phbroken)
 
 res = check_hermitian(rho0, tol)
 resreal = check_real(rho0, tol)

@@ -6,7 +6,7 @@ from datetime import datetime
 import numpy as np
 import pandas as pd
 
-from input.parameters import ep, Zm, asym, x, alpha_H_oct_int, uz, uperp, alpha_state, alpha_rand, dens
+from input.parameters import Zm, asym, x, alpha_H_oct_int, uz, uperp, alpha_state, alpha_rand, dens
 
 pd.set_option('display.max_columns', 300)
 pd.set_option('display.width', 1000)
@@ -29,7 +29,7 @@ print(dir_path)
 aux_dir_path = dir_path + '/aux2/'
 input_dir_path = dir_path + '/input/'
 bands = ['0p-', '1p-', '-2p-', '2p-', '0m-', '1m-', '-2m-', '2m-', '0p+', '1p+', '-2p+', '2p+', '0m+', '1m+', '-2m+', '2m+']
-title = 'nu4_v12_wspin_random_rho0_hermitian_rho0phbroken_ep' + str(ep) + '_Zm' + str(Zm)
+title = 'nu4_v12_wspin_random_rho0_hermitian_rho0phbroken' + '_Zm' + str(Zm)
 namecsv = title + '.csv'
 machine = platform.node()
 infos = '\n' + ' Starting this script (' + title + '.py) at date/time: ' + current_time + '. \n' + ' This script is running at: ' + machine + ', directory: ' + cwd + '\n'

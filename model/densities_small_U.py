@@ -1,5 +1,5 @@
 import numpy as np
-from input.parameters import ep, nu, occupied_bands
+from input.parameters import nu, occupied_bands
 
 
 if nu == 4:
