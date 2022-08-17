@@ -16,13 +16,18 @@ np.set_printoptions(precision=5, suppress=True, threshold=20, edgeitems=10, line
 nprocesses = 40
 itmax = 5
 tol = 1e-8
+setH = [0, 1, -2, 2]
 now = datetime.now()
 current_time = now.strftime("%Y-%m-%d %H:%M:%S")
 current_time_file = now.strftime("%d%m%Y%H%M%S")
 t0 = time.time()
-cwd = os.getcwd()
-aux_dir_path = cwd + '/aux2/'
-input_dir_path = cwd + '/input/'
+cwd = os.getcwd() #working directory
+path = os.path.abspath(__file__)
+dir_path = os.path.dirname(path)
+print(dir_path)
+
+aux_dir_path = dir_path + '/aux2/'
+input_dir_path = dir_path + '/input/'
 bands = ['0p-', '1p-', '-2p-', '2p-', '0m-', '1m-', '-2m-', '2m-', '0p+', '1p+', '-2p+', '2p+', '0m+', '1m+', '-2m+', '2m+']
 title = 'nu4_v12_wspin_random_rho0_hermitian_rho0phbroken_ep' + str(ep) + '_Zm' + str(Zm)
 namecsv = title + '.csv'

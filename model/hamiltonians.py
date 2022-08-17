@@ -1,6 +1,7 @@
 from input.parameters import np, Delta_ab, beta, Delta_td, omega, gamma1, gamma3, Delta, eta3, eta4, Zm, Eh, uperp, uz
 from model.exchange_integrals import Xskp, Xskm, Xdkpm, Xdkmp, Xzs, Xzd, Xos, Xod, Xfs, Xfd, Xsts, Xstd
 from utils import tau_func
+from config import setH
 
 # Zeeman energy
 mZm = np.diag([-Zm for i in range(8)] + [Zm for i in range(8)])
@@ -36,22 +37,27 @@ def H0(u):
     return [m + [0, 0, 0, 0] for m in h0p(u)] + [[0, 0, 0, 0] + m for m in h0m(u)]
 
 
-def hAp(u, Delta_ab):
+
+def hAp(u):
     "LL: -2, 2,...  - plot color: Black"
-    hamtx = [[-u / 2 + Delta_ab, -omega, eta4 * omega, 0], [-omega, - u / 2 + Delta - Delta_ab, gamma1, np.sqrt(2) * eta4 * omega],
-             [eta4 * omega, gamma1, u / 2 + Delta + Delta_ab, -np.sqrt(2) * omega], [0, np.sqrt(2) * eta4 * omega, -np.sqrt(2) * omega, u / 2 - Delta_ab]]
+    hamtx = [[-u / 2 + Delta_ab, -omega, eta4 * omega, 0],
+             [-omega, - u / 2 + Delta - Delta_ab, gamma1, np.sqrt(2) * eta4 * omega],
+             [eta4 * omega, gamma1, u / 2 + Delta + Delta_ab, -np.sqrt(2) * omega],
+             [0, np.sqrt(2) * eta4 * omega, -np.sqrt(2) * omega, u / 2 - Delta_ab]]
     return hamtx
 
 
-def hCp(u, Delta_ab):
+def hCp(u):
     "LL: 0, -3, 3,...  - plot color: Blue"
-    hamtx = [[u / 2 - Delta_ab, eta3 * omega, 0, 0, 0], [eta3 * omega, -u / 2 + Delta_ab, -np.sqrt(2) * omega, np.sqrt(2) * eta4 * omega, 0],
+    hamtx = [[u / 2 - Delta_ab, eta3 * omega, 0, 0, 0],
+             [eta3 * omega, -u / 2 + Delta_ab, -np.sqrt(2) * omega, np.sqrt(2) * eta4 * omega, 0],
              [0, -np.sqrt(2) * omega, - u / 2 + Delta - Delta_ab, gamma1, np.sqrt(3) * eta4 * omega],
-             [0, np.sqrt(2) * eta4 * omega, gamma1, u / 2 + Delta + Delta_ab, -np.sqrt(3) * omega], [0, 0, np.sqrt(3) * eta4 * omega, -np.sqrt(3) * omega, u / 2 - Delta_ab]]
+             [0, np.sqrt(2) * eta4 * omega, gamma1, u / 2 + Delta + Delta_ab, -np.sqrt(3) * omega],
+             [0, 0, np.sqrt(3) * eta4 * omega, -np.sqrt(3) * omega, u / 2 - Delta_ab]]
     return hamtx
 
 
-def hBp(u, Delta_ab):
+def hBp(u):
     "LL: 1, -4, 4...  - plot color: Red"
     hamtx = [[- u / 2 + Delta - Delta_ab, gamma1, eta4 * omega, 0, 0, 0, 0],
              [gamma1, u / 2 + Delta + Delta_ab, -omega, 0, 0, 0, 0],
@@ -60,6 +66,7 @@ def hBp(u, Delta_ab):
              [0, 0, 0, -np.sqrt(3) * omega, - u / 2 + Delta - Delta_ab, gamma1, 2 * eta4 * omega],
              [0, 0, 0, np.sqrt(3) * eta4 * omega, gamma1, u / 2 + Delta + Delta_ab, -2 * omega],
              [0, 0, 0, 0, 2 * eta4 * omega, - 2 * omega, u / 2 - Delta_ab]]
+
     return hamtx
 
 
@@ -216,3 +223,57 @@ def Hint_oct(rhotmp):
             b = base_dict_inverse[key_j] - 1
             Hint_16[i][j] = hamtx[a][b]
     return np.array(Hint_16)
+
+
+##########################################################################################################
+# regularization (self energy) U dependent
+
+
+def delta_e_kp(n, nu0, nu1, num2, nu2, eigenvectorp):
+    pzm = (nu1 - 1 / 2) * Xskp(n, 1, 1, n, eigenvectorp) + (nu0 - 1 / 2) * Xskp(n, 0, 0, n, eigenvectorp)
+
+    m2and2 = nu2 * Xskp(n, 2, 2, n, eigenvectorp) - (1 - num2) * Xskp(n, -2, -2, n, eigenvectorp)
+
+    F = (Xskp(n, 2, 2, n, eigenvectorp) - Xskp(n, -2, -2, n, eigenvectorp))
+
+    #     F0=Xskp(0, 2, 2, 0, eigenvectorp) - Xskp(0, -2, -2, 0, eigenvectorp)
+
+    #     F=F-F0
+
+    res = (F / 2 - pzm - m2and2)
+    return res
+
+
+# def delta_e_regmatrixUp_kp(rho0constUp, eigenvectorp):
+#     nu0spindown, nu1spindown, num2spindown, nu2spindown, nu0spinup, nu1spinup, num2spinup, nu2spinup = tuple(np.diag(rho0constUp))
+#     regmatrixUpspindown = [delta_e_kp(n, nu0spindown, nu1spindown, num2spindown, nu2spindown, eigenvectorp) for n in setH]
+#     regmatrixUpspinup = [delta_e_kp(n, nu0spinup, nu1spinup, num2spinup, nu2spinup, eigenvectorp) for n in setH]
+#     return np.diag(np.array(regmatrixUpspindown + regmatrixUpspinup))
+
+
+def delta_e_km(n, nu0, nu1, num2, nu2, eigenvectorm):
+    pzm = (nu1 - 1 / 2) * Xskm(n, 1, 1, n, eigenvectorm) + (nu0 - 1 / 2) * Xskm(n, 0, 0, n, eigenvectorm)
+
+    m2and2 = nu2 * Xskm(n, 2, 2, n, eigenvectorm) - (1 - num2) * Xskm(n, -2, -2, n, eigenvectorm)
+
+    F = (Xskm(n, 2, 2, n, eigenvectorm) - Xskm(n, -2, -2, n, eigenvectorm))
+
+    #     F0=Xskm(0, 2, 2, 0, eigenvectorm) - Xskm(0, -2, -2, 0, eigenvectorm)
+
+    #     F=F-F0
+
+    res = (F / 2 - pzm - m2and2)
+    return res
+
+def delta_e_regmatrix(rho0const, eigenvectorp, eigenvectorm):
+    # print('here3 ', np.diag(rho0const))
+    nu0kp, nu1kp, num2kp, nu2kp, nu0km, nu1km, num2km, nu2km  = tuple(np.diag(rho0const)[:8])
+    # print('here4')
+    regmatrixUmspindown = [delta_e_kp(n, nu0kp, nu1kp, num2kp, nu2kp, eigenvectorp) for n in setH] + [delta_e_km(n, nu0km, nu1km, num2km, nu2km, eigenvectorm) for n in setH]
+
+    nu0kp, nu1kp, num2kp, nu2kp, nu0km, nu1km, num2km, nu2km  = tuple(np.diag(rho0const)[8:16])
+    regmatrixUmspinup = [delta_e_kp(n, nu0kp, nu1kp, num2kp, nu2kp, eigenvectorp) for n in setH] + [delta_e_km(n, nu0km, nu1km, num2km, nu2km, eigenvectorm) for n in setH]
+    return np.diag(np.array(regmatrixUmspindown + regmatrixUmspinup))
+
+
+##########################################################################################################

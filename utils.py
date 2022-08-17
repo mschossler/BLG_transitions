@@ -39,15 +39,39 @@ base = np.identity(16)
 
 def idxcalc(vecs1):
     lenth = len(base)
+    # idxtmp = idx.copy()
+    # idx=[x for x in range(4)].copy()
     idx = []
     for i in range(lenth):
-        overlap = 0
+        # overlaptmp = npy.abs(npy.dot(vecs1[:, i], base[:, i]))
+        overlap= 0
         for j in range(lenth):
-            overlaptmp = np.abs(np.dot(base[i, :], vecs1[j, :]))
+            overlaptmp  = np.abs(np.dot(base[i, :], vecs1[j, :]))
+            # print('here')
             if overlaptmp > overlap:
-                idxtemp = j
+                idxtemp= j
                 overlap = overlaptmp
         idx.append(idxtemp)
+                # print('u=%.3f' % (u), i, j)
+    # if idx != idxtmp:
+    #     print('crossing here', u * 10 ** 3)
+    return idx
+
+def idxcalc_v0(idx, vecs1, vecs2, u):
+    lenth = len(vecs1)
+    idxtmp = idx.copy()
+    # idx=[x for x in range(4)].copy()
+    for i in range(lenth):
+        overlaptmp = np.abs(np.dot(vecs1[:, i], vecs2[:, idxtmp[i]]))
+        for j in range(lenth):
+            overlap = np.abs(np.dot(vecs1[:, i], vecs2[:, idxtmp[j]]))
+            # print('here')
+            if overlap > overlaptmp:
+                idx[i] = idxtmp[j]
+                overlaptmp = overlap
+                print('u=%.3f' % (1000 * u), i, j)
+    # if idx != idxtmp:
+    #     print('crossing here', u * 10 ** 3)
     return idx
 
 def nonedimmerp(vectors):
@@ -57,12 +81,14 @@ def nonedimmerp(vectors):
         newvectors.append((np.array(tmp) / npla.norm(tmp)).tolist())
     return np.array(newvectors)
 
+
 def nonedimmerm(vectors):
     newvectors = []
     for x in vectors:
         tmp = [-x[3], x[0]]
         newvectors.append((np.array(tmp) / npla.norm(tmp)).tolist())
     return np.array(newvectors)
+
 
 def tau_func(tau):
     tau = np.array(tau)

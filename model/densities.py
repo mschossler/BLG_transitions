@@ -5,6 +5,24 @@ from config import aux_dir_path, namecsv, tol
 from input.parameters import ep, nu
 from utils import eigen, check_hermitian, check_real
 
+
+
+if nu == 4:
+    spindownUp = [('0p-', 1), ('1p-', 1), ('-2p-', 1), ('2p-', 0), ('0m-', 1), ('1m-', 1), ('-2m-', 1), ('2m-', 0)]
+    spinupUp = [('0p+', 1), ('1p+', 1), ('-2p+', 1), ('2p+', 0), ('0m+', 1), ('1m+', 1), ('-2m+', 1), ('2m+', 0)]
+
+    spindownUm = [('0p-', 1), ('1p-', 1), ('-2p-', 1), ('2p-', 0), ('0m-', 1), ('1m-', 1), ('-2m-', 1), ('2m-', 0)]
+    spinupUm = [('0p+', 1), ('1p+', 1), ('-2p+', 1), ('2p+', 0), ('0m+', 1), ('1m+', 1), ('-2m+', 1), ('2m+', 0)]
+
+
+diag = [x[1] for x in spindownUp + spinupUp]
+print('is the filling factor right (U>0)?: ', sum(diag) == nu)
+rho0constUp = np.diag(diag)
+
+diag = [x[1] for x in spindownUm + spinupUm]
+print('is the filling factor right (U<0)?:', sum(diag) == nu)
+rho0constUm = np.diag(diag)
+
 # rho0rand = pd.read_csv(  aux_dir_path + 'rhoconstphbroken.csv', header=None).values.tolist()
 # # print(rho0rand)
 # rho = rho0rand
