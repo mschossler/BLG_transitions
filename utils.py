@@ -122,7 +122,7 @@ def transition_energy(energies, two_allowed_bands: (str, str), extra_terms=0):
         print('transition_energy: invalid format for energies, pandas.DataFrame is expected')
         exit()
 
-    transition_tuple = (from_band + '_to_' + to_band, energies[to_band] - energies[to_band])  # + extra_terms)
+    transition_tuple = (from_band + '_to_' + to_band, energies[to_band] - energies[from_band])  # + extra_terms)
     return transition_tuple
 
 

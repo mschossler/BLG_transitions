@@ -37,8 +37,7 @@ transition_energy_dic = {}
 for t in allowed_transitions:
     transition_label, energy = transition_energy(energies_df, t)
     transition_energy_dic[transition_label] = energy
-
-print(transition_energy_dic)
+    print(energy)
 
 print(energies_df)
 plot_energies(energies_df)
