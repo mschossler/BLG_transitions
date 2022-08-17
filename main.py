@@ -31,11 +31,11 @@ energies_df.to_csv(aux_dir_path + namecsv, index=False)
 for quantity in ['h0', 'rhoU', 'Eh_deltaU', 'Hint', 'Et', 'eigenvector', 'exciton_energy', 'regmatrix']:
     observable_to_csv(quantities_dict, quantity)
 
-print(time.time() - t0)
-print('file ' + namecsv + ' saved')
-print(" \n done in ", time.time() - t0)
-
 from visualization.plots import plot_energies
 
 print(energies_df)
 plot_energies(energies_df)
+
+print(time.time() - t0)
+print('file ' + namecsv + ' saved')
+print(" \n done in ", time.time() - t0)

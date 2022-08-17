@@ -1,7 +1,9 @@
 import numpy as np
 import pandas as pd
 from numpy import linalg as npla
+
 from config import aux_dir_path, namecsv
+
 
 def frange(start, end, inc):
     return np.arange(start, end, inc).tolist()
@@ -99,3 +101,14 @@ def tau_func(tau):
         temp[i + 4, i] = tau[1, 0]
         temp[i + 4, i + 4] = tau[1, 1]
     return np.kron(np.eye(2, dtype=int), temp)
+
+
+def transition_energy(energies: pd.core.frame.DataFrame, two_allowed_bands: (str, str), extra_terms=0):
+    from_band, to_band = two_allowed_bands
+    if isinstance(energies, pd.DataFrame):
+        pass
+    else:
+        print('Invalid format for energies: pandas.DataFrame is expected')
+
+    transition_dict = {from_band + '_to_' + to_band: energies[to_band] - energies[to_band] + extra_terms}
+    return transition_dict

@@ -137,9 +137,8 @@ def loopU(u):
     eigenvectorp = np.array([[1, 0, 0, 0], [0, 1, 0, 0]] + [[0, 0] + x for x in eigenvectorp2.tolist()])
     eigenvectorm = np.array([[1, 0, 0, 0], [0, 1, 0, 0]] + [[0, 0] + x for x in eigenvectorm2.tolist()])
 
-    exciton = np.array([u, exciton_j_to_n_km(-2, 1, eigenvectorm), exciton_j_to_n_kp(-2, 1, eigenvectorp),
+    exciton = np.array([exciton_j_to_n_km(-2, 1, eigenvectorm), exciton_j_to_n_kp(-2, 1, eigenvectorp),
                         exciton_j_to_n_km(1, 2, eigenvectorm), exciton_j_to_n_kp(1, 2, eigenvectorp)])
-    ##########################################################
 
     dict_quantities_u['regmatrix'] = 1e3 * regmatrix
     dict_quantities_u['exciton_energy'] = 1e3 * exciton

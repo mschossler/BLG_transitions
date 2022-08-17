@@ -14,7 +14,7 @@ pd.set_option('display.max_rows', 500)
 np.set_printoptions(precision=5, suppress=True, threshold=20, edgeitems=10, linewidth=140, formatter={'float': '{: 0.3f}'.format})
 
 nprocesses = 40
-itmax = 5
+itmax = 3
 tol = 1e-8
 setH = [0, 1, -2, 2]
 now = datetime.now()
@@ -33,6 +33,7 @@ bands = ['LL0_Kp_Sdown', 'LL1_Kp_Sdown', 'LLm2_Kp_Sdown', 'LL2_Kp_Sdown',
          'LL0_Km_Sdown', 'LL1_Km_Sdown', 'LLm2_Km_Sdown', 'LL2_Km_Sdown',
          'LL0_Kp_Sup', 'LL1_Kp_Sup', 'LLm2_Kp_Sup', 'LL2_Kp_Sup',
          'LL0_Km_Sup', 'LL1_Km_Sup', 'LLm2_Km_Sup', 'LL2_Km_Sup']
+
 title = 'nu4_v12_wspin_random_rho0_hermitian_rho0phbroken' + '_Zm' + str(Zm)
 namecsv = title + '.csv'
 machine = platform.node()
