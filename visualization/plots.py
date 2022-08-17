@@ -58,6 +58,7 @@ def plot_energies(energies):
         styleX = style_dict.get(band)
         # energies.plot(x='u', y=band, color=styleX[0], style=styleX[1], markersize=3, linewidth=0.7, label=styleX[3], ax=ax)  # , marker='o')
         energies.plot(x='u', y=band, color=styleX['color'], style=styleX['line_shape'], markersize=3, linewidth=0.7, label=styleX['label'], ax=ax)  # , marker='o')
+    energies.plot(x='u', y='fermi_energy', color='purple', style='-', markersize=3, linewidth=1, label=r'Fermi energy', ax=ax)
     plt.title('Energy bands  nu=' + str(nu) + ' as function of U with self-energy alpha 1')
     plt.xlabel('U(meV)')
     plt.ylabel('Energy bands(meV)')
@@ -97,12 +98,12 @@ def plot_transitions(transitions_df):
     f = plt.figure()
     ax = plt.gca()
 
-    for transition in transitions_style_dic:
+    for transition in transitions_df.drop('u', axis=1).columns:
         style_transition = transitions_style_dic.get(transition)
         # energies.plot(x='u', y=band, color=styleX[0], style=styleX[1], markersize=3, linewidth=0.7, label=styleX[3], ax=ax)  # , marker='o')
         transitions_df.plot(x='u', y=transition, color=style_transition['color'], style=style_transition['line_shape'], markersize=3, linewidth=0.7,
                             label=style_transition['label'], ax=ax)  # , marker='o')
-    plt.title('Transition bands  nu=' + str(nu) + ' as function of U with self-energy alpha 1')
+    plt.title('Transition nu=' + str(nu) + ' as function of U with self-energy')
     plt.xlabel('U(meV)')
     plt.ylabel('transitions(meV)')
 
