@@ -29,24 +29,16 @@ for k, v in quantities_dict.items():
     energies.append([u_temp] + v['eigenvalue'].tolist())
 
 energies_df = pd.DataFrame(energies, columns=['u'] + bands)
-energies_df.to_csv(aux_dir_path + namecsv, index=False)
 
 for quantity in ['h0', 'rhoU', 'Eh_deltaU', 'Hint', 'Et', 'eigenvector', 'exciton_energy', 'regmatrix']:
     observable_to_csv(quantities_dict, quantity)
 
-energies_df, transition_energy_df = transition_fermi_energy(energies_df)
+energies_df, transition_energy_df = transition_fermi_energy(energies_df)  # add fermi_energy to energies_df
+
+energies_df.to_csv(aux_dir_path + namecsv, index=False)
 transition_energy_df.to_csv(aux_dir_path + 'trans_' + namecsv, index=False)
 
 from visualization.plots import plot_energies, plot_transitions
-
-# transition_energy_all = pd.DataFrame([])
-# for t in allowed_transitions:
-#     transition_energy_df = transition_energy(energies_df, t)
-#     transition_energy_all = pd.concat([transition_energy_all, transition_energy_df], axis=1)
-#     # print(transition_energy_df)
-#
-# transition_energy_all['u'] = transition_energy_all.index
-
 
 print(energies_df)
 print(transition_energy_df)
