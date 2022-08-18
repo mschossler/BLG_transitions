@@ -33,7 +33,7 @@ beta = (omega / gamma1) ** 2
 Zm = 57.9e-6 * B * alpha_Zm  # in eV,  57.9e-6 is from Zhang2011PRB below equation 17 #temperature: 4 K=4 * 0.0862=0.3448meV # k * 0.0178 #
 # print(Zm)
 # ep = 0.5
-nu = 0
+nu = 4
 occupied_bands = nu + 8  # nu = 8 is the charge neutrality point in this schema
 alpha_k = alpha_k_dic[occupied_bands]
 
