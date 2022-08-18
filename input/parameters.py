@@ -43,6 +43,8 @@ el = 1.602176634 * 10 ** (-19)
 dlayer = 3.35 * 10 ** (-10)
 ep0 = 8.8541878128 * 10 ** (-12)
 
+alpha_tilda = alpha_k * (dlayer * 10 ** 9)
+
 Lb = np.sqrt(hbar / (el * B))
 x = dlayer / Lb * alpha_x
 epr = 6
