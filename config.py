@@ -28,7 +28,7 @@ dir_path = os.path.dirname(path)
 print(dir_path)
 
 aux_dir_path = dir_path + '/results_' + current_date + '/occupation_' + str(occupied_bands) + '/'
-aux_dir_path = dir_path + '/results/occupation_' + str(occupied_bands) + '/'
+# aux_dir_path = dir_path + '/results/occupation_' + str(occupied_bands) + '/'
 
 input_dir_path = dir_path + '/input/'
 # bands = ['0p-', '1p-', '-2p-', '2p-', '0m-', '1m-', '-2m-', '2m-', '0p+', '1p+', '-2p+', '2p+', '0m+', '1m+', '-2m+', '2m+']
