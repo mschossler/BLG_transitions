@@ -85,7 +85,7 @@ def loopU(u):
     ######
 
     ###### regularization (self energy) U dependent
-    regmatrix = delta_e_regmatrix(rho0, eigenvectorp, eigenvectorm) * k * alpha_reg
+    regmatrix = delta_e_regmatrix(rho0, eigenvectorp, eigenvectorm) * alpha_reg
     ######
 
     it = 1
@@ -118,7 +118,7 @@ def loopU(u):
         eigenvalue_loop, eigenvector_loop = eigen(H)
         rho = sum(np.outer(eigenvector_loop[i, :], eigenvector_loop[i, :]) for i in range(occupied_bands))
 
-        regmatrix = delta_e_regmatrix(rho, eigenvectorp, eigenvectorm) * k * alpha_reg
+        # regmatrix = delta_e_regmatrix(rho, eigenvectorp, eigenvectorm) * alpha_reg # we should not update regmatrix here, make results for nu=0 bad and won't affect nu=4
 
         it += 1
 

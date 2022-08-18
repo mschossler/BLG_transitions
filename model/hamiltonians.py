@@ -1,5 +1,5 @@
 from config import setH
-from input.parameters import np, Delta_ab, beta, Delta_td, omega, gamma1, gamma3, Delta, eta3, eta4, Zm, Eh, uperp, uz
+from input.parameters import k, np, Delta_ab, beta, Delta_td, omega, gamma1, gamma3, Delta, eta3, eta4, Zm, Eh, uperp, uz
 from model.exchange_integrals import Xskp, Xskm, Xdkpm, Xdkmp, Xzs, Xzd, Xos, Xod, Xfs, Xfd, Xsts, Xstd
 from utils import tau_func
 
@@ -240,7 +240,7 @@ def delta_e_kp(n, nu0, nu1, num2, nu2, eigenvectorp):
 
     #     F=F-F0
 
-    res = (F / 2 - pzm - m2and2)
+    res = (F / 2 - pzm - m2and2) * k
     return res
 
 
@@ -263,7 +263,7 @@ def delta_e_km(n, nu0, nu1, num2, nu2, eigenvectorm):
 
     #     F=F-F0
 
-    res = (F / 2 - pzm - m2and2)
+    res = (F / 2 - pzm - m2and2) * k
     return res
 
 def delta_e_regmatrix(rho0const, eigenvectorp, eigenvectorm):
