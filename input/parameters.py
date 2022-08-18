@@ -49,8 +49,8 @@ epr = 6
 Eh = x / np.sqrt(2 * np.pi)
 k = (np.sqrt(np.pi / 2) * el) / (4 * np.pi * ep0 * epr * Lb) * alpha_k
 
-# Zm = k * 0.0178
+Zm = k * 0.0178
 
-U0minD = -5e-3
-U0maxD = 100e-3
-dU0D = 0.5e-3
+U0minD = 20e-3
+U0maxD = 25e-3
+dU0D = 1e-3
