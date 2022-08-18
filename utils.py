@@ -108,7 +108,9 @@ def transtions_and_fermi_energy_u(energy_u):
     u = energy_u['u']
     energy_u.drop('u', axis=0, inplace=True)
     occupied_states = energy_u.nsmallest(occupied_bands, keep='all')
-    unoccupied_states = energy_u.nlargest(len(bands) - occupied_bands, keep='all')
+    unoccupied_states = energy_u.nlargest(len(bands) - occupied_bands, keep='all')[::-1]  # must be reversed for right fermi_energy
+    print(occupied_states)
+    print(unoccupied_states)
 
     fermi_energy = (unoccupied_states.iloc[0] + occupied_states.iloc[-1]) / 2
 

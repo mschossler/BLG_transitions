@@ -2,7 +2,7 @@ from config import itmax, setH
 from input.parameters import *
 from model.densities_small_U import rho0constUp, rho0constUm
 from model.exchange_integrals import Xskm, Xskp
-from model.hamiltonians import full_hp, full_hm, full_hpm, full_hmp, idp, idps, idm, idms, delta_e_regmatrix, mZm, h0p2, h0m2, h0p, h0m, hAp
+from model.hamiltonians import full_hp, full_hm, full_hpm, full_hmp, idp, idps, idm, idms, delta_e_regmatrix, mZm, hAp, hBp, hCp
 from utils import eigen, df_round, nonedimmerp, nonedimmerm
 
 
@@ -45,11 +45,31 @@ def loopU(u):
     print('u=%.2f' % (u * 1000))
     rho = rho0
 
-    eigenvaluep2, eigenvectorp2 = eigen(h0p2(u))
-    eigenvaluem2, eigenvectorm2 = eigen(h0m2(u))
-    eigenvaluep = [h0p(u)[0][0]] + [h0p(u)[1][1]] + eigenvaluep2.tolist()
-    eigenvaluem = [h0m(u)[0][0]] + [h0m(u)[1][1]] + eigenvaluem2.tolist()
+    ################### warping #############################################################
+    eigenvaluep2, eigenvectorp2 = eigen(hAp(u))[0][1:3], eigen(hAp(u))[1][1:3]
+    eigenvectorp2 = nonedimmerp(eigenvectorp2)
 
+    eigenvaluem2, eigenvectorm2 = eigen(hAp(-u))[0][1:3], eigen(hAp(-u))[1][1:3]
+    eigenvectorm2 = nonedimmerm(eigenvectorm2)
+
+    eigenvaluep1 = eigen(hBp(u))[0][3]
+    eigenvaluem1 = eigen(hBp(-u))[0][3]
+    # print(eigenvaluep1,eigenvaluem1)
+
+    eigenvaluep0 = eigen(hCp(u))[0][2]
+    eigenvaluem0 = eigen(hCp(-u))[0][2]
+    # print(eigenvaluep0,eigenvaluem0)
+
+    eigenvaluep = [eigenvaluep0] + [eigenvaluep1] + eigenvaluep2.tolist()
+    eigenvaluem = [eigenvaluem0] + [eigenvaluem1] + eigenvaluem2.tolist()
+    #########################################################################################
+
+    # ######################################
+    #     eigenvaluep2, eigenvectorp2 = eigen(h0p2(u))
+    #     eigenvaluem2, eigenvectorm2 = eigen(h0m2(u))
+    #     eigenvaluep = [h0p(u)[0][0]] + [h0p(u)[1][1]] + eigenvaluep2.tolist()
+    #     eigenvaluem = [h0m(u)[0][0]] + [h0m(u)[1][1]] + eigenvaluem2.tolist()
+    # ######################################
     h0 = np.diag(eigenvaluep + eigenvaluem + eigenvaluep + eigenvaluem)
 
     # eigenvectorp = np.transpose(np.array([[1, 0, 0, 0], [0, 1, 0, 0]] + [[0, 0] + x for x in eigenvectorp2.tolist()]))

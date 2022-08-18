@@ -40,7 +40,7 @@ script_name = __file__
 print(script_name)
 # file_name = file_name + '.csv'
 machine = platform.node()
-infos = '\n' + ' Starting this script (' + __file__ + ') at date/time: ' + current_time + '. \n' + ' This script is running at: ' + machine + ', directory: ' + cwd + '\n'
+infos = '\n' + ' Starting this script at date/time: ' + current_time + '. \n' + ' This script is running at: ' + machine + ', directory: ' + cwd + '\n'
 folder_name = 'files_' + 'asym_' + str(round(asym, 2)) + '__itmax_' + str(round(itmax, 2)) + '__Zm_' + str(round(Zm * 1e3, 3)) + \
               '__alpha_H_oct_int_' + str(round(alpha_H_oct_int, 2)) + '__uz_' + str(round(uz * 1e3, 3)) + '__uperp_' + str(round(uperp * 1e3, 3)) + \
               '__x_' + str(round(x, 3)) + '__alpha_state_' + str(round(alpha_state, 3)) + '__alpha_rand_' + str(round(alpha_rand, 3)) + '__dens_' + str(round(dens, 1))
