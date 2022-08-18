@@ -81,7 +81,7 @@ def plot_transitions(transitions_df):
     plt.xlabel('U(meV)')
     plt.ylabel('transitions(meV)')
     if nu == 0:
-        nu0_exp_transition_energies = pd.read_csv(input_dir_path + 'DGBLG_nu0_data.dat', sep='\s\s+|\t', engine='python')
+        nu0_exp_transition_energies = pd.read_csv(input_dir_path + 'DGBLG_nu0_data.csv')
         nu0_exp_transition_energies['U'] = nu0_exp_transition_energies['D_mV_per_nm'] * alpha_tilda
         nu0_exp_transition_energies.plot(x='U', y=['peak_A_meV', 'peak_B_meV', 'peak_C_meV'], linestyle='None', label=['experiment', '_nolegend_', '_nolegend_'], color='green',
                                          marker='o', fillstyle='none', ax=ax)
