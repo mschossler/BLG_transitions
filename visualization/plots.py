@@ -7,7 +7,7 @@ if __name__ == "__main__":
     # setting path
     sys.path.append('../')
 
-from config import aux_dir_path, namecsv, bands
+from config import aux_dir_path, file_name_csv, bands
 from input.parameters import nu
 
 
@@ -51,8 +51,8 @@ def plot_energies(energies):
 
 
 if __name__ == "__main__":
-    energies_df = pd.read_csv(aux_dir_path + namecsv)
-    transitions_df = pd.read_csv(aux_dir_path + 'trans_' + namecsv)
+    energies_df = pd.read_csv(aux_dir_path + 'energies_' + file_name_csv)
+    transitions_df = pd.read_csv(aux_dir_path + 'trans_' + file_name_csv)
     print(energies_df)
     plot_energies(energies_df)
 

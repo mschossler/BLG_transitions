@@ -3,7 +3,7 @@ import time
 
 import pandas as pd
 
-from config import aux_dir_path, namecsv, nprocesses, t0, bands
+from config import aux_dir_path, file_name_csv, nprocesses, t0, bands
 from input.parameters import U0minD, U0maxD, dU0D
 from model.hartree_fock_and_regularization import loopU
 from utils import frange, sort_dict, observable_to_csv, idxcalc, transition_fermi_energy
@@ -35,8 +35,8 @@ for quantity in ['h0', 'rhoU', 'Eh_deltaU', 'Hint', 'Et', 'eigenvector', 'excito
 
 energies_df, transition_energy_df = transition_fermi_energy(energies_df)  # add fermi_energy to energies_df
 
-energies_df.to_csv(aux_dir_path + namecsv, index=False)
-transition_energy_df.to_csv(aux_dir_path + 'trans_' + namecsv, index=False)
+energies_df.to_csv(aux_dir_path + 'energies_' + file_name_csv, index=False)
+transition_energy_df.to_csv(aux_dir_path + 'trans_' + file_name_csv, index=False)
 
 from visualization.plots import plot_energies, plot_transitions
 
@@ -46,5 +46,5 @@ plot_energies(energies_df)
 plot_transitions(transition_energy_df)
 
 print(time.time() - t0)
-print('file ' + namecsv + ' saved')
+print('files ' + file_name_csv + ' saved')
 print(" \n done in ", time.time() - t0)

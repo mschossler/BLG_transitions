@@ -116,7 +116,7 @@ def loopU(u):
                 [2 * Hint[idp(n)][idps(nprime)] * rho[idp(nprime)][idps(n)] for n in setH for nprime in setH] +
                 [2 * Hint[idm(n)][idms(nprime)] * rho[idm(nprime)][idms(n)] for n in setH for nprime in setH]
                 )
-    Et = sum([eigenvalue[i] for i in range(nu)]) + ehf
+    Et = sum([eigenvalue[i] for i in range(occupied_bands)]) + ehf
 
     dict_quantities_u = {'u': u * 1e3,
                          'eigenvalue': 1e3 * eigenvalue,

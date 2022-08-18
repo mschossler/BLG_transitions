@@ -1,7 +1,7 @@
+from config import setH
 from input.parameters import np, Delta_ab, beta, Delta_td, omega, gamma1, gamma3, Delta, eta3, eta4, Zm, Eh, uperp, uz
 from model.exchange_integrals import Xskp, Xskm, Xdkpm, Xdkmp, Xzs, Xzd, Xos, Xod, Xfs, Xfd, Xsts, Xstd
 from utils import tau_func
-from config import setH
 
 # Zeeman energy
 mZm = np.diag([-Zm for i in range(8)] + [Zm for i in range(8)])
@@ -246,7 +246,8 @@ def delta_e_kp(n, nu0, nu1, num2, nu2, eigenvectorp):
 
 # def delta_e_regmatrixUp_kp(rho0constUp, eigenvectorp):
 #     nu0spindown, nu1spindown, num2spindown, nu2spindown, nu0spinup, nu1spinup, num2spinup, nu2spinup = tuple(np.diag(rho0constUp))
-#     regmatrixUpspindown = [delta_e_kp(n, nu0spindown, nu1spindown, num2spindown, nu2spindown, eigenvectorp) for n in setH]
+#     regmatrixUpspindown = [delta_e_kp(n, nu0spindown, nu1spindown, num2spindown,
+#     2spindown, eigenvectorp) for n in setH]
 #     regmatrixUpspinup = [delta_e_kp(n, nu0spinup, nu1spinup, num2spinup, nu2spinup, eigenvectorp) for n in setH]
 #     return np.diag(np.array(regmatrixUpspindown + regmatrixUpspinup))
 

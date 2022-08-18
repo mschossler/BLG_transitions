@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from numpy import linalg as npla
 
-from config import aux_dir_path, namecsv, bands
+from config import aux_dir_path, file_name_csv, bands
 from input.parameters import occupied_bands
 
 
@@ -42,7 +42,7 @@ def observable_to_csv(obeservables_dict, obeservable):
     for k, v in obeservables_dict.items():
         obeservable_list.append([k, v[obeservable]])
     obeservable_df = pd.DataFrame(obeservable_list)
-    obeservable_df.to_csv(aux_dir_path + obeservable + '_' + namecsv, index=False, header=False)
+    obeservable_df.to_csv(aux_dir_path + obeservable + '_' + file_name_csv, index=False, header=False)
 
 
 # ['0p-', '1p-', '-2p-', '2p-', '0m-', '1m-', '-2m-', '2m-', '0p+', '1p+', '-2p+', '2p+', '0m+', '1m+', '-2m+', '2m+']
