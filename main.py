@@ -17,7 +17,6 @@ for dict_u in quantities:
 
 quantities_dict = sort_dict(quantities_dict)
 
-
 energies = []
 # allowed_transitions_nu = {}
 for k, v in quantities_dict.items():

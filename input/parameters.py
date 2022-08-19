@@ -6,8 +6,20 @@ alpha_H_oct_int = 1
 inter = 1
 alpha_x = 1
 
-alpha_k_dic = {12: 0.244,
-               8: 0.26,
+alpha_k_nu4 = 0.260
+alpha_k_nu0 = 0.244
+alpha_k_dic = {-6: alpha_k_nu4,
+               -4: alpha_k_nu4,
+               -3: alpha_k_nu4,
+               -2: alpha_k_nu4,
+               -1: alpha_k_nu4,
+               0: alpha_k_nu0,
+               1: alpha_k_nu4,
+               2: alpha_k_nu4,
+               3: alpha_k_nu4,
+               4: alpha_k_nu4,
+               5: alpha_k_nu4,
+               6: alpha_k_nu4
                }
 
 alpha_rho = 0
@@ -24,7 +36,7 @@ gamma0 = 3
 gamma1 = 0.41
 gamma4 = 0.15 * asym
 eta4 = gamma4 / gamma0
-gamma3 = -0.3 * asym # gamma3 = 0.3;
+gamma3 = -0.3 * asym  # gamma3 = 0.3;
 eta3 = gamma3 / gamma0
 Delta = 0.018 * asym
 Delta_ab = 0.001 * 0
@@ -35,7 +47,7 @@ Zm = 57.9e-6 * B * alpha_Zm  # in eV,  57.9e-6 is from Zhang2011PRB below equati
 # ep = 0.5
 nu = 4
 occupied_bands = nu + 8  # nu = 8 is the charge neutrality point in this schema
-alpha_k = alpha_k_dic[occupied_bands]
+alpha_k = alpha_k_dic[nu]
 
 clight = 299792458
 hbar = (6.62607 * 10 ** (-34)) / (2 * np.pi)
