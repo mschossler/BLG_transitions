@@ -1,10 +1,11 @@
-import sys
+
 
 import pandas as pd
 from matplotlib import pyplot as plt
 
 if __name__ == "__main__":
     # setting path
+    import sys
     sys.path.append('../')
 
 from config import aux_dir_path, file_name_csv, bands, input_dir_path
@@ -106,7 +107,7 @@ def plot_transitions(transitions_df):
 
 if __name__ == "__main__":
     energies_df = pd.read_csv(aux_dir_path + 'energies_' + file_name_csv)
-    transitions_df = pd.read_csv(aux_dir_path + 'trans_' + file_name_csv)
+    transitions_df = pd.read_csv(aux_dir_path + 'transitions_' + file_name_csv)
     # print(energies_df)
     plot_energies(energies_df)
     plot_transitions(transitions_df)

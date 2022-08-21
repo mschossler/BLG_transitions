@@ -35,7 +35,7 @@ for quantity in ['h0', 'rhoU', 'Eh_deltaU', 'Hint', 'Et', 'eigenvector', 'excito
 energies_df, transition_energy_df = transition_fermi_energy(energies_df)  # add fermi_energy to energies_df
 
 energies_df.to_csv(aux_dir_path + 'energies_' + file_name_csv, index=False)
-transition_energy_df.to_csv(aux_dir_path + 'trans_' + file_name_csv, index=False)
+transition_energy_df.to_csv(aux_dir_path + 'transitions_' + file_name_csv, index=False)
 
 from visualization.plots import plot_energies, plot_transitions
 

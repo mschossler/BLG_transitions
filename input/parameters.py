@@ -1,26 +1,31 @@
 import numpy as np
 
+nu = 0
+
 asym = 1
 alpha_Zm = 1  # 0.04227165829987071 # k / alpha_k
 alpha_H_oct_int = 1
 inter = 1
 alpha_x = 1
 
-alpha_k_nu4 = 0.260
-alpha_k_nu0 = 0.244
-alpha_k_dic = {-6: alpha_k_nu4,
-               -4: alpha_k_nu4,
-               -3: alpha_k_nu4,
-               -2: alpha_k_nu4,
-               -1: alpha_k_nu4,
-               0: alpha_k_nu0,
-               1: alpha_k_nu4,
-               2: alpha_k_nu4,
-               3: alpha_k_nu4,
-               4: alpha_k_nu4,
-               5: alpha_k_nu4,
-               6: alpha_k_nu4
-               }
+alpha_k_nu4 = 0.244
+alpha_k_nu0 = 0.260
+alpha_k_dic = {i: alpha_k_nu4 for i in range(-6, 7)}
+alpha_k_dic[0] = alpha_k_nu0
+# print(alpha_k_dic)
+# alpha_k_dic = {-6: alpha_k_nu4,
+#                -4: alpha_k_nu4,
+#                -3: alpha_k_nu4,
+#                -2: alpha_k_nu4,
+#                -1: alpha_k_nu4,
+#                0: alpha_k_nu0,
+#                1: alpha_k_nu4,
+#                2: alpha_k_nu4,
+#                3: alpha_k_nu4,
+#                4: alpha_k_nu4,
+#                5: alpha_k_nu4,
+#                6: alpha_k_nu4
+#                }
 
 alpha_rho = 0
 alpha_state = 1
@@ -45,7 +50,6 @@ beta = (omega / gamma1) ** 2
 Zm = 57.9e-6 * B * alpha_Zm  # in eV,  57.9e-6 is from Zhang2011PRB below equation 17 #temperature: 4 K=4 * 0.0862=0.3448meV # k * 0.0178 #
 # print(Zm)
 # ep = 0.5
-nu = 4
 occupied_bands = nu + 8  # nu = 8 is the charge neutrality point in this schema
 alpha_k = alpha_k_dic[nu]
 
@@ -65,6 +69,6 @@ k = (np.sqrt(np.pi / 2) * el) / (4 * np.pi * ep0 * epr * Lb) * alpha_k
 
 # Zm = k * 0.0178 #use def above, this is slightly off due to alpha_k
 
-U0minD = -5e-3
-U0maxD = 45e-3
+U0minD = 20e-3
+U0maxD = 23e-3
 dU0D = 1e-3

@@ -118,7 +118,7 @@ def loopU(u):
         eigenvalue_loop, eigenvector_loop = eigen(H)
         rho = sum(np.outer(eigenvector_loop[i, :], eigenvector_loop[i, :]) for i in range(occupied_bands))
 
-        # regmatrix = delta_e_regmatrix(rho, eigenvectorp, eigenvectorm) * alpha_reg # we should not update regmatrix here, make results for nu=0 bad and won't affect nu=4
+        # regmatrix = delta_e_regmatrix(rho, eigenvectorp, eigenvectorm) * alpha_reg # we should not update regmatrix here, make results_old for nu=0 bad and won't affect nu=4
 
         it += 1
 

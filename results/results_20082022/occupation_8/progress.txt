@@ -1,0 +1,24 @@
+
+ Starting this script at date/time: 20082022164704. 
+ This script is running at: schossler, directory: /home/matheus/Insync/matheus.schossler@alumni.usp.br/Google Drive/matheus.schossler@usp.br 2020-04-28 15:02/phd/research/henriksen's discussions/BLG_transitions
+
+
+ Starting this script at date/time: 20082022165227. 
+ This script is running at: schossler, directory: /home/matheus/Insync/matheus.schossler@alumni.usp.br/Google Drive/matheus.schossler@usp.br 2020-04-28 15:02/phd/research/henriksen's discussions/BLG_transitions/visualization
+
+
+ Starting this script at date/time: 20082022170754. 
+ This script is running at: schossler, directory: /home/matheus/Insync/matheus.schossler@alumni.usp.br/Google Drive/matheus.schossler@usp.br 2020-04-28 15:02/phd/research/henriksen's discussions/BLG_transitions/model
+
+
+ Starting this script at date/time: 20082022170939. 
+ This script is running at: schossler, directory: /home/matheus/Insync/matheus.schossler@alumni.usp.br/Google Drive/matheus.schossler@usp.br 2020-04-28 15:02/phd/research/henriksen's discussions/BLG_transitions/model
+
+
+ Starting this script at date/time: 20082022171004. 
+ This script is running at: schossler, directory: /home/matheus/Insync/matheus.schossler@alumni.usp.br/Google Drive/matheus.schossler@usp.br 2020-04-28 15:02/phd/research/henriksen's discussions/BLG_transitions/model
+
+
+ Starting this script at date/time: 20082022171055. 
+ This script is running at: schossler, directory: /home/matheus/Insync/matheus.schossler@alumni.usp.br/Google Drive/matheus.schossler@usp.br 2020-04-28 15:02/phd/research/henriksen's discussions/BLG_transitions/model
+

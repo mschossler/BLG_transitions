@@ -25,13 +25,13 @@ t0 = time.time()
 cwd = os.getcwd()  # working directory
 path = os.path.abspath(__file__)
 dir_path = os.path.dirname(path)
-print(dir_path)
+# print(dir_path)
 
-aux_dir_path = dir_path + '/results_' + current_date + '/occupation_' + str(occupied_bands) + '/'
-# aux_dir_path = dir_path + '/results/occupation_' + str(occupied_bands) + '/'
+aux_dir_path = dir_path + '/results/results_' + current_date + '/occupation_' + str(occupied_bands) + '/'
+# aux_dir_path = dir_path + '/results_old/occupation_' + str(occupied_bands) + '/'
 
 input_dir_path = dir_path + '/input/'
-# bands = ['0p-', '1p-', '-2p-', '2p-', '0m-', '1m-', '-2m-', '2m-', '0p+', '1p+', '-2p+', '2p+', '0m+', '1m+', '-2m+', '2m+']
+bands = ['0p-', '1p-', '-2p-', '2p-', '0m-', '1m-', '-2m-', '2m-', '0p+', '1p+', '-2p+', '2p+', '0m+', '1m+', '-2m+', '2m+']
 bands = ['LL0_Kp_Sdown', 'LL1_Kp_Sdown', 'LLm2_Kp_Sdown', 'LL2_Kp_Sdown',
          'LL0_Km_Sdown', 'LL1_Km_Sdown', 'LLm2_Km_Sdown', 'LL2_Km_Sdown',
          'LL0_Kp_Sup', 'LL1_Kp_Sup', 'LLm2_Kp_Sup', 'LL2_Kp_Sup',
@@ -40,10 +40,10 @@ bands = ['LL0_Kp_Sdown', 'LL1_Kp_Sdown', 'LLm2_Kp_Sdown', 'LL2_Kp_Sdown',
 file_name = 'nu_' + str(occupied_bands)
 file_name_csv = file_name + '.csv'
 script_name = __file__
-print(script_name)
+# print(script_name)
 # file_name = file_name + '.csv'
 machine = platform.node()
-infos = '\n' + ' Starting this script at date/time: ' + current_time + '. \n' + ' This script is running at: ' + machine + ', directory: ' + cwd + '\n'
+infos = '\n' + ' Starting this script at date/time: ' + current_time_formated + '. \n' + ' This script is running at: ' + machine + ', directory: ' + cwd + '\n'
 folder_name = 'files_' + 'asym_' + str(round(asym, 2)) + '__itmax_' + str(round(itmax, 2)) + '__Zm_' + str(round(Zm * 1e3, 3)) + \
               '__alpha_H_oct_int_' + str(round(alpha_H_oct_int, 2)) + '__uz_' + str(round(uz * 1e3, 3)) + '__uperp_' + str(round(uperp * 1e3, 3)) + \
               '__x_' + str(round(x, 3)) + '__alpha_state_' + str(round(alpha_state, 3)) + '__alpha_rand_' + str(round(alpha_rand, 3)) + '__dens_' + str(round(dens, 1))

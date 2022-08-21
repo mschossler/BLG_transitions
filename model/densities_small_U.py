@@ -1,10 +1,35 @@
 import numpy as np
 import pandas as pd
 
-from input.parameters import nu, occupied_bands
+if __name__ == "__main__":
+    # setting path
+    import sys
 
-filling_order_Upositive = ['-2p-', '-2p+', '-2m-', '-2m+', '0m-', '0p-', '0m+', '0p+', '1m-', '1p-', '1m+', '1p+', '2p-', '2p+']  # spin_polarz -> 0LL_polarz -> 1LL_spin_polarz
-filling_order_Unegative = ['-2m-', '-2m+', '-2p-', '-2p+', '0p-', '0m-', '0p+', '0m+', '1p-', '1m-', '1p+', '1m+', '2m-', '2m-']  # spin_polarz -> 0LL_polarz -> 1LL_spin_polarz
+    sys.path.append('../')
+
+from input.parameters import nu, occupied_bands
+from config import bands
+
+# filling_order_Upositive = ['-2p-', '-2p+', '-2m-', '-2m+', '0m-', '0p-', '0m+', '0p+', '1m-', '1p-', '1m+', '1p+', '2p-', '2p+']  # spin_polarz -> 0LL_polarz -> 1LL_spin_polarz
+# filling_order_Unegative = ['-2m-', '-2m+', '-2p-', '-2p+', '0p-', '0m-', '0p+', '0m+', '1p-', '1m-', '1p+', '1m+', '2m-', '2m-']  # spin_polarz -> 0LL_polarz -> 1LL_spin_polarz
+
+filling_order_Upositive = ['LLm2_Kp_Sdown', 'LLm2_Kp_Sup', 'LLm2_Km_Sdown', 'LLm2_Km_Sup', 'LL0_Km_Sdown', 'LL0_Kp_Sdown', 'LL0_Km_Sup', 'LL0_Kp_Sup', 'LL1_Km_Sdown',
+                           'LL1_Kp_Sdown', 'LL1_Km_Sup', 'LL1_Kp_Sup', 'LL2_Kp_Sdown', 'LL2_Kp_Sup']
+filling_order_Unegative = ['LLm2_Km_Sdown', 'LLm2_Km_Sup', 'LLm2_Kp_Sdown', 'LLm2_Kp_Sup', 'LL0_Kp_Sdown', 'LL0_Km_Sdown', 'LL0_Kp_Sup', 'LL0_Km_Sup', 'LL1_Kp_Sdown',
+                           'LL1_Km_Sdown', 'LL1_Kp_Sup', 'LL1_Km_Sup', 'LL2_Km_Sdown', 'LL2_Km_Sup']
+
+diag = [(1 if band in filling_order_Upositive[0:occupied_bands] else 0) for band in bands]
+# for band in bands:
+#     diag = [1 if band in filling_order_Upositive[0:occupied_bands] else 0]
+# rho0constUp = np.diag(diag)
+print(diag)
+
+# for state in filling_order_Upositive[0:occupied_bands]:
+#     print(state)
+#
+#     print('is the filling factor right (U>0)?: ', sum(diag) == occupied_bands)
+#     rho0constUp = np.diag(diag)
+
 
 if nu == 0:
     alpha = 0.6
