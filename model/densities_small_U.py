@@ -4,7 +4,6 @@ import pandas as pd
 if __name__ == "__main__":
     # setting path
     import sys
-
     sys.path.append('../')
 
 from input.parameters import nu, number_occupied_bands
@@ -29,7 +28,6 @@ def diag(u_signal, number_occupied_bands):
         print('is the filling factor right?:', sum(diag) == number_occupied_bands, 'u_signal:', u_signal)
         exit()
     return np.diag(diag)
-
 
 rho0constUp = diag(+1, number_occupied_bands)
 rho0constUm = diag(-1, number_occupied_bands)
@@ -63,23 +61,23 @@ if nu == 0:
     rho0file16 = rho0file8_zero + zero_rho0file8
     rhorand = rho0file16
 
-    spindownUp = [('0p-', 1), ('1p-', 0), ('-2p-', 1), ('2p-', 0), ('0m-', 1), ('1m-', 0), ('-2m-', 1), ('2m-', 0)]
-    spinupUp = [('0p+', 1), ('1p+', 0), ('-2p+', 1), ('2p+', 0), ('0m+', 1), ('1m+', 0), ('-2m+', 1), ('2m+', 0)]
-
-    spindownUm = [('0p-', 1), ('1p-', 0), ('-2p-', 1), ('2p-', 0), ('0m-', 1), ('1m-', 0), ('-2m-', 1), ('2m-', 0)]
-    spinupUm = [('0p+', 1), ('1p+', 0), ('-2p+', 1), ('2p+', 0), ('0m+', 1), ('1m+', 0), ('-2m+', 1), ('2m+', 0)]
-
-    diag = [x[1] for x in spindownUp + spinupUp]
-    if sum(diag) != number_occupied_bands:
-        print('is the filling factor right (U>0)?: ', sum(diag) == number_occupied_bands)
-        exit()
-    rho0constUp = (1 - alpha) * np.diag(diag) + alpha * rhorand
-
-    diag = [x[1] for x in spindownUm + spinupUm]
-    if sum(diag) != number_occupied_bands:
-        print('is the filling factor right (U<0)?:', sum(diag) == number_occupied_bands)
-        exit()
-    rho0constUm = (1 - alpha) * np.diag(diag) + alpha * rhorand
+    # spindownUp = [('0p-', 1), ('1p-', 0), ('-2p-', 1), ('2p-', 0), ('0m-', 1), ('1m-', 0), ('-2m-', 1), ('2m-', 0)]
+    # spinupUp = [('0p+', 1), ('1p+', 0), ('-2p+', 1), ('2p+', 0), ('0m+', 1), ('1m+', 0), ('-2m+', 1), ('2m+', 0)]
+    #
+    # spindownUm = [('0p-', 1), ('1p-', 0), ('-2p-', 1), ('2p-', 0), ('0m-', 1), ('1m-', 0), ('-2m-', 1), ('2m-', 0)]
+    # spinupUm = [('0p+', 1), ('1p+', 0), ('-2p+', 1), ('2p+', 0), ('0m+', 1), ('1m+', 0), ('-2m+', 1), ('2m+', 0)]
+    #
+    # diag = [x[1] for x in spindownUp + spinupUp]
+    # if sum(diag) != number_occupied_bands:
+    #     print('is the filling factor right (U>0)?: ', sum(diag) == number_occupied_bands)
+    #     exit()
+    rho0constUp = (1 - alpha) * rho0constUp + alpha * rhorand
+    #
+    # diag = [x[1] for x in spindownUm + spinupUm]
+    # if sum(diag) != number_occupied_bands:
+    #     print('is the filling factor right (U<0)?:', sum(diag) == number_occupied_bands)
+    #     exit()
+    rho0constUm = (1 - alpha) * rho0constUm + alpha * rhorand
 
 # if nu == 4:
 #     spindownUp = [('0p-', 1), ('1p-', 1), ('-2p-', 1), ('2p-', 0), ('0m-', 1), ('1m-', 1), ('-2m-', 1), ('2m-', 0)]
@@ -101,5 +99,5 @@ if nu == 0:
 #         exit()
 #     rho0constUm = np.diag(diag)
 
-print(np.diag(rho0constUp))
-print(np.diag(rho0constUm))
+# print(np.diag(rho0constUp))
+# print(np.diag(rho0constUm))
