@@ -6,7 +6,7 @@ import pandas as pd
 from config import aux_dir_path, file_name_csv, nprocesses, t0, bands
 from input.parameters import U0minD, U0maxD, dU0D
 from model.hartree_fock_and_regularization import loopU
-from utils import frange, sort_dict, observable_to_csv, idxcalc, transition_fermi_energy
+from utils import frange, sort_dict, observable_to_csv, idxcalc, transitions_energy_fermi_energy
 
 a_pool = multiprocessing.Pool(processes=nprocesses)
 quantities = a_pool.map(loopU, frange(U0minD, U0maxD, dU0D))
@@ -32,7 +32,7 @@ energies_df = pd.DataFrame(energies, columns=['u'] + bands)
 for quantity in ['h0', 'rhoU', 'Eh_deltaU', 'Hint', 'Et', 'eigenvector', 'exciton_energy', 'regmatrix']:
     observable_to_csv(quantities_dict, quantity)
 
-energies_df, transition_energy_df = transition_fermi_energy(energies_df)  # add fermi_energy to energies_df
+energies_df, transition_energy_df = transitions_energy_fermi_energy(energies_df)  # add fermi_energy to energies_df
 
 energies_df.to_csv(aux_dir_path + 'energies_' + file_name_csv, index=False)
 transition_energy_df.to_csv(aux_dir_path + 'transitions_' + file_name_csv, index=False)

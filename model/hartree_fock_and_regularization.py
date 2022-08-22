@@ -42,7 +42,7 @@ def loopU(u):
         rho0 = rho0constUp
     else:
         rho0 = rho0constUm
-    print('u=%.2f' % (u * 1000))
+    print('running u=%.2f' % (u * 1000))
     rho = rho0
 
     ################### warping #############################################################
@@ -116,7 +116,7 @@ def loopU(u):
         Hint = k * np.vstack((np.hstack((Hintup, Hintupdown)), np.hstack((Hintdownup, Hintdown))))
         H = Hint + h0 + mZm + regmatrix  # np.add(Hint, h0)
         eigenvalue_loop, eigenvector_loop = eigen(H)
-        rho = sum(np.outer(eigenvector_loop[i, :], eigenvector_loop[i, :]) for i in range(occupied_bands))
+        rho = sum(np.outer(eigenvector_loop[i, :], eigenvector_loop[i, :]) for i in range(number_occupied_bands))
 
         # regmatrix = delta_e_regmatrix(rho, eigenvectorp, eigenvectorm) * alpha_reg # we should not update regmatrix here, make results_old for nu=0 bad and won't affect nu=4
 
@@ -136,7 +136,7 @@ def loopU(u):
                 [2 * Hint[idp(n)][idps(nprime)] * rho[idp(nprime)][idps(n)] for n in setH for nprime in setH] +
                 [2 * Hint[idm(n)][idms(nprime)] * rho[idm(nprime)][idms(n)] for n in setH for nprime in setH]
                 )
-    Et = sum([eigenvalue[i] for i in range(occupied_bands)]) + ehf
+    Et = sum([eigenvalue[i] for i in range(number_occupied_bands)]) + ehf
 
     dict_quantities_u = {'u': u * 1e3,
                          'eigenvalue': 1e3 * eigenvalue,

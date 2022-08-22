@@ -1,6 +1,21 @@
+import sys
+
 import numpy as np
 
-nu = 0
+# variables_dict = {}
+
+nu_default = 6
+
+if len(sys.argv) == 2:
+    nu = int(sys.argv[1])
+else:
+    nu = nu_default
+
+if abs(nu) > 6:
+    print('Error: nu (filling factor) out of range')
+    exit()
+else:
+    print('executing script with nu = %i' % nu)
 
 asym = 1
 alpha_Zm = 1  # 0.04227165829987071 # k / alpha_k
@@ -8,10 +23,17 @@ alpha_H_oct_int = 1
 inter = 1
 alpha_x = 1
 
+# variables_dict['asym']=asym
+# variables_dict['alpha_Zm']=alpha_Zm
+# variables_dict['alpha_H_oct_int']=alpha_H_oct_int
+# variables_dict['alpha_x']=alpha_x
+
 alpha_k_nu4 = 0.244
 alpha_k_nu0 = 0.260
 alpha_k_dic = {i: alpha_k_nu4 for i in range(-6, 7)}
 alpha_k_dic[0] = alpha_k_nu0
+
+# variables_dict['alpha_k_dic']=alpha_k_dic
 # print(alpha_k_dic)
 # alpha_k_dic = {-6: alpha_k_nu4,
 #                -4: alpha_k_nu4,
@@ -33,8 +55,17 @@ alpha_rand = 0.01
 alpha_reg = 1
 dens = 1
 
+# variables_dict['alpha_rho']=alpha_rho
+# variables_dict['alpha_rand']=alpha_rand
+# variables_dict['alpha_reg']=alpha_reg
+
 uz = 7e0 * 1e-3  # * 0
 uperp = -1.6e0 * 1e-3  # * 0
+
+# variables_dict['uz']=uz
+# variables_dict['uperp']=uperp
+# variables_dict['uz']=uz
+
 B = 13
 omega = 35 * np.sqrt(B) / 1000
 gamma0 = 3
@@ -50,7 +81,7 @@ beta = (omega / gamma1) ** 2
 Zm = 57.9e-6 * B * alpha_Zm  # in eV,  57.9e-6 is from Zhang2011PRB below equation 17 #temperature: 4 K=4 * 0.0862=0.3448meV # k * 0.0178 #
 # print(Zm)
 # ep = 0.5
-occupied_bands = nu + 8  # nu = 8 is the charge neutrality point in this schema
+number_occupied_bands = nu + 8  # nu = 8 is the charge neutrality point in this schema
 alpha_k = alpha_k_dic[nu]
 
 clight = 299792458
@@ -72,3 +103,9 @@ k = (np.sqrt(np.pi / 2) * el) / (4 * np.pi * ep0 * epr * Lb) * alpha_k
 U0minD = 20e-3
 U0maxD = 23e-3
 dU0D = 1e-3
+
+# variables_dict = {}
+# variables_dict.update({k:v for k,v in locals().copy().iteritems() if k[:2] != '__' and k != 'variables_dict'})
+# variables_dict = {k:v for k,v in locals().copy().iteritems() if k[:2] != '__' and k != 'variables_dict'}
+# variables_dict = {str(i): locals()[i] for i in locals()}
+# print(variables_dict)

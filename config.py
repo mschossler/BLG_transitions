@@ -6,7 +6,7 @@ from datetime import datetime
 import numpy as np
 import pandas as pd
 
-from input.parameters import Zm, asym, x, alpha_H_oct_int, uz, uperp, alpha_state, alpha_rand, dens, occupied_bands
+from input.parameters import Zm, asym, x, alpha_H_oct_int, uz, uperp, alpha_state, alpha_rand, dens, number_occupied_bands
 
 pd.set_option('display.max_columns', 300)
 pd.set_option('display.width', 1000)
@@ -27,8 +27,8 @@ path = os.path.abspath(__file__)
 dir_path = os.path.dirname(path)
 # print(dir_path)
 
-aux_dir_path = dir_path + '/results/results_' + current_date + '/occupation_' + str(occupied_bands) + '/'
-# aux_dir_path = dir_path + '/results_old/occupation_' + str(occupied_bands) + '/'
+aux_dir_path = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands) + '/'
+# aux_dir_path = dir_path + '/results_old/occupation_' + str(number_occupied_bands) + '/'
 
 input_dir_path = dir_path + '/input/'
 bands = ['0p-', '1p-', '-2p-', '2p-', '0m-', '1m-', '-2m-', '2m-', '0p+', '1p+', '-2p+', '2p+', '0m+', '1m+', '-2m+', '2m+']
@@ -37,7 +37,7 @@ bands = ['LL0_Kp_Sdown', 'LL1_Kp_Sdown', 'LLm2_Kp_Sdown', 'LL2_Kp_Sdown',
          'LL0_Kp_Sup', 'LL1_Kp_Sup', 'LLm2_Kp_Sup', 'LL2_Kp_Sup',
          'LL0_Km_Sup', 'LL1_Km_Sup', 'LLm2_Km_Sup', 'LL2_Km_Sup']
 
-file_name = 'nu_' + str(occupied_bands)
+file_name = 'nu_' + str(number_occupied_bands)
 file_name_csv = file_name + '.csv'
 script_name = __file__
 # print(script_name)

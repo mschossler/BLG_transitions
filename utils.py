@@ -3,7 +3,7 @@ import pandas as pd
 from numpy import linalg as npla
 
 from config import aux_dir_path, file_name_csv, bands
-from input.parameters import occupied_bands
+from input.parameters import number_occupied_bands
 
 
 def frange(start, end, inc):
@@ -104,55 +104,56 @@ for sector in bands_by_sector:
                 allowed_transitions.append((band1, band2))
 
 
-def transtions_and_fermi_energy_u(energy_u):
+def transitions_energy_and_fermi_energy_u(energy_u):
     u = energy_u['u']
     energy_u.drop('u', axis=0, inplace=True)
-    occupied_states = energy_u.nsmallest(occupied_bands, keep='all')
-    unoccupied_states = energy_u.nlargest(len(bands) - occupied_bands, keep='all')[::-1]  # must be reversed for right fermi_energy
+    occupied_states = energy_u.nsmallest(number_occupied_bands, keep='all')
+    unoccupied_states = energy_u.nlargest(len(bands) - number_occupied_bands, keep='all')[::-1]  # must be reversed for right fermi_energy
     # print(occupied_states)
     # print(unoccupied_states)
 
     fermi_energy = (unoccupied_states.iloc[0] + occupied_states.iloc[-1]) / 2
 
-    allowed_transtions_nu = []
+    allowed_transitions_nu = []
     for two_allowed_bands in allowed_transitions:
         band1, band2 = two_allowed_bands
         if ('LL1' in band1) and (band1 in occupied_states.index):
-            allowed_transtions_nu.append(two_allowed_bands)
+            allowed_transitions_nu.append(two_allowed_bands)
         elif ('LL1' in band2) and (band2 in unoccupied_states.index):
-            allowed_transtions_nu.append(two_allowed_bands)
+            allowed_transitions_nu.append(two_allowed_bands)
 
     transition_energy_u_df = pd.DataFrame([])
-    for allowed_transition_nu in allowed_transtions_nu:
+    for allowed_transition_nu in allowed_transitions_nu:
         from_band, to_band = allowed_transition_nu
         transition_energy_u_df[from_band + '_to_' + to_band] = [energy_u[to_band] - energy_u[from_band]]
 
     transition_energy_u_df.index = [u]
 
-    transtions_energy_and_fermi_energy_u_dict = {'u': u,
-                                                 'fermi_energy': fermi_energy,
-                                                 'allowed_transtions_u': transition_energy_u_df.columns,
-                                                 'transtions_energy_u_df': transition_energy_u_df,
-                                                 }
+    transitions_energy_and_fermi_energy_u_dict = {'u': u,
+                                                  'fermi_energy': fermi_energy,
+                                                  'allowed_transitions_u': transition_energy_u_df.columns,
+                                                  'transitions_energy_u_df': transition_energy_u_df,
+                                                  }
 
-    return transtions_energy_and_fermi_energy_u_dict
+    return transitions_energy_and_fermi_energy_u_dict
 
 
-def transition_fermi_energy(energies):
+def transitions_energy_fermi_energy(energies):
     transitions_energy = pd.DataFrame([])
     fermi_energy = []
     for ind in energies.index:
         energy_u = energies.loc[ind]
         #         print(energy_u,type(energy_u))
-        #         print(transtions_and_fermi_energy_u(energy_u))
-        transtions_and_fermi_energy_u_dict = transtions_and_fermi_energy_u(energy_u)
+        #         print(transitions_energy_and_fermi_energy_u(energy_u))
+        transitions_energy_and_fermi_energy_u_dict = transitions_energy_and_fermi_energy_u(energy_u)
 
-        transitions_energy_u = transtions_and_fermi_energy_u_dict['transtions_energy_u_df']
-        fermi_energy.append(transtions_and_fermi_energy_u_dict['fermi_energy'])
-        #         print(transtions_and_fermi_energy_u_dict)
+        transitions_energy_u = transitions_energy_and_fermi_energy_u_dict['transitions_energy_u_df']
+        fermi_energy.append(transitions_energy_and_fermi_energy_u_dict['fermi_energy'])
+        #         print(transitions_energy_and_fermi_energy_u_dict)
         #         transitions_energy.join(transitions_energy_u)
         transitions_energy = pd.concat([transitions_energy, transitions_energy_u], axis=0)
-    transitions_energy['u'] = transitions_energy.index.values
+    # transitions_energy['u'] = transitions_energy.index.values
+    transitions_energy.insert(0, 'u', transitions_energy.index.values)
     energies['fermi_energy'] = fermi_energy
     return energies, transitions_energy
 
