@@ -1,7 +1,5 @@
-from config import setH
-from input.parameters import k, np, Delta_ab, beta, Delta_td, omega, gamma1, gamma3, Delta, eta3, eta4, Zm, Eh, uperp, uz
-from model.exchange_integrals import Xskp, Xskm, Xdkpm, Xdkmp, Xzs, Xzd, Xos, Xod, Xfs, Xfd, Xsts, Xstd
-from utils import tau_func
+from input.parameters import np, Delta_ab, beta, Delta_td, omega, gamma1, gamma3, Delta, eta3, eta4, Zm
+from model.exchange_integrals import Xskp, Xskm, Xdkpm, Xdkmp
 
 # Zeeman energy
 mZm = np.diag([-Zm for i in range(8)] + [Zm for i in range(8)])
@@ -40,32 +38,47 @@ def H0(u):
 
 def hAp(u):
     "LL: -2, 2,...  - plot color: Black"
-    hamtx = [[-u / 2 + Delta_ab, -omega, eta4 * omega, 0],
-             [-omega, - u / 2 + Delta - Delta_ab, gamma1, np.sqrt(2) * eta4 * omega],
-             [eta4 * omega, gamma1, u / 2 + Delta + Delta_ab, -np.sqrt(2) * omega],
-             [0, np.sqrt(2) * eta4 * omega, -np.sqrt(2) * omega, u / 2 - Delta_ab]]
+    if u < 0:
+        Delta_ab_local = - Delta_ab
+    else:
+        Delta_ab_local = Delta_ab
+
+    hamtx = [[-u / 2 + Delta_ab_local, -omega, eta4 * omega, 0],
+             [-omega, - u / 2 + Delta - Delta_ab_local, gamma1, np.sqrt(2) * eta4 * omega],
+             [eta4 * omega, gamma1, u / 2 + Delta + Delta_ab_local, -np.sqrt(2) * omega],
+             [0, np.sqrt(2) * eta4 * omega, -np.sqrt(2) * omega, u / 2 - Delta_ab_local]]
     return hamtx
 
 
 def hCp(u):
     "LL: 0, -3, 3,...  - plot color: Blue"
-    hamtx = [[u / 2 - Delta_ab, eta3 * omega, 0, 0, 0],
-             [eta3 * omega, -u / 2 + Delta_ab, -np.sqrt(2) * omega, np.sqrt(2) * eta4 * omega, 0],
-             [0, -np.sqrt(2) * omega, - u / 2 + Delta - Delta_ab, gamma1, np.sqrt(3) * eta4 * omega],
-             [0, np.sqrt(2) * eta4 * omega, gamma1, u / 2 + Delta + Delta_ab, -np.sqrt(3) * omega],
-             [0, 0, np.sqrt(3) * eta4 * omega, -np.sqrt(3) * omega, u / 2 - Delta_ab]]
+    if u < 0:
+        Delta_ab_local = - Delta_ab
+    else:
+        Delta_ab_local = Delta_ab
+
+    hamtx = [[u / 2 - Delta_ab_local, eta3 * omega, 0, 0, 0],
+             [eta3 * omega, -u / 2 + Delta_ab_local, -np.sqrt(2) * omega, np.sqrt(2) * eta4 * omega, 0],
+             [0, -np.sqrt(2) * omega, - u / 2 + Delta - Delta_ab_local, gamma1, np.sqrt(3) * eta4 * omega],
+             [0, np.sqrt(2) * eta4 * omega, gamma1, u / 2 + Delta + Delta_ab_local, -np.sqrt(3) * omega],
+             [0, 0, np.sqrt(3) * eta4 * omega, -np.sqrt(3) * omega, u / 2 - Delta_ab_local]]
     return hamtx
 
 
 def hBp(u):
     "LL: 1, -4, 4...  - plot color: Red"
-    hamtx = [[- u / 2 + Delta - Delta_ab, gamma1, eta4 * omega, 0, 0, 0, 0],
-             [gamma1, u / 2 + Delta + Delta_ab, -omega, 0, 0, 0, 0],
-             [eta4 * omega, - omega, u / 2 - Delta_ab, np.sqrt(2) * eta3 * omega, 0, 0, 0],
-             [0, 0, np.sqrt(2) * eta3 * omega, -u / 2 + Delta_ab, -np.sqrt(3) * omega, np.sqrt(3) * eta4 * omega, 0],
-             [0, 0, 0, -np.sqrt(3) * omega, - u / 2 + Delta - Delta_ab, gamma1, 2 * eta4 * omega],
-             [0, 0, 0, np.sqrt(3) * eta4 * omega, gamma1, u / 2 + Delta + Delta_ab, -2 * omega],
-             [0, 0, 0, 0, 2 * eta4 * omega, - 2 * omega, u / 2 - Delta_ab]]
+    if u < 0:
+        Delta_ab_local = - Delta_ab
+    else:
+        Delta_ab_local = Delta_ab
+
+    hamtx = [[- u / 2 + Delta - Delta_ab_local, gamma1, eta4 * omega, 0, 0, 0, 0],
+             [gamma1, u / 2 + Delta + Delta_ab_local, -omega, 0, 0, 0, 0],
+             [eta4 * omega, - omega, u / 2 - Delta_ab_local, np.sqrt(2) * eta3 * omega, 0, 0, 0],
+             [0, 0, np.sqrt(2) * eta3 * omega, -u / 2 + Delta_ab_local, -np.sqrt(3) * omega, np.sqrt(3) * eta4 * omega, 0],
+             [0, 0, 0, -np.sqrt(3) * omega, - u / 2 + Delta - Delta_ab_local, gamma1, 2 * eta4 * omega],
+             [0, 0, 0, np.sqrt(3) * eta4 * omega, gamma1, u / 2 + Delta + Delta_ab_local, -2 * omega],
+             [0, 0, 0, 0, 2 * eta4 * omega, - 2 * omega, u / 2 - Delta_ab_local]]
 
     return hamtx
 
@@ -162,119 +175,3 @@ def full_hmp(n, nprime, s1, s2, eigenvectorp, eigenvectorm, rho):
     res = -sum([Xdkmp(n2, nprime, n, n1, eigenvectorm, eigenvectorp) * rho[id1(n2)][id2(n1)] for n1 in [0, 1] for n2 in [0, 1]] + [
         Xdkmp(n2, nprime, n, n1, eigenvectorm, eigenvectorp) * rho[id1(n2)][id2(n1)] for n1 in [-2, 2] for n2 in [-2, 2]])
     return res
-
-
-#########################################################################################################
-def asymmetric_h(rho, tau, u):
-    first = u * np.trace(tau @ rho) * (tau @ rho)
-    second = - u * tau @ rho @ tau @ rho
-    return first + second
-
-
-taux = tau_func([[0, 1], [1, 0]])
-tauy = tau_func([[0, -1], [1, 0]]) * 1j
-tauz = tau_func([[1, 0], [0, -1]])
-
-
-def H_asym(rho):
-    H_asym_tmp = asymmetric_h(rho, taux, uperp) + asymmetric_h(rho, tauy, uperp) + asymmetric_h(rho, tauz, uz)
-    return H_asym_tmp
-
-
-base_oct = ['0m-', '0p-', '1m-', '1p-', '0m+', '0p+', '1m+', '1p+']
-base_full = ['0p-', '1p-', '-2p-', '2p-', '0m-', '1m-', '-2m-', '2m-', '0p+', '1p+', '-2p+', '2p+', '0m+', '1m+', '-2m+', '2m+']
-
-base_dict = {}
-for base in base_oct:
-    base_dict[base_oct.index(base) + 1] = base_full.index(base)
-
-base_dict_inverse = {}
-for key in base_dict:
-    base_dict_inverse[base_dict[key]] = key
-
-
-def Hint_oct(rhotmp):
-    def rho(i, j):
-        return rhotmp[base_dict[i]][base_dict[j]]
-
-    deltatb = (rho(1, 1) - rho(2, 2) + rho(3, 3) - rho(4, 4) + rho(5, 5) - rho(6, 6) + rho(7, 7) - rho(8, 8))
-    hamtx = [[- Xzs * rho(1, 1) - Xfs * rho(3, 3) + Eh * deltatb, -Xzd * rho(1, 2) - Xfd * rho(3, 4), -Xsts * rho(1, 3), -Xstd * rho(1, 4), -Xzs * rho(1, 5) - Xfs * rho(3, 7),
-              -Xzd * rho(1, 6) - Xfd * rho(3, 8), -Xsts * rho(1, 7), -Xstd * rho(1, 8)],
-             [-Xzd * rho(1, 2) - Xfd * rho(3, 4), - Xzs * rho(2, 2) - Xfs * rho(4, 4) - Eh * deltatb, -Xstd * rho(2, 3), -Xsts * rho(2, 4), -Xzd * rho(2, 5) - Xfd * rho(4, 7),
-              -Xzs * rho(2, 6) - Xfs * rho(4, 8), -Xstd * rho(2, 7), -Xsts * rho(2, 8)],
-             [-Xsts * rho(1, 3), -Xstd * rho(2, 3), - Xfs * rho(1, 1) - Xos * rho(3, 3) + Eh * deltatb, -Xfd * rho(1, 2) - Xod * rho(3, 4), - Xsts * rho(3, 5), -Xstd * rho(3, 6),
-              -Xfs * rho(1, 5) - Xos * rho(3, 7), -Xfd * rho(1, 6) - Xod * rho(3, 8)],
-             [-Xstd * rho(1, 4), -Xsts * rho(2, 4), -Xfd * rho(1, 2) - Xod * rho(3, 4), - Xfs * rho(2, 2) - Xos * rho(4, 4) - Eh * deltatb, -Xstd * rho(4, 5), -Xsts * rho(4, 6),
-              -Xfd * rho(2, 5) - Xod * rho(4, 7), -Xfs * rho(2, 6) - Xos * rho(4, 8)],
-             [-Xzs * rho(1, 5) - Xfs * rho(3, 7), -Xzd * rho(2, 5) - Xfd * rho(4, 7), -Xsts * rho(3, 5), -Xstd * rho(4, 5), - Xzs * rho(5, 5) - Xfs * rho(7, 7) + Eh * deltatb,
-              -Xfd * rho(3, 5) - Xzd * rho(5, 6), -Xsts * rho(5, 7), -Xstd * rho(5, 8)],
-             [-Xzd * rho(1, 6) - Xfd * rho(3, 8), -Xzs * rho(2, 6) - Xfs * rho(4, 8), -Xstd * rho(3, 6), -Xsts * rho(4, 6), -Xfd * rho(3, 5) - Xzd * rho(5, 6),
-              - Xzs * rho(6, 6) - Eh * deltatb - Xfs * rho(8, 8), -Xstd * rho(6, 7), -Xsts * rho(6, 8)],
-             [-Xsts * rho(1, 7), -Xstd * rho(2, 7), -Xfs * rho(1, 5) - Xos * rho(3, 7), -Xfd * rho(2, 5) - Xod * rho(4, 7), -Xsts * rho(5, 7), -Xstd * rho(6, 7),
-              - Xfs * rho(5, 5) - Xos * rho(7, 7) + Eh * deltatb, -Xfd * rho(5, 6) - Xod * rho(7, 8)],
-             [-Xstd * rho(1, 8), -Xsts * rho(2, 8), -Xfd * rho(1, 6) - Xod * rho(3, 8), -Xfs * rho(2, 6) - Xos * rho(4, 8), -Xstd * rho(5, 8), -Xsts * rho(6, 8),
-              -Xfd * rho(5, 6) - Xod * rho(7, 8), - Xfs * rho(6, 6) - Eh * deltatb - Xos * rho(8, 8)]]
-    Hint_16 = np.zeros((16, 16)).tolist()
-    for key_i in base_dict_inverse:
-        i = key_i
-        a = base_dict_inverse[key_i] - 1
-        for key_j in base_dict_inverse:
-            j = key_j
-            b = base_dict_inverse[key_j] - 1
-            Hint_16[i][j] = hamtx[a][b]
-    return np.array(Hint_16)
-
-
-##########################################################################################################
-# regularization (self energy) U dependent
-
-
-def delta_e_kp(n, nu0, nu1, num2, nu2, eigenvectorp):
-    pzm = (nu1 - 1 / 2) * Xskp(n, 1, 1, n, eigenvectorp) + (nu0 - 1 / 2) * Xskp(n, 0, 0, n, eigenvectorp)
-
-    m2and2 = nu2 * Xskp(n, 2, 2, n, eigenvectorp) - (1 - num2) * Xskp(n, -2, -2, n, eigenvectorp)
-
-    F = (Xskp(n, 2, 2, n, eigenvectorp) - Xskp(n, -2, -2, n, eigenvectorp))
-
-    #     F0=Xskp(0, 2, 2, 0, eigenvectorp) - Xskp(0, -2, -2, 0, eigenvectorp)
-
-    #     F=F-F0
-
-    res = (F / 2 - pzm - m2and2) * k
-    return res
-
-
-# def delta_e_regmatrixUp_kp(rho0constUp, eigenvectorp):
-#     nu0spindown, nu1spindown, num2spindown, nu2spindown, nu0spinup, nu1spinup, num2spinup, nu2spinup = tuple(np.diag(rho0constUp))
-#     regmatrixUpspindown = [delta_e_kp(n, nu0spindown, nu1spindown, num2spindown,
-#     2spindown, eigenvectorp) for n in setH]
-#     regmatrixUpspinup = [delta_e_kp(n, nu0spinup, nu1spinup, num2spinup, nu2spinup, eigenvectorp) for n in setH]
-#     return np.diag(np.array(regmatrixUpspindown + regmatrixUpspinup))
-
-
-def delta_e_km(n, nu0, nu1, num2, nu2, eigenvectorm):
-    pzm = (nu1 - 1 / 2) * Xskm(n, 1, 1, n, eigenvectorm) + (nu0 - 1 / 2) * Xskm(n, 0, 0, n, eigenvectorm)
-
-    m2and2 = nu2 * Xskm(n, 2, 2, n, eigenvectorm) - (1 - num2) * Xskm(n, -2, -2, n, eigenvectorm)
-
-    F = (Xskm(n, 2, 2, n, eigenvectorm) - Xskm(n, -2, -2, n, eigenvectorm))
-
-    #     F0=Xskm(0, 2, 2, 0, eigenvectorm) - Xskm(0, -2, -2, 0, eigenvectorm)
-
-    #     F=F-F0
-
-    res = (F / 2 - pzm - m2and2) * k
-    return res
-
-def delta_e_regmatrix(rho0const, eigenvectorp, eigenvectorm):
-    # print('here3 ', np.diag(rho0const))
-    nu0kp, nu1kp, num2kp, nu2kp, nu0km, nu1km, num2km, nu2km  = tuple(np.diag(rho0const)[:8])
-    # print('here4')
-    regmatrixUmspindown = [delta_e_kp(n, nu0kp, nu1kp, num2kp, nu2kp, eigenvectorp) for n in setH] + [delta_e_km(n, nu0km, nu1km, num2km, nu2km, eigenvectorm) for n in setH]
-
-    nu0kp, nu1kp, num2kp, nu2kp, nu0km, nu1km, num2km, nu2km  = tuple(np.diag(rho0const)[8:16])
-    regmatrixUmspinup = [delta_e_kp(n, nu0kp, nu1kp, num2kp, nu2kp, eigenvectorp) for n in setH] + [delta_e_km(n, nu0km, nu1km, num2km, nu2km, eigenvectorm) for n in setH]
-    return np.diag(np.array(regmatrixUmspindown + regmatrixUmspinup))
-
-
-##########################################################################################################

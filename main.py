@@ -1,10 +1,12 @@
 import multiprocessing
 import time
 
+t0 = time.time()
+
 import pandas as pd
 
-from config import aux_dir_path, file_name_csv, nprocesses, t0, bands
-from input.parameters import U0minD, U0maxD, dU0D
+from config import aux_dir_path, file_name_csv, nprocesses, bands
+from input.parameters import U0minD, U0maxD, dU0D, nu
 from model.hartree_fock_and_regularization import loopU
 from utils import frange, sort_dict, observable_to_csv, idxcalc, transitions_energy_fermi_energy
 
@@ -44,6 +46,5 @@ print(transition_energy_df)
 plot_energies(energies_df)
 plot_transitions(transition_energy_df)
 
-print(time.time() - t0)
 print('files ' + file_name_csv + ' saved')
-print(" \n done in ", time.time() - t0)
+print('working duration for nu=%(nu)i: %(t).1fs' % {'t': time.time() - t0, 'nu': nu})
