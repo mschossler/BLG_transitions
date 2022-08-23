@@ -4,7 +4,7 @@ import numpy as np
 
 # variables_dict = {}
 
-nu_default = 4
+nu_default = 6
 
 if len(sys.argv) == 2:
     nu = int(sys.argv[1])
@@ -100,8 +100,8 @@ k = (np.sqrt(np.pi / 2) * el) / (4 * np.pi * ep0 * epr * Lb) * alpha_k
 
 # Zm = k * 0.0178 #use def above, this is slightly off due to alpha_k
 
-U0minD = 20e-3
-U0maxD = 23e-3
+U0minD = -2e-3
+U0maxD = 4e-3
 dU0D = 1e-3
 
 # variables_dict = {}
