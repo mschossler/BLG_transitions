@@ -4,6 +4,7 @@ from numpy import linalg as npla
 
 from config import aux_dir_path, file_name_csv, bands
 from input.parameters import number_occupied_bands
+from model.densities_small_U import filling_order_Upositive, filling_order_Unegative
 
 
 def frange(start, end, inc):
@@ -125,7 +126,10 @@ def transitions_energy_and_fermi_energy_u(energy_u):
     transition_energy_u_df = pd.DataFrame([])
     for allowed_transition_nu in allowed_transitions_nu:
         from_band, to_band = allowed_transition_nu
-        transition_energy_u_df[from_band + '_to_' + to_band] = [energy_u[to_band] - energy_u[from_band]]
+        if (u >= 0) and (from_band in filling_order_Upositive[0:number_occupied_bands]):
+            transition_energy_u_df[from_band + '_to_' + to_band] = [energy_u[to_band] - energy_u[from_band]]
+        if (u < 0) and (from_band in filling_order_Unegative[0:number_occupied_bands]):
+            transition_energy_u_df[from_band + '_to_' + to_band] = [energy_u[to_band] - energy_u[from_band]]
 
     transition_energy_u_df.index = [u]
 

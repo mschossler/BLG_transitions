@@ -20,7 +20,7 @@ quantities_dict = sort_dict(quantities_dict)
 energies = []
 # allowed_transitions_nu = {}
 for k, v in quantities_dict.items():
-    u_temp, eigenvalue_temp, eigenvector_temp = v['u'], v['eigenvalue'], v['eigenvector']
+    u_temp, eigenvalue_temp, eigenvector_temp = round(v['u'], 4), v['eigenvalue'], v['eigenvector']
     idx = idxcalc(eigenvector_temp)
     v['eigenvalue'] = eigenvalue_temp[idx]
     v['eigenvector'] = eigenvector_temp[:, idx]
