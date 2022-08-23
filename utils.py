@@ -4,7 +4,6 @@ from numpy import linalg as npla
 
 from config import aux_dir_path, file_name_csv, bands
 from input.parameters import number_occupied_bands
-from model.densities_small_U import filling_order_Upositive, filling_order_Unegative
 
 
 def frange(start, end, inc):
@@ -101,7 +100,7 @@ allowed_transitions = []
 for sector in bands_by_sector:
     for band1 in sector:
         for band2 in sector:
-            if (('LL1' in band1) and ('LL2' in band2)) or (('LLm2' in band1) and ('LL1' in band2)):
+            if (('LL1' in band1) and ('LL2' in band2)) or (('LLm2' in band1) and ('LL1' in band2)):  # only states with LL1 and LL2, or LL1 and LLm2
                 allowed_transitions.append((band1, band2))
 
 
@@ -118,18 +117,18 @@ def transitions_energy_and_fermi_energy_u(energy_u):
     allowed_transitions_nu = []
     for two_allowed_bands in allowed_transitions:
         band1, band2 = two_allowed_bands
-        if ('LL1' in band1) and (band1 in occupied_states.index):
+        if ('LL1' in band1) and (band1 in occupied_states.index) and (band2 in unoccupied_states.index):
             allowed_transitions_nu.append(two_allowed_bands)
-        elif ('LL1' in band2) and (band2 in unoccupied_states.index):
+        elif ('LL1' in band2) and (band2 in unoccupied_states.index) and (band1 in occupied_states.index):
             allowed_transitions_nu.append(two_allowed_bands)
 
     transition_energy_u_df = pd.DataFrame([])
     for allowed_transition_nu in allowed_transitions_nu:
         from_band, to_band = allowed_transition_nu
-        if (u >= 0) and (from_band in filling_order_Upositive[0:number_occupied_bands]):
-            transition_energy_u_df[from_band + '_to_' + to_band] = [energy_u[to_band] - energy_u[from_band]]
-        if (u < 0) and (from_band in filling_order_Unegative[0:number_occupied_bands]):
-            transition_energy_u_df[from_band + '_to_' + to_band] = [energy_u[to_band] - energy_u[from_band]]
+        # if (u >= 0) and (from_band in filling_order_Upositive[0:number_occupied_bands]): #doesn't work for nu = 5 and 6
+        transition_energy_u_df[from_band + '_to_' + to_band] = [energy_u[to_band] - energy_u[from_band]]
+        # if (u < 0) and (from_band in filling_order_Unegative[0:number_occupied_bands]): #doesn't work for nu = 5 and 6
+        transition_energy_u_df[from_band + '_to_' + to_band] = [energy_u[to_band] - energy_u[from_band]]
 
     transition_energy_u_df.index = [u]
 

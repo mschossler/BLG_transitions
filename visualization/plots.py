@@ -8,7 +8,7 @@ if __name__ == "__main__":
     sys.path.append('../')
 
 from config import aux_dir_path, file_name_csv, bands, input_dir_path, dir_path, current_date, aux_dir_path_plot_vs_nu
-from input.parameters import nu, alpha_tilda
+from input.parameters import nu, alpha_tilda, u_zero
 
 style_dict = {'LL0_Kp_Sdown': {'color': 'lightblue', 'line_shape': '-', 'marker_shape': 'v', 'label': '$\\ \\ \\,0\\mathrm{K}^{+}\\downarrow$'},
               'LL1_Kp_Sdown': {'color': 'salmon', 'line_shape': '-', 'marker_shape': 'v', 'label': '$\\ \\ \\,1\\mathrm{K}^{+}\\downarrow$'},
@@ -72,6 +72,7 @@ transitions_style_dic = {'LL1_Kp_Sdown_to_LL2_Kp_Sdown': {'color': 'tab:blue', '
                          }
 
 
+
 def plot_transitions(transitions_df):
     f = plt.figure()
     ax = plt.gca()
@@ -107,8 +108,6 @@ def plot_transitions(transitions_df):
 
 def plot_energies_vs_nu():
     # pass
-    u_zero = 2
-    u_zero = round(u_zero, 4)
     energies_df = pd.DataFrame([])
     for nu in range(-6, 7):
         number_occupied_bands = nu + 8
@@ -118,6 +117,8 @@ def plot_energies_vs_nu():
         tmp = pd.read_csv(aux_dir_path + 'energies_' + file_name_csv)  # ,header=None
         tmp.insert(0, 'nu', nu)
         tmp = tmp[round(tmp['u'], 4) == u_zero]
+        if tmp.empty:
+            print('u_zero=' + str(u_zero) + 'meV not found for energies at nu=' + str(nu))
         # tmp.drop('u',axis=1,inplace=True)
         energies_df = pd.concat([energies_df, tmp], ignore_index=True)
     energies_df.to_csv(aux_dir_path_plot_vs_nu + 'energies_vs_nu.csv', index=False)
@@ -155,8 +156,7 @@ def plot_energies_vs_nu():
 
 def plot_transitions_vs_nu():
     # pass
-    u_zero = 2
-    u_zero = round(u_zero, 4)
+
     transitions_df = pd.DataFrame([])
     for nu in range(-6, 7):
         number_occupied_bands = nu + 8
@@ -166,6 +166,8 @@ def plot_transitions_vs_nu():
         tmp = pd.read_csv(aux_dir_path + 'transitions_' + file_name_csv)  # ,header=None
         tmp.insert(0, 'nu', nu)
         tmp = tmp[round(tmp['u'], 4) == u_zero]
+        if tmp.empty:
+            print('u_zero=' + str(u_zero) + 'meV not found for transitions at nu=' + str(nu))
         # tmp.drop('u',axis=1,inplace=True)
         transitions_df = pd.concat([transitions_df, tmp], ignore_index=True)
     transitions_df.to_csv(aux_dir_path_plot_vs_nu + 'transitions_vs_nu.csv', index=False)

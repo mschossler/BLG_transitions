@@ -100,9 +100,12 @@ k = (np.sqrt(np.pi / 2) * el) / (4 * np.pi * ep0 * epr * Lb) * alpha_k
 
 # Zm = k * 0.0178 #use def above, this is slightly off due to alpha_k
 
-U0minD = -2e-3
-U0maxD = 4e-3
+U0minD = -1e-3
+U0maxD = 2e-3
 dU0D = 1e-3
+
+u_zero = 1
+u_zero = round(u_zero, 4)
 
 # variables_dict = {}
 # variables_dict.update({k:v for k,v in locals().copy().iteritems() if k[:2] != '__' and k != 'variables_dict'})
