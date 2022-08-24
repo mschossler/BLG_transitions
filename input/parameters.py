@@ -4,7 +4,7 @@ import numpy as np
 
 # variables_dict = {}
 
-nu_default = 6
+nu_default = 3
 
 if len(sys.argv) == 2:
     nu = int(sys.argv[1])

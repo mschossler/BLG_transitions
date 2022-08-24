@@ -3,7 +3,6 @@ import pandas as pd
 from numpy import linalg as npla
 
 from config import aux_dir_path, file_name_csv, bands
-from input.parameters import number_occupied_bands
 
 
 def frange(start, end, inc):
@@ -104,9 +103,11 @@ for sector in bands_by_sector:
                 allowed_transitions.append((band1, band2))
 
 
-def transitions_energy_and_fermi_energy_u(energy_u):
+def transitions_energy_and_fermi_energy_u(energy_u, nu):
     u = energy_u['u']
     energy_u.drop('u', axis=0, inplace=True)
+
+    number_occupied_bands = nu + 8
     occupied_states = energy_u.nsmallest(number_occupied_bands, keep='all')
     unoccupied_states = energy_u.nlargest(len(bands) - number_occupied_bands, keep='all')[::-1]  # must be reversed for right fermi_energy
     # print(occupied_states)
@@ -141,14 +142,14 @@ def transitions_energy_and_fermi_energy_u(energy_u):
     return transitions_energy_and_fermi_energy_u_dict
 
 
-def transitions_energy_fermi_energy(energies):
+def transitions_energy_fermi_energy(energies, nu):
     transitions_energy = pd.DataFrame([])
     fermi_energy = []
     for ind in energies.index:
         energy_u = energies.loc[ind]
         #         print(energy_u,type(energy_u))
         #         print(transitions_energy_and_fermi_energy_u(energy_u))
-        transitions_energy_and_fermi_energy_u_dict = transitions_energy_and_fermi_energy_u(energy_u)
+        transitions_energy_and_fermi_energy_u_dict = transitions_energy_and_fermi_energy_u(energy_u, nu)
 
         transitions_energy_u = transitions_energy_and_fermi_energy_u_dict['transitions_energy_u_df']
         fermi_energy.append(transitions_energy_and_fermi_energy_u_dict['fermi_energy'])

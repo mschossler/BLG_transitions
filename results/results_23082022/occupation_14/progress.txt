@@ -90,3 +90,43 @@
  Starting this script at date/time: 2022-08-23 17:51:49. 
  This script is running at: schossler, directory: /home/matheus/Insync/matheus.schossler@alumni.usp.br/Google Drive/matheus.schossler@usp.br 2020-04-28 15:02/phd/research/henriksen's discussions/BLG_transitions/visualization
 
+
+ Starting this script at date/time: 2022-08-23 22:30:00. 
+ This script is running at: schossler, directory: /home/matheus/Insync/matheus.schossler@alumni.usp.br/Google Drive/matheus.schossler@usp.br 2020-04-28 15:02/phd/research/henriksen's discussions/BLG_transitions/visualization
+
+
+ Starting this script at date/time: 2022-08-23 22:30:49. 
+ This script is running at: schossler, directory: /home/matheus/Insync/matheus.schossler@alumni.usp.br/Google Drive/matheus.schossler@usp.br 2020-04-28 15:02/phd/research/henriksen's discussions/BLG_transitions/visualization
+
+
+ Starting this script at date/time: 2022-08-23 22:31:20. 
+ This script is running at: schossler, directory: /home/matheus/Insync/matheus.schossler@alumni.usp.br/Google Drive/matheus.schossler@usp.br 2020-04-28 15:02/phd/research/henriksen's discussions/BLG_transitions/visualization
+
+
+ Starting this script at date/time: 2022-08-23 22:31:34. 
+ This script is running at: schossler, directory: /home/matheus/Insync/matheus.schossler@alumni.usp.br/Google Drive/matheus.schossler@usp.br 2020-04-28 15:02/phd/research/henriksen's discussions/BLG_transitions/visualization
+
+
+ Starting this script at date/time: 2022-08-23 22:31:43. 
+ This script is running at: schossler, directory: /home/matheus/Insync/matheus.schossler@alumni.usp.br/Google Drive/matheus.schossler@usp.br 2020-04-28 15:02/phd/research/henriksen's discussions/BLG_transitions/visualization
+
+
+ Starting this script at date/time: 2022-08-23 22:33:56. 
+ This script is running at: schossler, directory: /home/matheus/Insync/matheus.schossler@alumni.usp.br/Google Drive/matheus.schossler@usp.br 2020-04-28 15:02/phd/research/henriksen's discussions/BLG_transitions/visualization
+
+
+ Starting this script at date/time: 2022-08-23 22:42:19. 
+ This script is running at: schossler, directory: /home/matheus/Insync/matheus.schossler@alumni.usp.br/Google Drive/matheus.schossler@usp.br 2020-04-28 15:02/phd/research/henriksen's discussions/BLG_transitions/visualization
+
+
+ Starting this script at date/time: 2022-08-23 22:42:36. 
+ This script is running at: schossler, directory: /home/matheus/Insync/matheus.schossler@alumni.usp.br/Google Drive/matheus.schossler@usp.br 2020-04-28 15:02/phd/research/henriksen's discussions/BLG_transitions/visualization
+
+
+ Starting this script at date/time: 2022-08-23 22:53:59. 
+ This script is running at: schossler, directory: /home/matheus/Insync/matheus.schossler@alumni.usp.br/Google Drive/matheus.schossler@usp.br 2020-04-28 15:02/phd/research/henriksen's discussions/BLG_transitions/visualization
+
+
+ Starting this script at date/time: 2022-08-23 22:54:14. 
+ This script is running at: schossler, directory: /home/matheus/Insync/matheus.schossler@alumni.usp.br/Google Drive/matheus.schossler@usp.br 2020-04-28 15:02/phd/research/henriksen's discussions/BLG_transitions/visualization
+

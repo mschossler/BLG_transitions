@@ -34,7 +34,7 @@ energies_df = pd.DataFrame(energies, columns=['u'] + bands)
 for quantity in ['h0', 'rhoU', 'Eh_deltaU', 'Hint', 'Et', 'eigenvector', 'exciton_energy', 'regmatrix']:
     observable_to_csv(quantities_dict, quantity)
 
-energies_df, transition_energy_df = transitions_energy_fermi_energy(energies_df)  # add fermi_energy to energies_df
+energies_df, transition_energy_df = transitions_energy_fermi_energy(energies_df, nu)  # add fermi_energy to energies_df
 
 energies_df.to_csv(aux_dir_path + 'energies_' + file_name_csv, index=False)
 transition_energy_df.to_csv(aux_dir_path + 'transitions_' + file_name_csv, index=False)
@@ -43,8 +43,8 @@ from visualization.plots import plot_energies, plot_transitions
 
 print(energies_df)
 print(transition_energy_df)
-plot_energies(energies_df)
-plot_transitions(transition_energy_df)
+plot_energies(energies_df, nu)
+plot_transitions(transition_energy_df, nu)
 
 print('files ' + file_name_csv + ' saved')
 print('working duration for nu=%(nu)i: %(t).1fs' % {'t': time.time() - t0, 'nu': nu})

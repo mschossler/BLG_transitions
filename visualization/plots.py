@@ -7,8 +7,9 @@ if __name__ == "__main__":
 
     sys.path.append('../')
 
-from config import aux_dir_path, file_name_csv, bands, input_dir_path, dir_path, current_date, aux_dir_path_plot_vs_nu
-from input.parameters import nu, alpha_tilda, u_zero
+from config import aux_dir_path, bands, input_dir_path, dir_path, current_date, aux_dir_path_plot_vs_nu
+from input.parameters import alpha_tilda, u_zero
+from utils import transitions_energy_fermi_energy
 
 style_dict = {'LL0_Kp_Sdown': {'color': 'lightblue', 'line_shape': '-', 'marker_shape': 'v', 'label': '$\\ \\ \\,0\\mathrm{K}^{+}\\downarrow$'},
               'LL1_Kp_Sdown': {'color': 'salmon', 'line_shape': '-', 'marker_shape': 'v', 'label': '$\\ \\ \\,1\\mathrm{K}^{+}\\downarrow$'},
@@ -32,7 +33,7 @@ style_dict = {'LL0_Kp_Sdown': {'color': 'lightblue', 'line_shape': '-', 'marker_
 plt.rcParams['figure.dpi'] = 150
 
 
-def plot_energies(energies):
+def plot_energies(energies, nu):
     f = plt.figure()
     ax = plt.gca()
 
@@ -50,7 +51,10 @@ def plot_energies(energies):
     plt.legend(loc='upper right', bbox_to_anchor=(1, 1))
     plt.rcParams["figure.figsize"] = (10, 5)
     # plt.show()
-    f.savefig(aux_dir_path + "LL(U)_HF_interactions_w_SE_warping_alpha1_nu_" + str(nu) + ".pdf", bbox_inches='tight')
+    number_occupied_bands_local = nu + 8
+    aux_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + '/'
+
+    f.savefig(aux_dir_path_local + "LL(U)_HF_interactions_w_SE_warping_alpha1_nu_" + str(nu) + ".pdf", bbox_inches='tight')
 
 
 transitions_style_dic = {'LL1_Kp_Sdown_to_LL2_Kp_Sdown': {'color': 'tab:blue', 'marker_shape': '2', 'line_shape': '-',
@@ -72,8 +76,7 @@ transitions_style_dic = {'LL1_Kp_Sdown_to_LL2_Kp_Sdown': {'color': 'tab:blue', '
                          }
 
 
-
-def plot_transitions(transitions_df):
+def plot_transitions(transitions_df, nu):
     f = plt.figure()
     ax = plt.gca()
 
@@ -103,6 +106,9 @@ def plot_transitions(transitions_df):
     plt.legend(loc='upper right', bbox_to_anchor=(.55, 1.020))
     plt.rcParams["figure.figsize"] = (10, 5)
     # plt.show()
+    number_occupied_bands_local = nu + 8
+    aux_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + '/'
+
     f.savefig(aux_dir_path + "Transition_nu_" + str(nu) + ".pdf", bbox_inches='tight')
 
 
@@ -110,11 +116,9 @@ def plot_energies_vs_nu():
     # pass
     energies_df = pd.DataFrame([])
     for nu in range(-6, 7):
-        number_occupied_bands = nu + 8
-        aux_dir_path = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands) + '/'
-        file_name = 'nu_' + str(nu)
-        file_name_csv = file_name + '.csv'
-        tmp = pd.read_csv(aux_dir_path + 'energies_' + file_name_csv)  # ,header=None
+        number_occupied_bands_local = nu + 8
+        aux_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + '/'
+        tmp = pd.read_csv(aux_dir_path_local + 'energies_' + 'nu_' + str(nu) + '.csv')  # ,header=None
         tmp.insert(0, 'nu', nu)
         tmp = tmp[round(tmp['u'], 4) == u_zero]
         if tmp.empty:
@@ -159,11 +163,9 @@ def plot_transitions_vs_nu():
 
     transitions_df = pd.DataFrame([])
     for nu in range(-6, 7):
-        number_occupied_bands = nu + 8
-        aux_dir_path = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands) + '/'
-        file_name = 'nu_' + str(nu)
-        file_name_csv = file_name + '.csv'
-        tmp = pd.read_csv(aux_dir_path + 'transitions_' + file_name_csv)  # ,header=None
+        number_occupied_bands_local = nu + 8
+        aux_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + '/'
+        tmp = pd.read_csv(aux_dir_path_local + 'transitions_' + 'nu_' + str(nu) + '.csv')  # ,header=None
         tmp.insert(0, 'nu', nu)
         tmp = tmp[round(tmp['u'], 4) == u_zero]
         if tmp.empty:
@@ -202,11 +204,67 @@ def plot_transitions_vs_nu():
     f.savefig(aux_dir_path_plot_vs_nu + 'transitions_vs_nu.pdf', bbox_inches='tight')
 
 
+def plot_energies_with_asymmetry(nu):
+    folder_name_CAF7 = 'files_asym_1__itmax_10000__Zm_0.753__alpha_H_oct_int_1__uz_7.0__uperp_-1.6__x_0.047__alpha_state_1__alpha_rand_0.01__dens_3'
+    folder_name_with_asymmetry = folder_name_CAF7
+    folder_name_file_name = dir_path + '/canted_antiferromagnetic/all_asymetric_scripts/' + folder_name_with_asymmetry + '/eigenU0_fullH0_Delta_CAF_tests.csv'
+    energies_df = pd.read_csv(folder_name_file_name)
+    energies_df.columns = ['u'] + bands
+    # print(energies_df)
+
+    energies_df, transition_energy_df = transitions_energy_fermi_energy(energies_df, nu)
+
+    number_occupied_bands_local = nu + 8
+    aux_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + '/'
+    print(aux_dir_path_local)
+    energies_df.to_csv(aux_dir_path_local + 'energies_' + 'nu_' + str(nu) + '.csv', index=False)
+    transition_energy_df.to_csv(aux_dir_path_local + 'transitions_' + 'nu_' + str(nu) + '.csv', index=False)
+    plot_energies(energies_df, nu)
+    plot_transitions(energies_df, nu)
+
+    # # eigenU = pd.read_csv(folder_name+namecsv,header=None).applymap(complex).applymap( lambda x: round(x.real,decimals) )
+    # # eigenU.columns = ['u'] + bands
+    #
+    # # display(eigenU)
+    #
+    # style_dict = {'0p-': ('lightblue', '-', 'v', r'$\ \ \,0\mathrm{K}^{+}\downarrow$'),
+    #               '1p-': ('salmon', '-', 'v', r'$\ \ \,1\mathrm{K}^{+}\downarrow$'),
+    #               '-2p-': ('gray', '-', 'v', r'$-2\mathrm{K}^{+}\downarrow$'),
+    #               '2p-': ('gray', '-', 'v', r'$\ \ \,2\mathrm{K}^{+}\downarrow$'),
+    #               '0m-': ('lightblue', '--', 'v', r'$\ \ \,0\mathrm{K}^{-}\downarrow$'),
+    #               '1m-': ('salmon', '--', 'v', r'$\ \ \,1\mathrm{K}^{-}\downarrow$'),
+    #               '-2m-': ('gray', '--', 'v', r'$-2\mathrm{K}^{-}\downarrow$'),
+    #               '2m-': ('gray', '--', 'v', r'$\ \ \,2\mathrm{K}^{-}\downarrow$'),
+    #               '0p+': ('blue', '-', '^', r'$\ \ \,0\mathrm{K}^{+}\uparrow$'),
+    #               '1p+': ('red', '-', '^', r'$\ \ \,1\mathrm{K}^{+}\uparrow$'),
+    #               '-2p+': ('black', '-', '^', r'$-2\mathrm{K}^{+}\uparrow$'),
+    #               '2p+': ('black', '-', '^', r'$\ \ \,2\mathrm{K}^{+}\uparrow$'),
+    #               '0m+': ('blue', '--', '^', r'$\ \ \,0\mathrm{K}^{-}\uparrow$'),
+    #               '1m+': ('red', '--', '^', r'$\ \ \,1\mathrm{K}^{-}\uparrow$'),
+    #               '-2m+': ('black', '--', '^', r'$-2\mathrm{K}^{-}\uparrow$'),
+    #               '2m+': ('black', '--', '^', r'$\ \ \,2\mathrm{K}^{-}\uparrow$')}
+    # #             ,'fermi_energy':('purple','-','.')}
+    # bands = ['0p-', '1p-', '-2p-', '2p-', '0m-', '1m-', '-2m-', '2m-', '0p+', '1p+', '-2p+', '2p+', '0m+', '1m+', '-2m+', '2m+']
+    #
+    # f = plt.figure()
+    # ax = plt.gca()
+    #
+    # plt.rcParams['figure.dpi'] = 150
+    #
+    # for x in bands:
+    #     styleX = style_dict.get(x)
+    #     eigenU.plot(x='u', y=x, color=styleX[0], style=styleX[1], markersize=3, linewidth=0.7, label=styleX[3], ax=ax)  # , marker='o')
+    # #     eigenU.plot(x='u', y=x, color=styleX[0], style=styleX[1],marker='.', markersize=.5,markerfacecolor='Black', linestyle = 'None', label=styleX[3], ax=ax)#, marker='o')
+    # # fermi_energy.plot(x='u', y='fermi_energy', color='purple', style='-', markersize=3, linewidth=1, label=r'Fermi energy', ax=ax)
+
+
 if __name__ == "__main__":
-    energies_df = pd.read_csv(aux_dir_path + 'energies_' + file_name_csv)
-    transitions_df = pd.read_csv(aux_dir_path + 'transitions_' + file_name_csv)
+    # energies_df = pd.read_csv(aux_dir_path + 'energies_' + file_name_csv)
+    # transitions_df = pd.read_csv(aux_dir_path + 'transitions_' + file_name_csv)
     # print(energies_df)
     # plot_energies(energies_df)
-    # plot_transitions(transitions_df)
+    # # plot_transitions(transitions_df)
+
+    plot_energies_with_asymmetry(nu=0)
     plot_energies_vs_nu()
     plot_transitions_vs_nu()
