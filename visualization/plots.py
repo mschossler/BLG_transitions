@@ -7,7 +7,7 @@ if __name__ == "__main__":
 
     sys.path.append('../')
 
-from config import aux_dir_path, bands, input_dir_path, dir_path, current_date, aux_dir_path_plot_vs_nu
+from config import bands, input_dir_path, dir_path, current_date, aux_dir_path_plot_vs_nu
 from input.parameters import alpha_tilda, u_zero
 from utils import transitions_energy_fermi_energy
 
@@ -81,9 +81,11 @@ def plot_transitions(transitions_df, nu):
     ax = plt.gca()
 
     for transition in transitions_df.drop('u', axis=1).columns:
+        # print(transition)
         style_transition = transitions_style_dic.get(transition)
         transitions_df.plot(x='u', y=transition, color=style_transition['color'], style=style_transition['line_shape'], markersize=3, linewidth=0.7,
                             label=style_transition['label'], ax=ax)  # , marker='o')
+    # print(transitions_df)
     plt.title('Transition nu=' + str(nu) + ' as function of U with self-energy')
     plt.xlabel('U(meV)')
     plt.ylabel('transitions(meV)')
@@ -92,6 +94,8 @@ def plot_transitions(transitions_df, nu):
         nu0_exp_transition_energies['u'] = nu0_exp_transition_energies['D_mV_per_nm'] * alpha_tilda
         nu0_exp_transition_energies.plot(x='u', y=['peak_A_meV', 'peak_B_meV', 'peak_C_meV'], linestyle='None', label=['experiment', '_nolegend_', '_nolegend_'], color='green',
                                          marker='o', fillstyle='none', ax=ax)  # print(nu0_exp_transition_energies)
+        # print('here')
+        # print(nu0_exp_transition_energies)
 
     if nu == 4:
         nu0_exp_transition_energies = pd.read_csv(input_dir_path + 'DGBLG122118_nu4_peak_energies.csv')
@@ -109,7 +113,7 @@ def plot_transitions(transitions_df, nu):
     number_occupied_bands_local = nu + 8
     aux_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + '/'
 
-    f.savefig(aux_dir_path + "Transition_nu_" + str(nu) + ".pdf", bbox_inches='tight')
+    f.savefig(aux_dir_path_local + "Transition_nu_" + str(nu) + ".pdf", bbox_inches='tight')
 
 
 def plot_energies_vs_nu():
@@ -173,7 +177,7 @@ def plot_transitions_vs_nu():
         # tmp.drop('u',axis=1,inplace=True)
         transitions_df = pd.concat([transitions_df, tmp], ignore_index=True)
     transitions_df.to_csv(aux_dir_path_plot_vs_nu + 'transitions_vs_nu.csv', index=False)
-    print(transitions_df)
+    # print(transitions_df)
 
     f = plt.figure()
     font = {'size': 15}
@@ -206,7 +210,14 @@ def plot_transitions_vs_nu():
 
 def plot_energies_with_asymmetry(nu):
     folder_name_CAF7 = 'files_asym_1__itmax_10000__Zm_0.753__alpha_H_oct_int_1__uz_7.0__uperp_-1.6__x_0.047__alpha_state_1__alpha_rand_0.01__dens_3'
+    # folder_name_CAF6 = 'files_asym_1__itmax_1000.0__Zm_0.753__alpha_H_oct_int_1__uz_6.0__uperp_-1.6__x_0.047__alpha_state_1__alpha_rand_0.01__dens_3'#CAF for U<12meV ocupation 0.62:0.38 $$$$$$$$$$
+    folder_name_CAF_uz6_uperpm1 = 'files_asym_1__itmax_5000__Zm_0.753__alpha_H_oct_int_1__uz_6.0__uperp_-1.0__x_0.047__alpha_state_1__alpha_rand_0.01__dens_2'  # CAF for U<12meV ocupation 0.69:0.31 $$$$$$$$$$
+    folder_name_CAF5 = 'files_asym_1__itmax_1000__Zm_0.753__alpha_H_oct_int_1__uz_5.0__uperp_-1.6__x_0.047__alpha_state_1__alpha_rand_0.01__dens_3'
+    folder_name_CAF6 = 'files_asym_1__itmax_1000.0__Zm_0.753__alpha_H_oct_int_1__uz_6.0__uperp_-1.6__x_0.047__alpha_state_1__alpha_rand_0.01__dens_3'  # CAF for U<12meV ocupation 0.62:0.38 $$$$$$$$$$
+    folder_name_CAF8 = 'files_asym_1__itmax_80000__Zm_0.753__alpha_H_oct_int_1__uz_8.0__uperp_-1.6__x_0.047__alpha_state_1__alpha_rand_0.01__dens_3'
+    folder_name_CAF9 = 'files_asym_1__itmax_10000__Zm_0.753__alpha_H_oct_int_1__uz_9.0__uperp_-1.6__x_0.047__alpha_state_1__alpha_rand_0.01__dens_3'
     folder_name_with_asymmetry = folder_name_CAF7
+    # folder_name_with_asymmetry = folder_name_CAF_uz6_uperpm1
     folder_name_file_name = dir_path + '/canted_antiferromagnetic/all_asymetric_scripts/' + folder_name_with_asymmetry + '/eigenU0_fullH0_Delta_CAF_tests.csv'
     energies_df = pd.read_csv(folder_name_file_name)
     energies_df.columns = ['u'] + bands
@@ -220,8 +231,7 @@ def plot_energies_with_asymmetry(nu):
     energies_df.to_csv(aux_dir_path_local + 'energies_' + 'nu_' + str(nu) + '.csv', index=False)
     transition_energy_df.to_csv(aux_dir_path_local + 'transitions_' + 'nu_' + str(nu) + '.csv', index=False)
     plot_energies(energies_df, nu)
-    plot_transitions(energies_df, nu)
-
+    plot_transitions(transition_energy_df, nu)
     # # eigenU = pd.read_csv(folder_name+namecsv,header=None).applymap(complex).applymap( lambda x: round(x.real,decimals) )
     # # eigenU.columns = ['u'] + bands
     #
