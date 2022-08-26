@@ -1,0 +1,98 @@
+git add short_resume/schossler_resume_short.pdf short_resume/schossler_resume_short.tex
+git checkout dev_public short_resume/schossler_resume_short.pdf && git mv -f short_resume/schossler_resume_short.pdf schossler_resume.pdf
+
+
+
+######### submodules ##############
+
+1. git submodule deinit -f -- a/submodule    
+2. rm -rf .git/modules/a/submodule
+3. git rm -f a/submodule
+# Note: a/submodule (no trailing slash)
+
+# or, if you want to leave it in your working tree and have done step 0
+3.   git rm --cached a/submodule
+3bis mv a/submodule_tmp a/submodule
+
+###################################
+
+git ls-tree -r dev --name-only
+
+
+git remote set-url origin https://github.com/mschossler/resume_private.git
+
+
+git config --global credential.helper store
+
+git fetch origin master    
+git merge master    
+git push origin development:master
+
+
+git rm --cached bh_model_no_npi_tin_v4_202206171626.pkl bh_model_npi_tin_v4_202206171626.pkl bh_model_npi_v4_202206171626.pkl bh_model_tin_v4_202206171626.pkl
+git rm --cached bh_optuna_202206132016.pkl bh_optuna_npi_tin_202206132019.pkl bh_optuna_tin_202206132042.pkl bh_optuna_npi_202206132026.pkl
+git commit -m 'delete model and study files'
+git add cmle-842_hyperparameter_tuning_npi_tin.ipynb cmle-842_EDA_npi_tin.ipynb
+git commit -m 'update cmle-842 notebooks'
+git push origin cmle-842
+git add cmle-842_EDA_npi_tin.ipynb
+git commit -m 'update cmle-842_EDA_npi_tin notebook'
+
+git rm cmle-842_EDA_npi_tin.ipynb --cached
+git rm cmle-842_hyperparameter_tuning_npi_tin.ipynb --cached
+
+git rm cmle-842_EDA_npi_tin.ipynb --cached
+
+
+
+git fetch origin cmle-279 && git reset --hard FETCH_HEAD
+
+git fetch
+git pull origin cmle-...
+
+git checkout -m <revision> <yourfilepath>
+git add <yourfilepath>
+git commit
+
+git checkout remotes/origin/cmle-458 notebooks/cmle-819_trimester_visits.ipynb
+git checkout remotes/origin/cmle-279 notebooks/data_process/cmle-279_mongo_prod_query.ipynb
+git checkout remotes/origin/cmle-279 notebooks/data_process/cmle-279_mongo_prod_query.ipynb
+
+
+######
+list of local and remote (-a) branches:
+$git branch -a
+
+go to local dev:
+$git checkout dev
+
+update local dev:
+$git pull origin dev
+
+create new branch:
+$git checkout -b new_branch
+#####
+
+
+$ git commit -m "Something terribly misguided" # (0: Your Accident)
+git push it
+#realize the mistake
+git push -f origin efa2f9b7:cmle-279
+git reset --hard HEAD~1
+
+
+pulling with conflicts:
+
+$ git checkout REMOTE-BRANCH
+$ git pull  (you get local merge conflicts)
+$ git reset --hard HEAD (discards local conflicts, and resets to remote branch HEAD)
+$ git pull (now get remote branch updates without local conflicts)
+
+
+
+
+files: bh_optuna_202206132016.pkl bh_optuna_npi_tin_202206132019.pkl bh_optuna_npi_202206132026.pkl bh_optuna_tin_202206132042.pkl bh_optuna_no_msh4_val_202206171740.pkl bh_optuna_no_msh4_val_w_npi_tin_202206212222.pkl bh_optuna_no_msh4_val_w_npi_202206212318.pkl bh_optuna_no_msh4_val_w_tin_202206220010.pkl
+
+bh_model_no_npi_tin_v4_202206171626.pkl bh_model_npi_tin_v4_202206171626.pkl bh_model_npi_v4_202206171626.pkl bh_model_tin_v4_202206171626.pkl bh_model_no_msh4_val_v4_202206181215.pkl bh_model_no_msh4_val_w_npi_tin_v4_202206220105.pkl bh_model_no_msh4_val_w_npi_v4_202206220105.pkl bh_model_no_msh4_val_w_tin_v4_202206220105.pkl
+
+selected data files
