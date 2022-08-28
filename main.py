@@ -8,10 +8,16 @@ import pandas as pd
 from config import aux_dir_path, file_name_csv, nprocesses, bands
 from input.parameters import U0minD, U0maxD, dU0D, nu
 from model.hartree_fock_and_regularization import loopU
+from model.hartree_fock_with_asymmetric_interactions import loopU0
 from utils import frange, sort_dict, observable_to_csv, idxcalc, transitions_energy_fermi_energy
 
 a_pool = multiprocessing.Pool(processes=nprocesses)
-quantities = a_pool.map(loopU, frange(U0minD, U0maxD, dU0D))
+
+regime = 'full_range'
+if regime == 'full_range':
+    quantities = a_pool.map(loopU, frange(U0minD, U0maxD, dU0D))
+elif regime == 'zero_dielectric_field':
+    quantities = a_pool.map(loopU0, frange(U0minD, U0maxD, dU0D))
 
 quantities_dict = {}
 for dict_u in quantities:

@@ -1,9 +1,9 @@
-from config import itmax
+from config import itmax, setH
 from input.parameters import *
 from model.densities_small_U import rho0constUp, rho0constUm
-from model.exchange_integrals import Xzs, Xzd, Xos, Xod, Xfs, Xfd, Xsts, Xstd
+from model.exchange_integrals import Xzs, Xzd, Xos, Xod, Xfs, Xfd, Xsts, Xstd, Xskp, Xskm
 from model.hamiltonians import mZm, hAp, hBp, hCp  # , asymmetric_h, taux, tauy, tauz
-from utils import eigen, nonedimmerp, nonedimmerm, tau_func
+from utils import eigen, nonedimmerp, nonedimmerm, tau_func, df_round
 
 base_oct = ['0m-', '0p-', '1m-', '1p-', '0m+', '0p+', '1m+', '1p+']
 base_full = ['0p-', '1p-', '-2p-', '2p-', '0m-', '1m-', '-2m-', '2m-', '0p+', '1p+', '-2p+', '2p+', '0m+', '1m+', '-2m+', '2m+']
@@ -15,7 +15,6 @@ for base in base_oct:
 base_dict_inverse = {}
 for key in base_dict:
     base_dict_inverse[base_dict[key]] = key
-
 
 def Hint_oct(rhotmp):
     def rho(i, j):
@@ -47,6 +46,66 @@ def Hint_oct(rhotmp):
             b = base_dict_inverse[key_j] - 1
             Hint_16[i][j] = hamtx[a][b]
     return np.array(Hint_16)
+
+
+##########################################################################################################
+# regularization (self energy) U dependent
+
+def delta_e_kp(n, nu0, nu1, num2, nu2, eigenvectorp):
+    pzm = (nu1 - 1 / 2) * Xskp(n, 1, 1, n, eigenvectorp) + (nu0 - 1 / 2) * Xskp(n, 0, 0, n, eigenvectorp)
+
+    m2and2 = nu2 * Xskp(n, 2, 2, n, eigenvectorp) - (1 - num2) * Xskp(n, -2, -2, n, eigenvectorp)
+
+    F = (Xskp(n, 2, 2, n, eigenvectorp) - Xskp(n, -2, -2, n, eigenvectorp))
+
+    #     F0=Xskp(0, 2, 2, 0, eigenvectorp) - Xskp(0, -2, -2, 0, eigenvectorp)
+
+    #     F=F-F0
+
+    res = (F / 2 - pzm - m2and2) * k
+    return res
+
+
+def delta_e_km(n, nu0, nu1, num2, nu2, eigenvectorm):
+    pzm = (nu1 - 1 / 2) * Xskm(n, 1, 1, n, eigenvectorm) + (nu0 - 1 / 2) * Xskm(n, 0, 0, n, eigenvectorm)
+
+    m2and2 = nu2 * Xskm(n, 2, 2, n, eigenvectorm) - (1 - num2) * Xskm(n, -2, -2, n, eigenvectorm)
+
+    F = (Xskm(n, 2, 2, n, eigenvectorm) - Xskm(n, -2, -2, n, eigenvectorm))
+
+    #     F0=Xskm(0, 2, 2, 0, eigenvectorm) - Xskm(0, -2, -2, 0, eigenvectorm)
+
+    #     F=F-F0
+
+    res = (F / 2 - pzm - m2and2) * k
+    return res
+
+
+def delta_e_regmatrix(rho0const, eigenvectorp, eigenvectorm):
+    # print('here3 ', np.diag(rho0const))
+    nu0kp, nu1kp, num2kp, nu2kp, nu0km, nu1km, num2km, nu2km = tuple(np.diag(rho0const)[:8])
+    # print('here4')
+    regmatrixUmspindown = [delta_e_kp(n, nu0kp, nu1kp, num2kp, nu2kp, eigenvectorp) for n in setH] + [delta_e_km(n, nu0km, nu1km, num2km, nu2km, eigenvectorm) for n in setH]
+
+    nu0kp, nu1kp, num2kp, nu2kp, nu0km, nu1km, num2km, nu2km = tuple(np.diag(rho0const)[8:16])
+    regmatrixUmspinup = [delta_e_kp(n, nu0kp, nu1kp, num2kp, nu2kp, eigenvectorp) for n in setH] + [delta_e_km(n, nu0km, nu1km, num2km, nu2km, eigenvectorm) for n in setH]
+    return np.diag(np.array(regmatrixUmspindown + regmatrixUmspinup))
+
+
+##########################################################################################################
+
+def exciton_j_to_n_km(n, j, eigenvectorm):
+    A_nj = Xskm(n, n, j, j, eigenvectorm) * k * alpha_k
+    nu_j = 1
+    nu_n = 0
+    return -(nu_j - nu_n) * A_nj
+
+
+def exciton_j_to_n_kp(n, j, eigenvectorp):
+    A_nj = Xskp(n, n, j, j, eigenvectorp) * k * alpha_k
+    nu_j = 1
+    nu_n = 0
+    return -(nu_j - nu_n) * A_nj
 
 
 #########################################################################################################
@@ -104,11 +163,19 @@ def loopU0(u):
     # bands = ['0p-', '1p-', '-2p-', '2p-', '0m-', '1m-', '-2m-', '2m-', '0p+', '1p+', '-2p+', '2p+', '0m+', '1m+', '-2m+', '2m+']
     h0 = np.diag(eigenvaluep + eigenvaluem + eigenvaluep + eigenvaluem)  # follows notation order
 
+    eigenvectorp = np.array([[1, 0, 0, 0], [0, 1, 0, 0]] + [[0, 0] + x for x in eigenvectorp2.tolist()])
+    eigenvectorm = np.array([[1, 0, 0, 0], [0, 1, 0, 0]] + [[0, 0] + x for x in eigenvectorm2.tolist()])
+
+    eigenvectorp_none_interact = eigenvectorp
+    eigenvectorm_none_interact = eigenvectorm
+
+    regmatrix = delta_e_regmatrix(rho0, eigenvectorp, eigenvectorm) * alpha_reg
+
     it = 1;
     while it < itmax:
         Hint_longrange = k * alpha_H_oct_int * Hint_oct(rho)
         H_asym = asymmetric_h(taux, rho, uperp) + asymmetric_h(tauy, rho, uperp) + asymmetric_h(tauz, rho, uz)
-        H = h0 + Hint_longrange + H_asym + mZm
+        H = h0 + Hint_longrange + H_asym + mZm + regmatrix
         eigenvalue_loop, eigenvector_loop = eigen(H);
         rhotemp = rho
         rho = sum(np.outer(eigenvector_loop[i, :], eigenvector_loop[i, :]) for i in range(nu));
@@ -120,11 +187,24 @@ def loopU0(u):
     # eigenvector = np.transpose(eigenvector)# follows notation (bands list) order
     # eigenvalue_h0, eigenvector = npla.eig(h0+mZm)
     # eigenvalue_H_asym, eigenvector = npla.eig(H_asym)
-    #
-    #
+
+    dict_quantities_u = {'u': u * 1e3,
+                         'eigenvalue': 1e3 * eigenvalue,
+                         'eigenvector': eigenvector,
+                         # 'Et': 1e3 * Et,
+                         # 'h0': df_round(1e3 * h0),
+                         'rhoU': df_round(rho),
+                         # 'Eh_deltaU': 1e3 * k * Eh * deltatb,
+                         # 'Hint': df_round(1e3 * Hint),
+                         'regmatrix': 1e3 * regmatrix
+                         }
+    exciton = np.array([exciton_j_to_n_km(-2, 1, eigenvectorm_none_interact), exciton_j_to_n_kp(-2, 1, eigenvectorp_none_interact),
+                        exciton_j_to_n_km(1, 2, eigenvectorm_none_interact), exciton_j_to_n_kp(1, 2, eigenvectorp_none_interact)])
+
+    dict_quantities_u['exciton_energy'] = 1e3 * exciton
     # print(sorted(np.real(eigenvalue_h0)*1e3))
     # print(sorted(np.real(eigenvalue_H_asym)*1e3))
     # print(sorted(np.real(eigenvalue)*1e3))
 
     # return [u * 1e3]+ (np.real(eigenvalue) * 1e3).tolist()
-    return u * 1e3, np.real(eigenvalue) * 1e3, eigenvector, rho
+    return dict_quantities_u
