@@ -12,7 +12,7 @@ pd.set_option('display.width', 1000)
 pd.set_option('display.max_rows', 500)
 np.set_printoptions(precision=5, suppress=True, threshold=20, edgeitems=10, linewidth=140, formatter={'float': '{: 0.3f}'.format})
 
-nprocesses = 3
+nprocesses = 12
 itmax = 5
 tol = 1e-8
 setH = [0, 1, -2, 2]
@@ -20,6 +20,8 @@ now = datetime.now()
 current_time_formated = now.strftime("%Y-%m-%d %H:%M:%S")
 current_time = now.strftime("%d%m%Y%H%M%S")
 current_date = now.strftime("%d%m%Y")
+
+# current_date = 'server'
 
 cwd = os.getcwd()  # working directory
 path = os.path.abspath(__file__)

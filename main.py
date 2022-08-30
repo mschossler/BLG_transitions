@@ -13,11 +13,12 @@ from utils import frange, sort_dict, observable_to_csv, idxcalc, transitions_ene
 
 a_pool = multiprocessing.Pool(processes=nprocesses)
 
-regime = 'full_range'
+regime = 'zero_dielectric_field'
 if regime == 'full_range':
     quantities = a_pool.map(loopU, frange(U0minD, U0maxD, dU0D))
 elif regime == 'zero_dielectric_field':
     quantities = a_pool.map(loopU0, frange(U0minD, U0maxD, dU0D))
+    # quantities = a_pool.map(loopU0, [1e-3,2e-3])
 
 quantities_dict = {}
 for dict_u in quantities:
@@ -36,8 +37,13 @@ for k, v in quantities_dict.items():
     energies.append([u_temp] + v['eigenvalue'].tolist())
 
 energies_df = pd.DataFrame(energies, columns=['u'] + bands)
-
-for quantity in ['h0', 'rhoU', 'Eh_deltaU', 'Hint', 'Et', 'eigenvector', 'exciton_energy', 'regmatrix']:
+#
+# for quantity in ['h0', 'rhoU', 'Eh_deltaU', 'Hint', 'Et', 'eigenvector', 'exciton_energy', 'regmatrix']:
+#     observable_to_csv(quantities_dict, quantity)
+list_of_u = list(quantities_dict.keys())
+list_of_observables = list(quantities_dict[list_of_u[0]].keys())
+# print(list_of_observables)
+for quantity in list_of_observables:
     observable_to_csv(quantities_dict, quantity)
 
 energies_df, transition_energy_df = transitions_energy_fermi_energy(energies_df, nu)  # add fermi_energy to energies_df

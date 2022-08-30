@@ -2,7 +2,7 @@ from config import setH
 from input.parameters import *
 from model.densities_small_U import rho0constUp, rho0constUm
 from model.exchange_integrals import Xskm, Xskp
-from model.hamiltonians import hAp, hBp, hCp
+from model.hamiltonians import hAp
 from utils import eigen, df_round, nonedimmerp, nonedimmerm
 
 
@@ -72,7 +72,7 @@ def regmatrix_u(u):
         rho0 = rho0constUp
     else:
         rho0 = rho0constUm
-    print('running u=%.2f' % (u * 1000))
+    print('running nu=%(nu)i u=%(u).2fmeV' % {'u': (u * 1000), 'nu': nu})
     rho = rho0
 
     ################### warping #############################################################
@@ -82,16 +82,16 @@ def regmatrix_u(u):
     eigenvaluem2, eigenvectorm2 = eigen(hAp(-u))[0][1:3], eigen(hAp(-u))[1][1:3]
     eigenvectorm2 = nonedimmerm(eigenvectorm2)
 
-    eigenvaluep1 = eigen(hBp(u))[0][3]
-    eigenvaluem1 = eigen(hBp(-u))[0][3]
+    # eigenvaluep1 = eigen(hBp(u))[0][3]
+    # eigenvaluem1 = eigen(hBp(-u))[0][3]
     # print(eigenvaluep1,eigenvaluem1)
 
-    eigenvaluep0 = eigen(hCp(u))[0][2]
-    eigenvaluem0 = eigen(hCp(-u))[0][2]
+    # eigenvaluep0 = eigen(hCp(u))[0][2]
+    # eigenvaluem0 = eigen(hCp(-u))[0][2]
     # print(eigenvaluep0,eigenvaluem0)
 
-    eigenvaluep = [eigenvaluep0] + [eigenvaluep1] + eigenvaluep2.tolist()
-    eigenvaluem = [eigenvaluem0] + [eigenvaluem1] + eigenvaluem2.tolist()
+    # eigenvaluep = [eigenvaluep0] + [eigenvaluep1] + eigenvaluep2.tolist()
+    # eigenvaluem = [eigenvaluem0] + [eigenvaluem1] + eigenvaluem2.tolist()
 
     #########################################################################################
 

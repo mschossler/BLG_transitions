@@ -218,12 +218,18 @@ def plot_energies_with_asymmetry(nu):
     folder_name_CAF9 = 'files_asym_1__itmax_10000__Zm_0.753__alpha_H_oct_int_1__uz_9.0__uperp_-1.6__x_0.047__alpha_state_1__alpha_rand_0.01__dens_3'
     folder_name_with_asymmetry = folder_name_CAF7
     # folder_name_with_asymmetry = folder_name_CAF_uz6_uperpm1
-    folder_name_file_name = dir_path + '/canted_antiferromagnetic/all_asymetric_scripts/' + folder_name_with_asymmetry + '/eigenU0_fullH0_Delta_CAF_tests.csv'
+    folder_name_file_name = dir_path + '/canted_antiferromagnetic/CAF_oct_interaction/' + folder_name_with_asymmetry + '/eigenU0_fullH0_Delta_CAF_tests.csv'
     energies_df = pd.read_csv(folder_name_file_name)
     energies_df.columns = ['u'] + bands
-    # print(energies_df)
+    # print(energies_df[energies_df['u']==2.0])
+
+    print(energies_df.iloc[[2, 4]])
 
     energies_df, transition_energy_df = transitions_energy_fermi_energy(energies_df, nu)
+    # if nu==0:
+    #     for column_name in energies_df.columns:
+    #         if 'LLm2' in column_name:
+    #             energies_df[column_name] = energies_df[column_name]
 
     number_occupied_bands_local = nu + 8
     aux_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + '/'
@@ -276,5 +282,5 @@ if __name__ == "__main__":
     # # plot_transitions(transitions_df)
 
     plot_energies_with_asymmetry(nu=0)
-    plot_energies_vs_nu()
-    plot_transitions_vs_nu()
+    # plot_energies_vs_nu()
+    # plot_transitions_vs_nu()

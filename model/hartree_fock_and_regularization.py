@@ -88,7 +88,7 @@ def loopU(u):
         rho0 = rho0constUp
     else:
         rho0 = rho0constUm
-    print('running u=%.2f' % (u * 1000))
+    print('running nu=%(nu)i u=%(u).2fmeV' % {'u': (u * 1000), 'nu': nu})
     rho = rho0
 
     ################### warping #############################################################
