@@ -186,3 +186,7 @@
  Starting this script at date/time: 2022-08-29 21:16:19. 
  This script is running at: schossler, directory: /home/matheus/Insync/matheus.schossler@alumni.usp.br/Google Drive/matheus.schossler@usp.br 2020-04-28 15:02/phd/research/henriksen's discussions/BLG_transitions
 
+
+ Starting this script at date/time: 2022-08-29 21:43:00. 
+ This script is running at: schossler, directory: /home/matheus/Insync/matheus.schossler@alumni.usp.br/Google Drive/matheus.schossler@usp.br 2020-04-28 15:02/phd/research/henriksen's discussions/BLG_transitions/visualization
+
