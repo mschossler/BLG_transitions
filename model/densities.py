@@ -1,6 +1,10 @@
 import numpy as np
 import pandas as pd
 
+# print('here_density')
+# import time
+# time.sleep(.1)
+
 input_dir = 'input/'
 
 if __name__ == "__main__":
@@ -10,7 +14,7 @@ if __name__ == "__main__":
     sys.path.append('../')
     input_dir = '../input/'
 
-from input.parameters import nu, number_occupied_bands, model_regime
+from input.parameters import nu, number_occupied_bands  # , model_regime
 from config import bands, bands_oct, alpha_rand_full_range, alpha_rand_asymmetric_calcs
 from utils import eigen
 
@@ -36,8 +40,9 @@ seed_oct_dict = {-4: (0, 0, 0, 0, 0, 0, 0, 0),
                  }
 
 
-def ramdom_16x16_density(numb_of_filled_states):
+def ramdom_16x16_density(numb_of_filled_states, model_regime):
     if (model_regime == 'full_range') and (nu == 0):
+        # print('inside condition (model_regime == full_range) and (nu == 0)')
         rhorand8 = pd.read_csv('input/' + 'rho0phbroken.csv', header=None).values.tolist()
 
         rho0file8_zero = np.pad(rhorand8, ((0, 8), (0, 8)), mode='constant')
@@ -45,6 +50,9 @@ def ramdom_16x16_density(numb_of_filled_states):
 
         rhorand16 = rho0file8_zero + zero_rho0file8
     else:
+        # print('here_random_seed')
+        # import time
+        # time.sleep(.1)
         rhorand8 = np.random.rand(8, 8)
         eigenvalue, eigenvector = eigen(rhorand8)
         # rhorand8 = sum(np.outer(eigenvector[i, :], eigenvector[i, :]) for i in range(int(number_occupied_bands / 2)))
@@ -73,7 +81,7 @@ def diag_full_regime(u_signal, number_occupied_bands):
     # if u_signal < 0:
     #     filling_order = filling_order_Unegative
     # seed_dict = {'rho0constUp': rho0constUp, 'rho0constUm': rho0constUm}
-    rhorand16 = ramdom_16x16_density(number_occupied_bands)
+    rhorand16 = ramdom_16x16_density(number_occupied_bands, 'full_range')
     return (1 - alpha_rand_full_range) * np.diag(diag) + alpha_rand_full_range * rhorand16
 
 
@@ -208,8 +216,10 @@ def seed_asymmetric_calcs(nu):
     if sum(diag) != number_occupied_bands:
         print('Wrong filling factor for nu %i', nu)
         exit()
-
-    rhorand16 = ramdom_16x16_density(number_occupied_bands_local)
+    # print('here_seed_asymmetric')
+    # import time
+    # time.sleep(.1)
+    rhorand16 = ramdom_16x16_density(number_occupied_bands_local, 'near_zero_dielectric_field')
 
     rho0const = (1 - alpha_rand_asymmetric_calcs) * np.diag(diag) + alpha_rand_asymmetric_calcs * rhorand16
 
@@ -248,11 +258,15 @@ def seed_asymmetric_calcs(nu):
 #     return seed_dict
 ########################################################################################################################################################
 
-if model_regime == 'full_range':
-    rho0constUp = diag_full_regime(+1, number_occupied_bands)
-    rho0constUm = diag_full_regime(-1, number_occupied_bands)
-elif model_regime == 'near_zero_dielectric_field':
-    rho0constUp = seed_asymmetric_calcs(nu)
-    rho0constUm = seed_asymmetric_calcs(nu)
-
+def density_by_model_regime(model_regime):
+    if model_regime == 'full_range':
+        rho0constUp = diag_full_regime(+1, number_occupied_bands)
+        rho0constUm = diag_full_regime(-1, number_occupied_bands)
+    elif model_regime == 'near_zero_dielectric_field':
+        # print('here_rhos_assignment')
+        # import time
+        # time.sleep(.1)
+        rho0constUp = seed_asymmetric_calcs(nu)
+        rho0constUm = seed_asymmetric_calcs(nu)
+    return {'rho0constUp': rho0constUp, 'rho0constUm': rho0constUm}
 # print(seed_asymmetric_calcs(nu))

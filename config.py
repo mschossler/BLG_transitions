@@ -12,7 +12,7 @@ pd.set_option('display.width', 1000)
 pd.set_option('display.max_rows', 500)
 np.set_printoptions(precision=5, suppress=True, threshold=20, edgeitems=10, linewidth=140, formatter={'float': '{: 0.3f}'.format})
 
-itmax_full_range = 10
+itmax_full_range = 5
 itmax_asymmetric_calcs = 1e4
 
 if abs(nu) > 4:

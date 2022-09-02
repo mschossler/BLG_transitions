@@ -50,8 +50,8 @@ alpha_k_dic[0] = alpha_k_nu0
 #                }
 
 # asymmetry parameters
-model_regime = 'near_zero_dielectric_field'
-# model_regime = 'full_range'
+# model_regime = 'near_zero_dielectric_field'
+model_regime = 'full_range'
 alpha_state = 1
 alpha_reg = 1
 dens = 3

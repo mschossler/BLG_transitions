@@ -5,17 +5,25 @@ t0 = time.time()
 
 import pandas as pd
 
-from config import model_regime, aux_dir_path, file_name_csv, nprocesses, bands
+from config import model_regime, aux_dir_path, file_name_csv, nprocesses, bands, bands_LL2
 from input.parameters import U0minD, U0maxD, dU0D, nu
-from model.hartree_fock_and_regularization import loopU
-from model.hartree_fock_with_asymmetric_interactions import loopU0
 from utils import frange, sort_dict, observable_to_csv, idxcalc, transitions_energy_fermi_energy
+
+# from model.hartree_fock_and_regularization import loopU
+# from model.hartree_fock_with_asymmetric_interactions import loopU0
 
 a_pool = multiprocessing.Pool(processes=nprocesses)
 
 if model_regime == 'full_range':
+    from model.hartree_fock_and_regularization import loopU
+
     quantities = a_pool.map(loopU, frange(U0minD, U0maxD, dU0D))
 elif model_regime == 'near_zero_dielectric_field':
+    # print('here_condition_near_zero_calcs')
+    # import time
+    # time.sleep(.1)
+    from model.hartree_fock_with_asymmetric_interactions import loopU0
+
     quantities = a_pool.map(loopU0, frange(U0minD, U0maxD, dU0D))
     # quantities = a_pool.map(loopU0, [1e-3,2e-3])
 
@@ -45,12 +53,18 @@ def energies_and_observable_to_csv(quantities):
     for quantity in list_of_observables:
         observable_to_csv(quantities_dict, quantity)
 
-    return energies
+    energies_df = pd.DataFrame(energies, columns=['u'] + bands)
+    return energies_df
 
 
-energies = energies_and_observable_to_csv(quantities)
+energies_df = energies_and_observable_to_csv(quantities)
+if model_regime == 'near_zero_dielectric_field':
+    from model.hartree_fock_and_regularization import loopU
 
-energies_df = pd.DataFrame(energies, columns=['u'] + bands)
+    a_pool = multiprocessing.Pool(processes=nprocesses)
+    quantities_full_range = a_pool.map(loopU, frange(U0minD, U0maxD, dU0D))
+    energies_df_full_range = energies_and_observable_to_csv(quantities_full_range)
+    energies_df[bands_LL2] = energies_df_full_range[bands_LL2]
 
 energies_df, transition_energy_df = transitions_energy_fermi_energy(energies_df, nu)  # add fermi_energy to energies_df
 

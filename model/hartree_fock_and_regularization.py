@@ -1,11 +1,22 @@
 from config import itmax_full_range, setH
 from input.parameters import *
-from model.densities import rho0constUp, rho0constUm
+from model.densities import density_by_model_regime
 # from model.density_test import rho0constUp, rho0constUm
 from model.exchange_integrals import Xskm, Xskp
 from model.hamiltonians import full_hp, full_hm, full_hpm, full_hmp, idp, idps, idm, idms, mZm, hAp, hBp, hCp
 from utils import eigen, df_round, nonedimmerp, nonedimmerm
 
+# if model_regime == 'near_zero_dielectric_field':
+#     print('executing hartree_fock_and_regularization to return LL2 and LLm2 for near_zero_dielectric_field regime')
+# elif model_regime == 'full_range':
+#     print('executing hartree_fock_and_regularization in full_range regime')
+
+model_regime = 'full_range'
+
+
+# print('here_hartree_fock_only_calcs')
+# # import time
+# # time.sleep(.2)
 
 def hp(n, nprime, s1, s2):
     return full_hp(n, nprime, s1, s2, Eh, deltatb, eigenvectorp, rho)
@@ -86,10 +97,10 @@ def exciton_j_to_n_kp(n, j, eigenvectorp):
 def loopU(u):
     global eigenvectorp, eigenvectorm, deltatb, rho
     if u >= 0:
-        rho0 = rho0constUp
+        rho0 = density_by_model_regime(model_regime)['rho0constUp']
     else:
-        rho0 = rho0constUm
-    print('running nu=%(nu)i u=%(u).2fmeV' % {'u': (u * 1000), 'nu': nu})
+        rho0 = density_by_model_regime(model_regime)['rho0constUm']
+    print('running hartree_fock_and_regularization with nu=%(nu)i u=%(u).2fmeV \n' % {'u': (u * 1000), 'nu': nu})
     rho = rho0
 
     ################### warping #############################################################
