@@ -4,7 +4,7 @@ import numpy as np
 
 # variables_dict = {}
 
-nu_default = 0
+nu_default = 4
 
 if len(sys.argv) == 2:
     nu = int(sys.argv[1])
@@ -25,7 +25,10 @@ alpha_x = 1
 
 itmax_full_range = 5
 itmax_asymmetric_calcs = 1e4
-alpha_rand_full_range = 0.6
+if nu == 0:
+    alpha_rand_full_range = 0.6
+else:
+    alpha_rand_full_range = 0
 alpha_rand_asymmetric_calcs = 0.01
 alpha_rho = 0  # controls numerical regularization for rho (memory of rho from previews loop)
 # variables_dict['asym']=asym
@@ -55,11 +58,11 @@ alpha_k_dic[0] = alpha_k_nu0
 #                }
 
 # asymmetry parameters
-model_regime = 'near_zero_dielectric_field'
-# model_regime = 'full_range'
-alpha_state = 1
+# model_regime = 'near_zero_dielectric_field'
+model_regime = 'full_range'
+# alpha_state = 1
 alpha_reg = 1
-dens = 3
+# dens = 3
 uz = 7e0 * 1e-3  # * 0
 uperp = -1.6e0 * 1e-3  # * 0
 
@@ -107,7 +110,7 @@ k = (np.sqrt(np.pi / 2) * el) / (4 * np.pi * ep0 * epr * Lb) * alpha_k
 # Zm = k * 0.0178 #use def above, this is slightly off due to alpha_k
 
 U0minD = 0e-3
-U0maxD = 12e-3
+U0maxD = 2e-3
 dU0D = 1e-3
 
 u_zero = 1

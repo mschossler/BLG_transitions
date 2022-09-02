@@ -5,7 +5,7 @@ from datetime import datetime
 import numpy as np
 import pandas as pd
 
-from input.parameters import Zm, asym, x, alpha_H_oct_int, uz, uperp, alpha_state, dens, nu, number_occupied_bands, model_regime
+from input.parameters import Zm, asym, x, alpha_H_oct_int, uz, uperp, nu, number_occupied_bands, model_regime  # , alpha_state, dens,
 
 pd.set_option('display.max_columns', 300)
 pd.set_option('display.width', 1000)
@@ -60,7 +60,7 @@ machine = platform.node()
 infos = '\n' + ' Starting this script at date/time: ' + current_time_formated + '. \n' + ' This script is running at: ' + machine + ', directory: ' + cwd + '\n'
 folder_name = 'files_' + 'asym_' + str(round(asym, 2)) + '__Zm_' + str(round(Zm * 1e3, 3)) + \
               '__alpha_H_oct_int_' + str(round(alpha_H_oct_int, 2)) + '__uz_' + str(round(uz * 1e3, 3)) + '__uperp_' + str(round(uperp * 1e3, 3)) + \
-              '__x_' + str(round(x, 3)) + '__alpha_state_' + str(round(alpha_state, 3)) + '__dens_' + str(round(dens, 1))
+              '__x_' + str(round(x, 3)) + '__alpha_state_'  # + str(round(alpha_state, 3)) + '__dens_' + str(round(dens, 1))
 
 if not os.path.isdir(aux_dir_path):
     os.makedirs(aux_dir_path)

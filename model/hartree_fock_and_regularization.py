@@ -200,7 +200,7 @@ def loopU(u):
     Et = sum([eigenvalue[i] for i in range(number_occupied_bands)]) + ehf
 
     dict_quantities_u = {'u': u * 1e3,
-                         'eigenvalue': 1e3 * eigenvalue,
+                         'eigenvalue': 1e3 * np.real(eigenvalue),  # np.real due to numerical fluctuations
                          'eigenvector': eigenvector,
                          'Et': 1e3 * Et,
                          'h0': df_round(1e3 * h0),
