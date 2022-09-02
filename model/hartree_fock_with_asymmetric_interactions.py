@@ -1,4 +1,4 @@
-from config import itmax_asymmetric_calcs, bands, bands_oct, alpha_rho
+from config import bands, bands_oct  # , itmax_asymmetric_calcs, alpha_rho
 from input.parameters import *
 from model.densities import density_by_model_regime
 from model.exchange_integrals import Xzs, Xzd, Xos, Xod, Xfs, Xfd, Xsts, Xstd

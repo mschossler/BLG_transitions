@@ -23,6 +23,11 @@ alpha_H_oct_int = 1
 inter = 1
 alpha_x = 1
 
+itmax_full_range = 5
+itmax_asymmetric_calcs = 1e4
+alpha_rand_full_range = 0.6
+alpha_rand_asymmetric_calcs = 0.01
+alpha_rho = 0  # controls numerical regularization for rho (memory of rho from previews loop)
 # variables_dict['asym']=asym
 # variables_dict['alpha_Zm']=alpha_Zm
 # variables_dict['alpha_H_oct_int']=alpha_H_oct_int

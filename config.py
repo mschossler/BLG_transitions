@@ -12,9 +12,6 @@ pd.set_option('display.width', 1000)
 pd.set_option('display.max_rows', 500)
 np.set_printoptions(precision=5, suppress=True, threshold=20, edgeitems=10, linewidth=140, formatter={'float': '{: 0.3f}'.format})
 
-itmax_full_range = 5
-itmax_asymmetric_calcs = 1e4
-
 if abs(nu) > 4:
     model_regime = 'full_range'
 
@@ -23,9 +20,6 @@ if model_regime == 'full_range':
 elif model_regime == 'near_zero_dielectric_field':
     print('model: %s' % model_regime)
 
-alpha_rand_full_range = 0.6
-alpha_rand_asymmetric_calcs = 0.01
-alpha_rho = 0  # controls numerical regularization for rho (memory of rho from previews loop)
 nprocesses = 10
 tol = 1e-8
 setH = [0, 1, -2, 2]

@@ -14,8 +14,8 @@ if __name__ == "__main__":
     sys.path.append('../')
     input_dir = '../input/'
 
-from input.parameters import nu, number_occupied_bands  # , model_regime
-from config import bands, bands_oct, alpha_rand_full_range, alpha_rand_asymmetric_calcs
+from input.parameters import nu, number_occupied_bands, alpha_rand_full_range, alpha_rand_asymmetric_calcs  # , model_regime
+from config import bands, bands_oct
 from utils import eigen
 
 # filling_order_Upositive = ['-2p-', '-2p+', '-2m-', '-2m+', '0m-', '0p-', '0m+', '0p+', '1m-', '1p-', '1m+', '1p+', '2p-', '2p+']  # spin_polarz -> 0LL_polarz -> 1LL_spin_polarz

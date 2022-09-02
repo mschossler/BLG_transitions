@@ -1,4 +1,4 @@
-from config import itmax_full_range, setH
+from config import setH  # itmax_full_range,
 from input.parameters import *
 from model.densities import density_by_model_regime
 # from model.density_test import rho0constUp, rho0constUm
