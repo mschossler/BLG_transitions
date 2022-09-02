@@ -74,8 +74,8 @@ if model_regime == 'near_zero_dielectric_field':
         energies_df_full_range = pd.read_csv('input/' + 'energies_nu_0_for_LLm2_and_LL2.csv')
 
     elif mode == 'fast_from_constant':
-        constant_LLm2 = -14.14
-        constant_LL2 = -5.84
+        constant_LLm2 = -14.14  # -(-56.701644+42.5611020) ##-56.701644 is average of LL-2 with full interactions
+        constant_LL2 = -5.84  # 49.672084-55.512116000000006 ##49.672084 is average of LL2 with full interactions
         energies_df_full_range = pd.DataFrame([])
         energies_df_full_range[['LLm2_Kp_Sdown', 'LLm2_Km_Sdown', 'LLm2_Kp_Sup', 'LLm2_Km_Sup']] = energies_df[['LLm2_Kp_Sdown', 'LLm2_Km_Sdown', 'LLm2_Kp_Sup',
                                                                                                                 'LLm2_Km_Sup']] + constant_LLm2
