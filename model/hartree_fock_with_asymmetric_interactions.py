@@ -1,6 +1,6 @@
 from config import itmax, bands, bands_oct
 from input.parameters import *
-from model.densities_small_U import rho0constUp, rho0constUm
+from model.densities import rho0constUp, rho0constUm
 from model.exchange_integrals import Xzs, Xzd, Xos, Xod, Xfs, Xfd, Xsts, Xstd
 from model.hamiltonians import mZm, hAp, hBp, hCp  # , asymmetric_h, taux, tauy, tauz
 from utils import eigen, nonedimmerp, nonedimmerm, tau_func, df_round

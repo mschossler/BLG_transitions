@@ -1,6 +1,6 @@
 from config import itmax, setH
 from input.parameters import *
-from model.densities_small_U import rho0constUp, rho0constUm
+from model.densities import rho0constUp, rho0constUm
 # from model.density_test import rho0constUp, rho0constUm
 from model.exchange_integrals import Xskm, Xskp
 from model.hamiltonians import full_hp, full_hm, full_hpm, full_hmp, idp, idps, idm, idms, mZm, hAp, hBp, hCp

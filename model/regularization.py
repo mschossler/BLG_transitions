@@ -1,6 +1,6 @@
 from config import setH
 from input.parameters import *
-from model.densities_small_U import rho0constUp, rho0constUm
+from model.densities import rho0constUp, rho0constUm
 from model.exchange_integrals import Xskm, Xskp
 from model.hamiltonians import hAp
 from utils import eigen, df_round, nonedimmerp, nonedimmerm
