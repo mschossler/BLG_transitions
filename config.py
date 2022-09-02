@@ -25,7 +25,7 @@ elif model_regime == 'near_zero_dielectric_field':
 
 alpha_rand_full_range = 0.6
 alpha_rand_asymmetric_calcs = 0.01
-alpha_rho = 0.01  # controls numerical regularization for rho (memory of rho from previews loop)
+alpha_rho = 0  # controls numerical regularization for rho (memory of rho from previews loop)
 nprocesses = 10
 tol = 1e-8
 setH = [0, 1, -2, 2]
