@@ -55,7 +55,7 @@ model_regime = 'near_zero_dielectric_field'
 alpha_state = 1
 alpha_reg = 1
 dens = 3
-uz = 6e0 * 1e-3  # * 0
+uz = 7e0 * 1e-3  # * 0
 uperp = -1.6e0 * 1e-3  # * 0
 
 # variables_dict['alpha_rho']=alpha_rho
@@ -101,13 +101,14 @@ k = (np.sqrt(np.pi / 2) * el) / (4 * np.pi * ep0 * epr * Lb) * alpha_k
 
 # Zm = k * 0.0178 #use def above, this is slightly off due to alpha_k
 
-U0minD = 1e-3
-U0maxD = 5e-3
+U0minD = 0e-3
+U0maxD = 12e-3
 dU0D = 1e-3
 
 u_zero = 1
 u_zero = round(u_zero, 4)
 
+# print(Zm, alpha_H_oct_int, uz, uperp, x)
 # variables_dict = {}
 # variables_dict.update({k:v for k,v in locals().copy().iteritems() if k[:2] != '__' and k != 'variables_dict'})
 # variables_dict = {k:v for k,v in locals().copy().iteritems() if k[:2] != '__' and k != 'variables_dict'}

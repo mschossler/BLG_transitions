@@ -59,12 +59,28 @@ def energies_and_observable_to_csv(quantities):
 
 energies_df = energies_and_observable_to_csv(quantities)
 if model_regime == 'near_zero_dielectric_field':
-    # from model.hartree_fock_and_regularization import loopU
-    #
-    # a_pool = multiprocessing.Pool(processes=nprocesses)
-    # quantities_full_range = a_pool.map(loopU, frange(U0minD, U0maxD, dU0D))
-    # energies_df_full_range = energies_and_observable_to_csv(quantities_full_range)
-    energies_df_full_range = pd.read_csv('input/' + 'energies_nu_0_for_LLm2_and_LL2.csv')
+    # mode = 'hartree_fock_and_regularization_calcs'
+    # mode = 'fast_from_file'
+    mode = 'fast_from_constant'
+
+    if mode == 'hartree_fock_and_regularization_calcs':
+        from model.hartree_fock_and_regularization import loopU
+
+        a_pool = multiprocessing.Pool(processes=nprocesses)
+        quantities_full_range = a_pool.map(loopU, frange(U0minD, U0maxD, dU0D))
+        energies_df_full_range = energies_and_observable_to_csv(quantities_full_range)
+
+    elif mode == 'fast_from_file':
+        energies_df_full_range = pd.read_csv('input/' + 'energies_nu_0_for_LLm2_and_LL2.csv')
+
+    elif mode == 'fast_from_constant':
+        constant_LLm2 = -14.14
+        constant_LL2 = -5.84
+        energies_df_full_range = pd.DataFrame([])
+        energies_df_full_range[['LLm2_Kp_Sdown', 'LLm2_Km_Sdown', 'LLm2_Kp_Sup', 'LLm2_Km_Sup']] = energies_df[['LLm2_Kp_Sdown', 'LLm2_Km_Sdown', 'LLm2_Kp_Sup',
+                                                                                                                'LLm2_Km_Sup']] + constant_LLm2
+        energies_df_full_range[['LL2_Kp_Sdown', 'LL2_Km_Sdown', 'LL2_Kp_Sup', 'LL2_Km_Sup']] = energies_df[
+                                                                                                   ['LL2_Kp_Sdown', 'LL2_Km_Sdown', 'LL2_Kp_Sup', 'LL2_Km_Sup']] + constant_LL2
 
     energies_df[bands_LL2] = energies_df_full_range[bands_LL2]
 
