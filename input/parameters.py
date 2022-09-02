@@ -50,12 +50,12 @@ alpha_k_dic[0] = alpha_k_nu0
 #                }
 
 # asymmetry parameters
-# model_regime = 'near_zero_dielectric_field'
-model_regime = 'full_range'
+model_regime = 'near_zero_dielectric_field'
+# model_regime = 'full_range'
 alpha_state = 1
 alpha_reg = 1
 dens = 3
-uz = 7e0 * 1e-3  # * 0
+uz = 6e0 * 1e-3  # * 0
 uperp = -1.6e0 * 1e-3  # * 0
 
 # variables_dict['alpha_rho']=alpha_rho

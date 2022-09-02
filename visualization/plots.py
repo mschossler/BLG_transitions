@@ -9,7 +9,6 @@ if __name__ == "__main__":
 
 from config import bands, input_dir_path, dir_path, current_date, aux_dir_path_plot_vs_nu
 from input.parameters import alpha_tilda, u_zero
-from utils import transitions_energy_fermi_energy
 
 style_dict = {'LL0_Kp_Sdown': {'color': 'lightblue', 'line_shape': '-', 'marker_shape': 'v', 'label': '$\\ \\ \\,0\\mathrm{K}^{+}\\downarrow$'},
               'LL1_Kp_Sdown': {'color': 'salmon', 'line_shape': '-', 'marker_shape': 'v', 'label': '$\\ \\ \\,1\\mathrm{K}^{+}\\downarrow$'},
@@ -208,70 +207,71 @@ def plot_transitions_vs_nu():
     f.savefig(aux_dir_path_plot_vs_nu + 'transitions_vs_nu.pdf', bbox_inches='tight')
 
 
-def plot_energies_with_asymmetry(nu):
-    folder_name_CAF7 = 'files_asym_1__itmax_10000__Zm_0.753__alpha_H_oct_int_1__uz_7.0__uperp_-1.6__x_0.047__alpha_state_1__alpha_rand_0.01__dens_3'
-    # folder_name_CAF6 = 'files_asym_1__itmax_1000.0__Zm_0.753__alpha_H_oct_int_1__uz_6.0__uperp_-1.6__x_0.047__alpha_state_1__alpha_rand_0.01__dens_3'#CAF for U<12meV ocupation 0.62:0.38 $$$$$$$$$$
-    folder_name_CAF_uz6_uperpm1 = 'files_asym_1__itmax_5000__Zm_0.753__alpha_H_oct_int_1__uz_6.0__uperp_-1.0__x_0.047__alpha_state_1__alpha_rand_0.01__dens_2'  # CAF for U<12meV ocupation 0.69:0.31 $$$$$$$$$$
-    folder_name_CAF5 = 'files_asym_1__itmax_1000__Zm_0.753__alpha_H_oct_int_1__uz_5.0__uperp_-1.6__x_0.047__alpha_state_1__alpha_rand_0.01__dens_3'
-    folder_name_CAF6 = 'files_asym_1__itmax_1000.0__Zm_0.753__alpha_H_oct_int_1__uz_6.0__uperp_-1.6__x_0.047__alpha_state_1__alpha_rand_0.01__dens_3'  # CAF for U<12meV ocupation 0.62:0.38 $$$$$$$$$$
-    folder_name_CAF8 = 'files_asym_1__itmax_80000__Zm_0.753__alpha_H_oct_int_1__uz_8.0__uperp_-1.6__x_0.047__alpha_state_1__alpha_rand_0.01__dens_3'
-    folder_name_CAF9 = 'files_asym_1__itmax_10000__Zm_0.753__alpha_H_oct_int_1__uz_9.0__uperp_-1.6__x_0.047__alpha_state_1__alpha_rand_0.01__dens_3'
-    folder_name_with_asymmetry = folder_name_CAF7
-    # folder_name_with_asymmetry = folder_name_CAF_uz6_uperpm1
-    folder_name_file_name = dir_path + '/canted_antiferromagnetic/CAF_oct_interaction/' + folder_name_with_asymmetry + '/eigenU0_fullH0_Delta_CAF_tests.csv'
-    energies_df = pd.read_csv(folder_name_file_name)
-    energies_df.columns = ['u'] + bands
-    # print(energies_df[energies_df['u']==2.0])
-
-    print(energies_df.iloc[[2, 4]])
-
-    energies_df, transition_energy_df = transitions_energy_fermi_energy(energies_df, nu)
-    # if nu==0:
-    #     for column_name in energies_df.columns:
-    #         if 'LLm2' in column_name:
-    #             energies_df[column_name] = energies_df[column_name]
-
-    number_occupied_bands_local = nu + 8
-    aux_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + '/'
-    print(aux_dir_path_local)
-    energies_df.to_csv(aux_dir_path_local + 'energies_' + 'nu_' + str(nu) + '.csv', index=False)
-    transition_energy_df.to_csv(aux_dir_path_local + 'transitions_' + 'nu_' + str(nu) + '.csv', index=False)
-    plot_energies(energies_df, nu)
-    plot_transitions(transition_energy_df, nu)
-    # # eigenU = pd.read_csv(folder_name+namecsv,header=None).applymap(complex).applymap( lambda x: round(x.real,decimals) )
-    # # eigenU.columns = ['u'] + bands
-    #
-    # # display(eigenU)
-    #
-    # style_dict = {'0p-': ('lightblue', '-', 'v', r'$\ \ \,0\mathrm{K}^{+}\downarrow$'),
-    #               '1p-': ('salmon', '-', 'v', r'$\ \ \,1\mathrm{K}^{+}\downarrow$'),
-    #               '-2p-': ('gray', '-', 'v', r'$-2\mathrm{K}^{+}\downarrow$'),
-    #               '2p-': ('gray', '-', 'v', r'$\ \ \,2\mathrm{K}^{+}\downarrow$'),
-    #               '0m-': ('lightblue', '--', 'v', r'$\ \ \,0\mathrm{K}^{-}\downarrow$'),
-    #               '1m-': ('salmon', '--', 'v', r'$\ \ \,1\mathrm{K}^{-}\downarrow$'),
-    #               '-2m-': ('gray', '--', 'v', r'$-2\mathrm{K}^{-}\downarrow$'),
-    #               '2m-': ('gray', '--', 'v', r'$\ \ \,2\mathrm{K}^{-}\downarrow$'),
-    #               '0p+': ('blue', '-', '^', r'$\ \ \,0\mathrm{K}^{+}\uparrow$'),
-    #               '1p+': ('red', '-', '^', r'$\ \ \,1\mathrm{K}^{+}\uparrow$'),
-    #               '-2p+': ('black', '-', '^', r'$-2\mathrm{K}^{+}\uparrow$'),
-    #               '2p+': ('black', '-', '^', r'$\ \ \,2\mathrm{K}^{+}\uparrow$'),
-    #               '0m+': ('blue', '--', '^', r'$\ \ \,0\mathrm{K}^{-}\uparrow$'),
-    #               '1m+': ('red', '--', '^', r'$\ \ \,1\mathrm{K}^{-}\uparrow$'),
-    #               '-2m+': ('black', '--', '^', r'$-2\mathrm{K}^{-}\uparrow$'),
-    #               '2m+': ('black', '--', '^', r'$\ \ \,2\mathrm{K}^{-}\uparrow$')}
-    # #             ,'fermi_energy':('purple','-','.')}
-    # bands = ['0p-', '1p-', '-2p-', '2p-', '0m-', '1m-', '-2m-', '2m-', '0p+', '1p+', '-2p+', '2p+', '0m+', '1m+', '-2m+', '2m+']
-    #
-    # f = plt.figure()
-    # ax = plt.gca()
-    #
-    # plt.rcParams['figure.dpi'] = 150
-    #
-    # for x in bands:
-    #     styleX = style_dict.get(x)
-    #     eigenU.plot(x='u', y=x, color=styleX[0], style=styleX[1], markersize=3, linewidth=0.7, label=styleX[3], ax=ax)  # , marker='o')
-    # #     eigenU.plot(x='u', y=x, color=styleX[0], style=styleX[1],marker='.', markersize=.5,markerfacecolor='Black', linestyle = 'None', label=styleX[3], ax=ax)#, marker='o')
-    # # fermi_energy.plot(x='u', y='fermi_energy', color='purple', style='-', markersize=3, linewidth=1, label=r'Fermi energy', ax=ax)
+#
+# def plot_energies_with_asymmetry(nu):
+#     folder_name_CAF7 = 'files_asym_1__itmax_10000__Zm_0.753__alpha_H_oct_int_1__uz_7.0__uperp_-1.6__x_0.047__alpha_state_1__alpha_rand_0.01__dens_3'
+#     # folder_name_CAF6 = 'files_asym_1__itmax_1000.0__Zm_0.753__alpha_H_oct_int_1__uz_6.0__uperp_-1.6__x_0.047__alpha_state_1__alpha_rand_0.01__dens_3'#CAF for U<12meV ocupation 0.62:0.38 $$$$$$$$$$
+#     folder_name_CAF_uz6_uperpm1 = 'files_asym_1__itmax_5000__Zm_0.753__alpha_H_oct_int_1__uz_6.0__uperp_-1.0__x_0.047__alpha_state_1__alpha_rand_0.01__dens_2'  # CAF for U<12meV ocupation 0.69:0.31 $$$$$$$$$$
+#     folder_name_CAF5 = 'files_asym_1__itmax_1000__Zm_0.753__alpha_H_oct_int_1__uz_5.0__uperp_-1.6__x_0.047__alpha_state_1__alpha_rand_0.01__dens_3'
+#     folder_name_CAF6 = 'files_asym_1__itmax_1000.0__Zm_0.753__alpha_H_oct_int_1__uz_6.0__uperp_-1.6__x_0.047__alpha_state_1__alpha_rand_0.01__dens_3'  # CAF for U<12meV ocupation 0.62:0.38 $$$$$$$$$$
+#     folder_name_CAF8 = 'files_asym_1__itmax_80000__Zm_0.753__alpha_H_oct_int_1__uz_8.0__uperp_-1.6__x_0.047__alpha_state_1__alpha_rand_0.01__dens_3'
+#     folder_name_CAF9 = 'files_asym_1__itmax_10000__Zm_0.753__alpha_H_oct_int_1__uz_9.0__uperp_-1.6__x_0.047__alpha_state_1__alpha_rand_0.01__dens_3'
+#     folder_name_with_asymmetry = folder_name_CAF7
+#     # folder_name_with_asymmetry = folder_name_CAF_uz6_uperpm1
+#     folder_name_file_name = dir_path + '/canted_antiferromagnetic/CAF_oct_interaction/' + folder_name_with_asymmetry + '/eigenU0_fullH0_Delta_CAF_tests.csv'
+#     energies_df = pd.read_csv(folder_name_file_name)
+#     energies_df.columns = ['u'] + bands
+#     # print(energies_df[energies_df['u']==2.0])
+#
+#     print(energies_df.iloc[[2, 4]])
+#
+#     energies_df, transition_energy_df = transitions_energy_fermi_energy(energies_df, nu)
+#     # if nu==0:
+#     #     for column_name in energies_df.columns:
+#     #         if 'LLm2' in column_name:
+#     #             energies_df[column_name] = energies_df[column_name]
+#
+#     number_occupied_bands_local = nu + 8
+#     aux_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + '/'
+#     print(aux_dir_path_local)
+#     energies_df.to_csv(aux_dir_path_local + 'energies_' + 'nu_' + str(nu) + '.csv', index=False)
+#     transition_energy_df.to_csv(aux_dir_path_local + 'transitions_' + 'nu_' + str(nu) + '.csv', index=False)
+#     plot_energies(energies_df, nu)
+#     plot_transitions(transition_energy_df, nu)
+#     # # eigenU = pd.read_csv(folder_name+namecsv,header=None).applymap(complex).applymap( lambda x: round(x.real,decimals) )
+#     # # eigenU.columns = ['u'] + bands
+#     #
+#     # # display(eigenU)
+#     #
+#     # style_dict = {'0p-': ('lightblue', '-', 'v', r'$\ \ \,0\mathrm{K}^{+}\downarrow$'),
+#     #               '1p-': ('salmon', '-', 'v', r'$\ \ \,1\mathrm{K}^{+}\downarrow$'),
+#     #               '-2p-': ('gray', '-', 'v', r'$-2\mathrm{K}^{+}\downarrow$'),
+#     #               '2p-': ('gray', '-', 'v', r'$\ \ \,2\mathrm{K}^{+}\downarrow$'),
+#     #               '0m-': ('lightblue', '--', 'v', r'$\ \ \,0\mathrm{K}^{-}\downarrow$'),
+#     #               '1m-': ('salmon', '--', 'v', r'$\ \ \,1\mathrm{K}^{-}\downarrow$'),
+#     #               '-2m-': ('gray', '--', 'v', r'$-2\mathrm{K}^{-}\downarrow$'),
+#     #               '2m-': ('gray', '--', 'v', r'$\ \ \,2\mathrm{K}^{-}\downarrow$'),
+#     #               '0p+': ('blue', '-', '^', r'$\ \ \,0\mathrm{K}^{+}\uparrow$'),
+#     #               '1p+': ('red', '-', '^', r'$\ \ \,1\mathrm{K}^{+}\uparrow$'),
+#     #               '-2p+': ('black', '-', '^', r'$-2\mathrm{K}^{+}\uparrow$'),
+#     #               '2p+': ('black', '-', '^', r'$\ \ \,2\mathrm{K}^{+}\uparrow$'),
+#     #               '0m+': ('blue', '--', '^', r'$\ \ \,0\mathrm{K}^{-}\uparrow$'),
+#     #               '1m+': ('red', '--', '^', r'$\ \ \,1\mathrm{K}^{-}\uparrow$'),
+#     #               '-2m+': ('black', '--', '^', r'$-2\mathrm{K}^{-}\uparrow$'),
+#     #               '2m+': ('black', '--', '^', r'$\ \ \,2\mathrm{K}^{-}\uparrow$')}
+#     # #             ,'fermi_energy':('purple','-','.')}
+#     # bands = ['0p-', '1p-', '-2p-', '2p-', '0m-', '1m-', '-2m-', '2m-', '0p+', '1p+', '-2p+', '2p+', '0m+', '1m+', '-2m+', '2m+']
+#     #
+#     # f = plt.figure()
+#     # ax = plt.gca()
+#     #
+#     # plt.rcParams['figure.dpi'] = 150
+#     #
+#     # for x in bands:
+#     #     styleX = style_dict.get(x)
+#     #     eigenU.plot(x='u', y=x, color=styleX[0], style=styleX[1], markersize=3, linewidth=0.7, label=styleX[3], ax=ax)  # , marker='o')
+#     # #     eigenU.plot(x='u', y=x, color=styleX[0], style=styleX[1],marker='.', markersize=.5,markerfacecolor='Black', linestyle = 'None', label=styleX[3], ax=ax)#, marker='o')
+#     # # fermi_energy.plot(x='u', y='fermi_energy', color='purple', style='-', markersize=3, linewidth=1, label=r'Fermi energy', ax=ax)
 
 
 if __name__ == "__main__":

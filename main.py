@@ -59,11 +59,13 @@ def energies_and_observable_to_csv(quantities):
 
 energies_df = energies_and_observable_to_csv(quantities)
 if model_regime == 'near_zero_dielectric_field':
-    from model.hartree_fock_and_regularization import loopU
+    # from model.hartree_fock_and_regularization import loopU
+    #
+    # a_pool = multiprocessing.Pool(processes=nprocesses)
+    # quantities_full_range = a_pool.map(loopU, frange(U0minD, U0maxD, dU0D))
+    # energies_df_full_range = energies_and_observable_to_csv(quantities_full_range)
+    energies_df_full_range = pd.read_csv('input/' + 'energies_nu_0_for_LLm2_and_LL2.csv')
 
-    a_pool = multiprocessing.Pool(processes=nprocesses)
-    quantities_full_range = a_pool.map(loopU, frange(U0minD, U0maxD, dU0D))
-    energies_df_full_range = energies_and_observable_to_csv(quantities_full_range)
     energies_df[bands_LL2] = energies_df_full_range[bands_LL2]
 
 energies_df, transition_energy_df = transitions_energy_fermi_energy(energies_df, nu)  # add fermi_energy to energies_df

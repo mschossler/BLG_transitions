@@ -100,7 +100,7 @@ def loopU(u):
         rho0 = density_by_model_regime(model_regime)['rho0constUp']
     else:
         rho0 = density_by_model_regime(model_regime)['rho0constUm']
-    print('running hartree_fock_and_regularization with nu=%(nu)i u=%(u).2fmeV \n' % {'u': (u * 1000), 'nu': nu})
+    print('running hartree_fock_and_regularization with nu=%(nu)i u=%(u).2fmeV' % {'u': (u * 1000), 'nu': nu})
     rho = rho0
 
     ################### warping #############################################################
