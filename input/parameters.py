@@ -50,9 +50,8 @@ alpha_k_dic[0] = alpha_k_nu0
 #                }
 
 # asymmetry parameters
-alpha_rho = 0  # controls numerical regularization for rho (memory of rho from previews loop)
+alpha_rho = 0.3  # controls numerical regularization for rho (memory of rho from previews loop)
 alpha_state = 1
-alpha_rand = 0.01
 alpha_reg = 1
 dens = 3
 uz = 7e0 * 1e-3  # * 0
@@ -101,8 +100,8 @@ k = (np.sqrt(np.pi / 2) * el) / (4 * np.pi * ep0 * epr * Lb) * alpha_k
 
 # Zm = k * 0.0178 #use def above, this is slightly off due to alpha_k
 
-U0minD = 0e-3
-U0maxD = 12e-3
+U0minD = 1e-3
+U0maxD = 5e-3
 dU0D = 1e-3
 
 u_zero = 1

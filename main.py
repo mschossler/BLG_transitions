@@ -5,7 +5,7 @@ t0 = time.time()
 
 import pandas as pd
 
-from config import aux_dir_path, file_name_csv, nprocesses, bands
+from config import model_regime, aux_dir_path, file_name_csv, nprocesses, bands
 from input.parameters import U0minD, U0maxD, dU0D, nu
 from model.hartree_fock_and_regularization import loopU
 from model.hartree_fock_with_asymmetric_interactions import loopU0
@@ -13,10 +13,9 @@ from utils import frange, sort_dict, observable_to_csv, idxcalc, transitions_ene
 
 a_pool = multiprocessing.Pool(processes=nprocesses)
 
-regime = 'zero_dielectric_field'
-if regime == 'full_range':
+if model_regime == 'full_range':
     quantities = a_pool.map(loopU, frange(U0minD, U0maxD, dU0D))
-elif regime == 'zero_dielectric_field':
+elif model_regime == 'near_zero_dielectric_field':
     quantities = a_pool.map(loopU0, frange(U0minD, U0maxD, dU0D))
     # quantities = a_pool.map(loopU0, [1e-3,2e-3])
 
