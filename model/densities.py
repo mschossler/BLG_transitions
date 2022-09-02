@@ -14,7 +14,7 @@ if __name__ == "__main__":
     sys.path.append('../')
     input_dir = '../input/'
 
-from input.parameters import nu, number_occupied_bands, alpha_rand_asymmetric_calcs  # , model_regime
+from input.parameters import nu, number_occupied_bands, alpha_rand_full_range, alpha_rand_asymmetric_calcs  # , model_regime
 from config import bands, bands_oct
 from utils import eigen
 
@@ -82,8 +82,8 @@ def diag_full_regime(u_signal, number_occupied_bands):
     #     filling_order = filling_order_Unegative
     # seed_dict = {'rho0constUp': rho0constUp, 'rho0constUm': rho0constUm}
     rhorand16 = ramdom_16x16_density(number_occupied_bands, 'full_range')
-    # return (1 - alpha_rand_full_range) * np.diag(diag) + alpha_rand_full_range * rhorand16
-    return np.diag(diag)
+    return (1 - alpha_rand_full_range) * np.diag(diag) + alpha_rand_full_range * rhorand16
+    # return np.diag(diag)
 
 
 # for band in bands:
