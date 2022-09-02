@@ -19,31 +19,38 @@ elif model_regime == 'near_zero_dielectric_field':
     quantities = a_pool.map(loopU0, frange(U0minD, U0maxD, dU0D))
     # quantities = a_pool.map(loopU0, [1e-3,2e-3])
 
-quantities_dict = {}
-for dict_u in quantities:
-    quantities_dict[dict_u['u']] = dict_u
 
-quantities_dict = sort_dict(quantities_dict)
+def energies_and_observable_to_csv(quantities):
+    quantities_dict = {}
+    for dict_u in quantities:
+        quantities_dict[dict_u['u']] = dict_u
 
-energies = []
-# allowed_transitions_nu = {}
-for k, v in quantities_dict.items():
-    u_temp, eigenvalue_temp, eigenvector_temp = round(v['u'], 4), v['eigenvalue'], v['eigenvector']
-    idx = idxcalc(eigenvector_temp)
-    v['eigenvalue'] = eigenvalue_temp[idx]
-    v['eigenvector'] = eigenvector_temp[:, idx]
-    # allowed_transitions_nu[v['u']] = allowed_transitions(v['u'],v['eigenvalue'])
-    energies.append([u_temp] + v['eigenvalue'].tolist())
+    quantities_dict = sort_dict(quantities_dict)
+
+    energies = []
+    # allowed_transitions_nu = {}
+    for k, v in quantities_dict.items():
+        u_temp, eigenvalue_temp, eigenvector_temp = round(v['u'], 4), v['eigenvalue'], v['eigenvector']
+        idx = idxcalc(eigenvector_temp)
+        v['eigenvalue'] = eigenvalue_temp[idx]
+        v['eigenvector'] = eigenvector_temp[:, idx]
+        # allowed_transitions_nu[v['u']] = allowed_transitions(v['u'],v['eigenvalue'])
+        energies.append([u_temp] + v['eigenvalue'].tolist())
+    #
+    # for quantity in ['h0', 'rhoU', 'Eh_deltaU', 'Hint', 'Et', 'eigenvector', 'exciton_energy', 'regmatrix']:
+    #     observable_to_csv(quantities_dict, quantity)
+    list_of_u = list(quantities_dict.keys())
+    list_of_observables = list(quantities_dict[list_of_u[0]].keys())
+    # print(list_of_observables)
+    for quantity in list_of_observables:
+        observable_to_csv(quantities_dict, quantity)
+
+    return energies
+
+
+energies = energies_and_observable_to_csv(quantities)
 
 energies_df = pd.DataFrame(energies, columns=['u'] + bands)
-#
-# for quantity in ['h0', 'rhoU', 'Eh_deltaU', 'Hint', 'Et', 'eigenvector', 'exciton_energy', 'regmatrix']:
-#     observable_to_csv(quantities_dict, quantity)
-list_of_u = list(quantities_dict.keys())
-list_of_observables = list(quantities_dict[list_of_u[0]].keys())
-# print(list_of_observables)
-for quantity in list_of_observables:
-    observable_to_csv(quantities_dict, quantity)
 
 energies_df, transition_energy_df = transitions_energy_fermi_energy(energies_df, nu)  # add fermi_energy to energies_df
 

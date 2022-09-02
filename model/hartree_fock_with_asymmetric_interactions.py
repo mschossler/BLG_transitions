@@ -1,4 +1,4 @@
-from config import itmax, bands, bands_oct
+from config import itmax_asymmetric_calcs, bands, bands_oct, alpha_rho
 from input.parameters import *
 from model.densities import rho0constUp, rho0constUm
 from model.exchange_integrals import Xzs, Xzd, Xos, Xod, Xfs, Xfd, Xsts, Xstd
@@ -406,7 +406,7 @@ def loopU0(u):
     # print('here')
     # print(k)
     it = 1
-    while it < itmax:
+    while it < itmax_asymmetric_calcs:
         Hint_longrange = k * alpha_H_oct_int * Hint_oct(rho)
         H_asym = asymmetric_h(taux, rho, uperp) + asymmetric_h(tauy, rho, uperp) + asymmetric_h(tauz, rho, uz)
         H = h0 + Hint_longrange + H_asym + mZm

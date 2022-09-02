@@ -5,29 +5,28 @@ from datetime import datetime
 import numpy as np
 import pandas as pd
 
-from input.parameters import Zm, asym, x, alpha_H_oct_int, uz, uperp, alpha_state, dens, nu, number_occupied_bands
+from input.parameters import Zm, asym, x, alpha_H_oct_int, uz, uperp, alpha_state, dens, nu, number_occupied_bands, model_regime
 
 pd.set_option('display.max_columns', 300)
 pd.set_option('display.width', 1000)
 pd.set_option('display.max_rows', 500)
 np.set_printoptions(precision=5, suppress=True, threshold=20, edgeitems=10, linewidth=140, formatter={'float': '{: 0.3f}'.format})
 
-model_regime = 'near_zero_dielectric_field'
-# model_regime = 'full_range'
+itmax_full_range = 10
+itmax_asymmetric_calcs = 1e4
 
 if abs(nu) > 4:
     model_regime = 'full_range'
 
 if model_regime == 'full_range':
     print('model: %s' % model_regime)
-    itmax = 10
-    alpha_rand = 0.6
 elif model_regime == 'near_zero_dielectric_field':
     print('model: %s' % model_regime)
-    itmax = 1e4
-    alpha_rand = 0.3
 
-nprocesses = 12
+alpha_rand_full_range = 0.6
+alpha_rand_asymmetric_calcs = 0.1
+alpha_rho = 0.1  # controls numerical regularization for rho (memory of rho from previews loop)
+nprocesses = 4
 tol = 1e-8
 setH = [0, 1, -2, 2]
 now = datetime.now()
@@ -65,9 +64,9 @@ script_name = __file__
 # file_name = file_name + '.csv'
 machine = platform.node()
 infos = '\n' + ' Starting this script at date/time: ' + current_time_formated + '. \n' + ' This script is running at: ' + machine + ', directory: ' + cwd + '\n'
-folder_name = 'files_' + 'asym_' + str(round(asym, 2)) + '__itmax_' + str(round(itmax, 2)) + '__Zm_' + str(round(Zm * 1e3, 3)) + \
+folder_name = 'files_' + 'asym_' + str(round(asym, 2)) + '__Zm_' + str(round(Zm * 1e3, 3)) + \
               '__alpha_H_oct_int_' + str(round(alpha_H_oct_int, 2)) + '__uz_' + str(round(uz * 1e3, 3)) + '__uperp_' + str(round(uperp * 1e3, 3)) + \
-              '__x_' + str(round(x, 3)) + '__alpha_state_' + str(round(alpha_state, 3)) + '__alpha_rand_' + str(round(alpha_rand, 3)) + '__dens_' + str(round(dens, 1))
+              '__x_' + str(round(x, 3)) + '__alpha_state_' + str(round(alpha_state, 3)) + '__dens_' + str(round(dens, 1))
 
 if not os.path.isdir(aux_dir_path):
     os.makedirs(aux_dir_path)

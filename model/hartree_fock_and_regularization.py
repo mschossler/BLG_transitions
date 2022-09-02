@@ -1,4 +1,4 @@
-from config import itmax, setH
+from config import itmax_full_range, setH
 from input.parameters import *
 from model.densities import rho0constUp, rho0constUm
 # from model.density_test import rho0constUp, rho0constUm
@@ -139,7 +139,7 @@ def loopU(u):
     ######
 
     it = 1
-    while it < itmax:
+    while it < itmax_full_range:
         deltatb = sum([rho[idp(n)][idp(n)] + rho[idps(n)][idps(n)] - rho[idm(n)][idm(n)] - rho[idms(n)][idms(n)] for n in setH])
         # hphpm = [[hp(n, nprime) for n in setH] + [hpm(n, nprime) for n in setH] for nprime in setH]
         # hmphm = [[hmp(n, nprime) for n in setH] + [hm(n, nprime) for n in setH] for nprime in setH]
