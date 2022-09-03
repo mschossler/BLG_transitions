@@ -12,6 +12,14 @@ from utils import frange, sort_dict, observable_to_csv, idxcalc, transitions_ene
 # from model.hartree_fock_and_regularization import loopU
 # from model.hartree_fock_with_asymmetric_interactions import loopU0
 
+
+# class Multiprocessing:
+#     def __init__(self,regime):
+#         self.regime = regime
+#
+#     a_pool = multiprocessing.Pool(processes=nprocesses)
+
+
 a_pool = multiprocessing.Pool(processes=nprocesses)
 
 if model_regime == 'full_range':
@@ -60,6 +68,7 @@ def energies_and_observable_to_csv(quantities):
 energies_df = energies_and_observable_to_csv(quantities)
 if model_regime == 'near_zero_dielectric_field':
     # mode = 'hartree_fock_and_regularization_calcs'
+    # mode = 'fast_none_interact'
     # mode = 'fast_from_file'
     mode = 'fast_from_constant'
 
@@ -69,6 +78,9 @@ if model_regime == 'near_zero_dielectric_field':
         a_pool = multiprocessing.Pool(processes=nprocesses)
         quantities_full_range = a_pool.map(loopU, frange(U0minD, U0maxD, dU0D))
         energies_df_full_range = energies_and_observable_to_csv(quantities_full_range)
+
+    elif mode == 'fast_none_interact':
+        energies_df_full_range = energies_df
 
     elif mode == 'fast_from_file':
         energies_df_full_range = pd.read_csv('input/' + 'energies_nu_0_for_LLm2_and_LL2.csv')
