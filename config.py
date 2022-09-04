@@ -49,7 +49,9 @@ bands = ['LL0_Kp_Sdown', 'LL1_Kp_Sdown', 'LLm2_Kp_Sdown', 'LL2_Kp_Sdown',
 
 bands_oct = ['LL0_Km_Sdown', 'LL0_Kp_Sdown', 'LL1_Km_Sdown', 'LL1_Kp_Sdown', 'LL0_Km_Sup', 'LL0_Kp_Sup', 'LL1_Km_Sup', 'LL1_Kp_Sup']
 # print(bands_oct)
-bands_LL2 = [band for band in bands if '2' in band]
+bands_LLm2_LL2 = [band for band in bands if '2' in band]
+bands_LL2 = [band for band in bands if 'LL2' in band]
+bands_LLm2 = [band for band in bands if 'm2' in band]
 
 file_name = 'nu_' + str(nu)
 file_name_csv = file_name + '.csv'

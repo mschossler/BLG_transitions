@@ -17,6 +17,7 @@ if abs(nu) > 6:
 else:
     print('executing script with nu = %i' % nu)
 
+u_critical = 12  # value of u in meV for phase transition
 asym = 1
 alpha_Zm = 1  # 0.04227165829987071 # k / alpha_k
 alpha_H_oct_int = 1
@@ -109,8 +110,8 @@ k = (np.sqrt(np.pi / 2) * el) / (4 * np.pi * ep0 * epr * Lb) * alpha_k
 
 # Zm = k * 0.0178 #use def above, this is slightly off due to alpha_k
 
-U0minD = 0e-3
-U0maxD = 2e-3
+U0minD = -8e-3
+U0maxD = 31e-3
 dU0D = 1e-3
 
 u_zero = 1
