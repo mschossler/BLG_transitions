@@ -2,8 +2,6 @@ import sys
 
 import numpy as np
 
-# variables_dict = {}
-
 nu_default = 0
 
 if len(sys.argv) == 2:
@@ -23,6 +21,16 @@ alpha_Zm = 1  # 0.04227165829987071 # k / alpha_k
 alpha_H_oct_int = 1
 inter = 1
 alpha_x = 1
+
+U0minD = -8e-3
+U0maxD = 31e-3
+dU0D = 1e-3
+
+u_zero = 1
+u_zero = round(u_zero, 4)
+
+several_tests_mode = 'on'  # change this to off when done with tests
+# several_tests_mode = 'off'
 
 itmax_full_range = 5
 itmax_asymmetric_calcs = 1e4
@@ -65,8 +73,8 @@ model_regime = 'near_zero_dielectric_field'
 alpha_reg = 1
 # dens = 3
 uz = 7e0 * 1e-3  # * 0
-uperp = -1.6e0 * 1e-3  # * 0
-
+uperp = 1.6e0 * 1e-3  # * 0
+print('uz=%(uz).1fmeV, uperp=%(uperp).1fmeV' % {'uz': uz * 1e3, 'uperp': uperp * 1e3})
 # variables_dict['alpha_rho']=alpha_rho
 # variables_dict['alpha_rand']=alpha_rand
 # variables_dict['alpha_reg']=alpha_reg
@@ -110,13 +118,49 @@ k = (np.sqrt(np.pi / 2) * el) / (4 * np.pi * ep0 * epr * Lb) * alpha_k
 
 # Zm = k * 0.0178 #use def above, this is slightly off due to alpha_k
 
-U0minD = -8e-3
-U0maxD = 31e-3
-dU0D = 1e-3
 
-u_zero = 1
-u_zero = round(u_zero, 4)
+parameters_to_save = {'nu': nu,
+                      'number_occupied_bands': number_occupied_bands,
+                      'u_critical_meV': u_critical,
+                      'asym': asym,
+                      'alpha_H_oct_int': alpha_H_oct_int,
+                      'Zm_meV': Zm * 1e3,
+                      'x': x,
+                      'itmax_full_range': itmax_full_range,
+                      'itmax_asymmetric_calcs': itmax_asymmetric_calcs,
+                      'alpha_rand_full_range': alpha_rand_full_range,
+                      'alpha_rand_asymmetric_calcs': alpha_rand_asymmetric_calcs,
+                      'alpha_rho': alpha_rho,
+                      'alpha_k': alpha_k_dic[nu],
+                      'model_regime': model_regime,
+                      'alpha_reg': alpha_reg,
+                      'uz_meV': uz,
+                      'uperp_meV': uperp,
+                      'u_zero_meV': u_zero,
+                      'range_meV': (U0minD * 1e3, U0maxD * 1e3, dU0D * 1e3),
+                      'several_tests_mode': several_tests_mode
+                      }
 
+# if __name__ == "__main__":
+#     # setting path
+#     import sys
+#     sys.path.append('../')
+#     from config import results_dir_path
+# print(sorted(parameters_to_save, key=parameters_to_save.get))
+# print(sorted(parameters_to_save, key=lambda key: parameters_to_save[key]))
+# with open("myfile.txt", 'w') as f:
+#     for key, value in details.items():
+#         f.write('%s:%s\n' % (key, value))
+# print((  ))
+
+# from datetime import datetime
+# with open('parameters.txt', 'w') as parameters_file:
+#     # for key in sorted(parameters_to_save.keys()):
+#     parameters_file.write('created on (Y-m-d): %s \n' % datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+#     for key in sorted(list(parameters_to_save.keys()),key=str.lower):
+#         parameters_file.write('%s = %s\n' % (key, parameters_to_save[key]))
+
+# print(x)
 # print(Zm, alpha_H_oct_int, uz, uperp, x)
 # variables_dict = {}
 # variables_dict.update({k:v for k,v in locals().copy().iteritems() if k[:2] != '__' and k != 'variables_dict'})

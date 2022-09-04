@@ -161,7 +161,7 @@ def loopU0(u):
         rho0 = density_by_model_regime(model_regime)['rho0constUp']  # rhodiagUp
     else:
         rho0 = density_by_model_regime(model_regime)['rho0constUm']  # rhodiagUm
-    print('running hartree_fock_with_asymmetric_interactions for  nu=%(nu)i u=%(u).2fmeV' % {'u': (u * 1e3), 'nu': nu})
+    print('running hartree_fock_with_asymmetric_interactions for  nu=%(nu)i u=%(u).2fmeV ' % {'u': (u * 1e3), 'nu': nu})
     rho = rho0
 
     eigenvaluep2, eigenvectorp2 = eigen(hAp(u))[0][1:3], eigen(hAp(u))[1][1:3]

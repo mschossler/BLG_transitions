@@ -7,7 +7,7 @@ if __name__ == "__main__":
 
     sys.path.append('../')
 
-from config import bands, input_dir_path, dir_path, current_date, aux_dir_path_plot_vs_nu
+from config import bands, input_dir_path, dir_path, current_date, several_tests_mode, results_dir_path_plot_vs_nu
 from input.parameters import alpha_tilda, u_zero
 
 style_dict = {'LL0_Kp_Sdown': {'color': 'lightblue', 'line_shape': '-', 'marker_shape': 'v', 'label': '$\\ \\ \\,0\\mathrm{K}^{+}\\downarrow$'},
@@ -51,9 +51,9 @@ def plot_energies(energies, nu):
     plt.rcParams["figure.figsize"] = (10, 5)
     # plt.show()
     number_occupied_bands_local = nu + 8
-    aux_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + '/'
+    results_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + several_tests_mode
 
-    f.savefig(aux_dir_path_local + "LL(U)_HF_interactions_w_SE_warping_alpha1_nu_" + str(nu) + ".pdf", bbox_inches='tight')
+    f.savefig(results_dir_path_local + "LL(U)_HF_interactions_w_SE_warping_alpha1_nu_" + str(nu) + ".pdf", bbox_inches='tight')
 
 
 transitions_style_dic = {'LL1_Kp_Sdown_to_LL2_Kp_Sdown': {'color': 'tab:blue', 'marker_shape': '2', 'line_shape': '-',
@@ -110,9 +110,9 @@ def plot_transitions(transitions_df, nu):
     plt.rcParams["figure.figsize"] = (10, 5)
     # plt.show()
     number_occupied_bands_local = nu + 8
-    aux_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + '/'
+    results_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + several_tests_mode
 
-    f.savefig(aux_dir_path_local + "Transition_nu_" + str(nu) + ".pdf", bbox_inches='tight')
+    f.savefig(results_dir_path_local + "Transition_nu_" + str(nu) + ".pdf", bbox_inches='tight')
 
 
 def plot_energies_vs_nu():
@@ -120,15 +120,15 @@ def plot_energies_vs_nu():
     energies_df = pd.DataFrame([])
     for nu in range(-6, 7):
         number_occupied_bands_local = nu + 8
-        aux_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + '/'
-        tmp = pd.read_csv(aux_dir_path_local + 'energies_' + 'nu_' + str(nu) + '.csv')  # ,header=None
+        results_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + '/'
+        tmp = pd.read_csv(results_dir_path_local + 'energies_' + 'nu_' + str(nu) + '.csv')  # ,header=None
         tmp.insert(0, 'nu', nu)
         tmp = tmp[round(tmp['u'], 4) == u_zero]
         if tmp.empty:
             print('u_zero=' + str(u_zero) + 'meV not found for energies at nu=' + str(nu))
         # tmp.drop('u',axis=1,inplace=True)
         energies_df = pd.concat([energies_df, tmp], ignore_index=True)
-    energies_df.to_csv(aux_dir_path_plot_vs_nu + 'energies_vs_nu.csv', index=False)
+    energies_df.to_csv(results_dir_path_plot_vs_nu + 'energies_vs_nu.csv', index=False)
     print(energies_df)
 
     f = plt.figure()
@@ -158,7 +158,7 @@ def plot_energies_vs_nu():
     plt.title('Energies as function of filling factor for U ~ 0meV.', fontsize=19, y=-0.24, x=0.55)
     plt.xlabel(r'$\nu$')
     plt.ylabel('Energies(meV)')
-    f.savefig(aux_dir_path_plot_vs_nu + 'energies_vs_nu.pdf', bbox_inches='tight')
+    f.savefig(results_dir_path_plot_vs_nu + 'energies_vs_nu.pdf', bbox_inches='tight')
 
 
 def plot_transitions_vs_nu():
@@ -167,15 +167,15 @@ def plot_transitions_vs_nu():
     transitions_df = pd.DataFrame([])
     for nu in range(-6, 7):
         number_occupied_bands_local = nu + 8
-        aux_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + '/'
-        tmp = pd.read_csv(aux_dir_path_local + 'transitions_' + 'nu_' + str(nu) + '.csv')  # ,header=None
+        results_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + '/'
+        tmp = pd.read_csv(results_dir_path_local + 'transitions_' + 'nu_' + str(nu) + '.csv')  # ,header=None
         tmp.insert(0, 'nu', nu)
         tmp = tmp[round(tmp['u'], 4) == u_zero]
         if tmp.empty:
             print('u_zero=' + str(u_zero) + 'meV not found for transitions at nu=' + str(nu))
         # tmp.drop('u',axis=1,inplace=True)
         transitions_df = pd.concat([transitions_df, tmp], ignore_index=True)
-    transitions_df.to_csv(aux_dir_path_plot_vs_nu + 'transitions_vs_nu.csv', index=False)
+    transitions_df.to_csv(results_dir_path_plot_vs_nu + 'transitions_vs_nu.csv', index=False)
     # print(transitions_df)
 
     f = plt.figure()
@@ -204,7 +204,7 @@ def plot_transitions_vs_nu():
     plt.title('Transition energies as function of filling factor for U ~ 0meV.', fontsize=19, y=-0.24, x=0.55)
     plt.xlabel(r'$\nu$')
     plt.ylabel('Transitions(meV)')
-    f.savefig(aux_dir_path_plot_vs_nu + 'transitions_vs_nu.pdf', bbox_inches='tight')
+    f.savefig(results_dir_path_plot_vs_nu + 'transitions_vs_nu.pdf', bbox_inches='tight')
 
 
 #
@@ -232,10 +232,10 @@ def plot_transitions_vs_nu():
 #     #             energies_df[column_name] = energies_df[column_name]
 #
 #     number_occupied_bands_local = nu + 8
-#     aux_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + '/'
-#     print(aux_dir_path_local)
-#     energies_df.to_csv(aux_dir_path_local + 'energies_' + 'nu_' + str(nu) + '.csv', index=False)
-#     transition_energy_df.to_csv(aux_dir_path_local + 'transitions_' + 'nu_' + str(nu) + '.csv', index=False)
+#     results_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + '/'
+#     print(results_dir_path_local)
+#     energies_df.to_csv(results_dir_path_local + 'energies_' + 'nu_' + str(nu) + '.csv', index=False)
+#     transition_energy_df.to_csv(results_dir_path_local + 'transitions_' + 'nu_' + str(nu) + '.csv', index=False)
 #     plot_energies(energies_df, nu)
 #     plot_transitions(transition_energy_df, nu)
 #     # # eigenU = pd.read_csv(folder_name+namecsv,header=None).applymap(complex).applymap( lambda x: round(x.real,decimals) )
@@ -275,8 +275,8 @@ def plot_transitions_vs_nu():
 
 
 if __name__ == "__main__":
-    # energies_df = pd.read_csv(aux_dir_path + 'energies_' + file_name_csv)
-    # transitions_df = pd.read_csv(aux_dir_path + 'transitions_' + file_name_csv)
+    # energies_df = pd.read_csv(results_dir_path + 'energies_' + file_name_csv)
+    # transitions_df = pd.read_csv(results_dir_path + 'transitions_' + file_name_csv)
     # print(energies_df)
     # plot_energies(energies_df)
     # # plot_transitions(transitions_df)

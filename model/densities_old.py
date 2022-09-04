@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from config import aux_dir_path, tol, alpha_rand, file_name_csv
+from config import results_dir_path, tol, alpha_rand, file_name_csv
 from input.parameters import number_occupied_bands, nu
 from utils import eigen, check_hermitian, check_real
 
@@ -21,7 +21,7 @@ diag = [x[1] for x in spindownUm + spinupUm]
 print('is the filling factor right (U<0)?:', sum(diag) == number_occupied_bands)
 rho0constUm = np.diag(diag)
 
-# rho0rand = pd.read_csv(  aux_dir_path + 'rhoconstphbroken.csv', header=None).values.tolist()
+# rho0rand = pd.read_csv(  results_dir_path + 'rhoconstphbroken.csv', header=None).values.tolist()
 # # print(rho0rand)
 # rho = rho0rand
 
@@ -52,11 +52,11 @@ if res:
 
 else:
     print('rho0rand is not hermitian')
-    pd.DataFrame(rho0).to_csv(aux_dir_path + 'rho0_nsymmetric_' + file_name_csv, mode='w', index=False, header=False)
+    pd.DataFrame(rho0).to_csv(results_dir_path + 'rho0_nsymmetric_' + file_name_csv, mode='w', index=False, header=False)
     exit()
 
-pd.DataFrame(rho0).to_csv(aux_dir_path + 'rho0' + file_name_csv, mode='w', index=False, header=False)
+pd.DataFrame(rho0).to_csv(results_dir_path + 'rho0' + file_name_csv, mode='w', index=False, header=False)
 #
 #
 # rhoUdf = pd.DataFrame([])
-# rhoUdf.to_csv( aux_dir_path + 'rhoU_tmp_' + namecsv, mode='w', index=False, header=False)
+# rhoUdf.to_csv( results_dir_path + 'rhoU_tmp_' + namecsv, mode='w', index=False, header=False)

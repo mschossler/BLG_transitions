@@ -1,12 +1,13 @@
 import multiprocessing
 import time
+from datetime import datetime
 
 t0 = time.time()
 
 import pandas as pd
 
-from config import model_regime, aux_dir_path, file_name_csv, nprocesses, bands, bands_LLm2_LL2, bands_LL2, bands_LLm2
-from input.parameters import U0minD, U0maxD, dU0D, nu, u_critical
+from config import model_regime, results_dir_path, file_name_csv, nprocesses, bands, bands_LLm2_LL2, bands_LL2, bands_LLm2
+from input.parameters import U0minD, U0maxD, dU0D, nu, u_critical, parameters_to_save
 from utils import frange, sort_dict, observable_to_csv, idxcalc, transitions_energy_fermi_energy
 
 a_pool = multiprocessing.Pool(processes=nprocesses)
@@ -70,10 +71,12 @@ energies_df = energies_and_observable_to_csv(quantities)
 
 
 if model_regime == 'near_zero_dielectric_field':
-    mode = 'hartree_fock_and_regularization_calcs'
-    # mode = 'fast_none_interact'
+    # mode = 'hartree_fock_and_regularization_calcs'
+    mode = 'fast_none_interact'
     # mode = 'fast_from_file'
     # mode = 'fast_from_constant'
+
+    print('approximation mode for LL2 and LLm2: %s' % mode)
 
     energies_df_from_file = pd.read_csv('input/' + 'energies_nu_0_for_LLm2_LL2_HighFieldRange.csv')
     energies_df_from_file = energies_df_from_file[(energies_df_from_file['u'] >= U0minD * 1e3) & (energies_df_from_file['u'] < U0maxD * 1e3)].reset_index(drop=True)
@@ -130,8 +133,8 @@ if model_regime == 'near_zero_dielectric_field':
 # print('after')
 energies_df, transition_energy_df = transitions_energy_fermi_energy(energies_df, nu)  # add fermi_energy to energies_df
 
-energies_df.to_csv(aux_dir_path + 'energies_' + file_name_csv, index=False)
-transition_energy_df.to_csv(aux_dir_path + 'transitions_' + file_name_csv, index=False)
+energies_df.to_csv(results_dir_path + 'energies_' + file_name_csv, index=False)
+transition_energy_df.to_csv(results_dir_path + 'transitions_' + file_name_csv, index=False)
 
 from visualization.plots import plot_energies, plot_transitions
 
@@ -139,6 +142,13 @@ print(energies_df)
 print(transition_energy_df)
 plot_energies(energies_df, nu)
 plot_transitions(transition_energy_df, nu)
+
+with open(results_dir_path + 'parameters.txt', 'w') as parameters_file:
+    # with open('parameters.txt', 'w') as parameters_file:
+    # for key in sorted(parameters_to_save.keys()):
+    parameters_file.write('created on (Y-m-d): %s \n' % datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    for key in sorted(list(parameters_to_save.keys()), key=str.lower):
+        parameters_file.write('%s = %s\n' % (key, parameters_to_save[key]))
 
 print('files ' + file_name_csv + ' saved')
 print('working duration for nu=%(nu)i: %(t).1fs' % {'t': time.time() - t0, 'nu': nu})

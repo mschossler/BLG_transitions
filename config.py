@@ -5,7 +5,7 @@ from datetime import datetime
 import numpy as np
 import pandas as pd
 
-from input.parameters import Zm, asym, x, alpha_H_oct_int, uz, uperp, nu, number_occupied_bands, model_regime  # , alpha_state, dens,
+from input.parameters import Zm, asym, x, alpha_H_oct_int, uz, uperp, nu, number_occupied_bands, model_regime, several_tests_mode  # , alpha_state, dens,
 
 pd.set_option('display.max_columns', 300)
 pd.set_option('display.width', 1000)
@@ -35,10 +35,15 @@ path = os.path.abspath(__file__)
 dir_path = os.path.dirname(path)
 # print(dir_path)
 
-aux_dir_path = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands) + '/'
-aux_dir_path_plot_vs_nu = dir_path + '/results/results_' + current_date + '/vs_nu/'
-# aux_dir_path = dir_path + '/results_old/occupation_' + str(number_occupied_bands) + '/'
-print(aux_dir_path_plot_vs_nu)
+if several_tests_mode == 'on':
+    several_tests_mode = '/' + current_time + '__uz_' + str(round(uz * 1e3, 3)) + '__uperp_' + str(round(uperp * 1e3, 3)) + '/'
+elif several_tests_mode == 'off':
+    several_tests_mode = '/'
+
+results_dir_path = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands) + several_tests_mode
+results_dir_path_plot_vs_nu = dir_path + '/results/results_' + current_date + '/vs_nu/'
+# results_dir_path = dir_path + '/results_old/occupation_' + str(number_occupied_bands) + '/'
+# print(results_dir_path_plot_vs_nu)
 
 input_dir_path = dir_path + '/input/'
 # bands = ['0p-', '1p-', '-2p-', '2p-', '0m-', '1m-', '-2m-', '2m-', '0p+', '1p+', '-2p+', '2p+', '0m+', '1m+', '-2m+', '2m+']
@@ -64,15 +69,15 @@ folder_name = 'files_' + 'asym_' + str(round(asym, 2)) + '__Zm_' + str(round(Zm 
               '__alpha_H_oct_int_' + str(round(alpha_H_oct_int, 2)) + '__uz_' + str(round(uz * 1e3, 3)) + '__uperp_' + str(round(uperp * 1e3, 3)) + \
               '__x_' + str(round(x, 3)) + '__alpha_state_'  # + str(round(alpha_state, 3)) + '__dens_' + str(round(dens, 1))
 
-if not os.path.isdir(aux_dir_path):
-    os.makedirs(aux_dir_path)
+if not os.path.isdir(results_dir_path):
+    os.makedirs(results_dir_path)
 
-if not os.path.isdir(aux_dir_path_plot_vs_nu):
-    os.makedirs(aux_dir_path_plot_vs_nu)
+if not os.path.isdir(results_dir_path_plot_vs_nu):
+    os.makedirs(results_dir_path_plot_vs_nu)
 
 if os.path.isfile('screenlog.0'):
-    os.remove(aux_dir_path + 'screenlog.0')
+    os.remove(results_dir_path + 'screenlog.0')
 
 print(infos)
-with open(aux_dir_path + 'progress.txt', 'a') as f:
+with open(results_dir_path + 'progress.txt', 'a') as f:
     print(infos, file=f)
