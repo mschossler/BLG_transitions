@@ -46,6 +46,7 @@ def energies_and_observable_to_csv(quantities, export_to_file=True):
     #     observable_to_csv(quantities_dict, quantity)
     list_of_u = list(quantities_dict.keys())
     list_of_observables = list(quantities_dict[list_of_u[0]].keys())
+    list_of_observables.remove('u')
     # print(list_of_observables)
     if export_to_file:
         for quantity in list_of_observables:

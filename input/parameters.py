@@ -22,8 +22,8 @@ alpha_H_oct_int = 1
 inter = 1
 alpha_x = 1
 
-U0minD = -8e-3
-U0maxD = 31e-3
+U0minD = 0e-3
+U0maxD = 2e-3
 dU0D = 1e-3
 
 u_zero = 1
@@ -73,7 +73,7 @@ model_regime = 'near_zero_dielectric_field'
 alpha_reg = 1
 # dens = 3
 uz = 7e0 * 1e-3  # * 0
-uperp = 1.6e0 * 1e-3  # * 0
+uperp = -1.6e0 * 1e-3  # * 0
 print('uz=%(uz).1fmeV, uperp=%(uperp).1fmeV' % {'uz': uz * 1e3, 'uperp': uperp * 1e3})
 # variables_dict['alpha_rho']=alpha_rho
 # variables_dict['alpha_rand']=alpha_rand

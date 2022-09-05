@@ -21,7 +21,8 @@ elif model_regime == 'near_zero_dielectric_field':
     print('model: %s' % model_regime)
 
 nprocesses = 10
-tol = 1e-8
+# print(np.finfo(float).eps)
+tol = 1e-12
 setH = [0, 1, -2, 2]
 now = datetime.now()
 current_time_formated = now.strftime("%Y-%m-%d %H:%M:%S")
@@ -52,8 +53,10 @@ bands = ['LL0_Kp_Sdown', 'LL1_Kp_Sdown', 'LLm2_Kp_Sdown', 'LL2_Kp_Sdown',
          'LL0_Kp_Sup', 'LL1_Kp_Sup', 'LLm2_Kp_Sup', 'LL2_Kp_Sup',
          'LL0_Km_Sup', 'LL1_Km_Sup', 'LLm2_Km_Sup', 'LL2_Km_Sup']
 
-bands_oct = ['LL0_Km_Sdown', 'LL0_Kp_Sdown', 'LL1_Km_Sdown', 'LL1_Kp_Sdown', 'LL0_Km_Sup', 'LL0_Kp_Sup', 'LL1_Km_Sup', 'LL1_Kp_Sup']
-# print(bands_oct)
+base_octet = ['LL0_Km_Sdown', 'LL0_Kp_Sdown', 'LL1_Km_Sdown', 'LL1_Kp_Sdown', 'LL0_Km_Sup', 'LL0_Kp_Sup', 'LL1_Km_Sup', 'LL1_Kp_Sup']  #
+indexes_octet_on_bands = [bands.index(band) for band in base_octet]
+# print(indexes_octet_on_bands)
+# print(base_octet)
 bands_LLm2_LL2 = [band for band in bands if '2' in band]
 bands_LL2 = [band for band in bands if 'LL2' in band]
 bands_LLm2 = [band for band in bands if 'm2' in band]

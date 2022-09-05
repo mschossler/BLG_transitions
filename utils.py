@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from numpy import linalg as npla
 
-from config import results_dir_path, file_name_csv, bands
+from config import results_dir_path, file_name_csv, bands, tol
 
 
 def frange(start, end, inc):
@@ -16,7 +16,7 @@ def eigen(A):
     eigenValues = eigenValues[idxfunc]
     eigenVectors = eigenVectors[:, idxfunc]
     # return eigenValues.real, np.transpose(eigenVectors)
-    return eigenValues, np.transpose(eigenVectors)
+    return remove_small_imag(eigenValues), remove_small_imag(np.transpose(eigenVectors))
 
 
 def check_hermitian(a, tol):
@@ -36,11 +36,22 @@ def sort_dict(dict):
     return sorted_dict
 
 
+# returns real part if imag<tol
+tol_machine_epsilon = tol / np.finfo(float).eps
+
+
+# print(tol_machine_epsilon)
+def remove_small_imag(scalar):
+    # print(scalar)
+    return np.real_if_close(scalar, tol_machine_epsilon)
+
+
 def observable_to_csv(obeservables_dict, obeservable):
     obeservable_list = []
     for k, v in obeservables_dict.items():
         obeservable_list.append([k, v[obeservable]])
     obeservable_df = pd.DataFrame(obeservable_list)
+    obeservable_df = obeservable_df.applymap(remove_small_imag)
     obeservable_df.to_csv(results_dir_path + obeservable + '_' + file_name_csv, index=False, header=False)
 
 
@@ -103,10 +114,47 @@ for sector in bands_by_sector:
                 allowed_transitions.append((band1, band2))
 
 
+# def remove_imaginary_energy(energy_u_series,u,nu):
+#     def check_if_real(scalar):
+#         if np.imag(scalar)>tol:
+#             # print(energy_u_series, u)
+#             # exit()
+#             print('none-zero imaginary part for nu=%(nu)i, u=%(u).2fmeV '% {'u': (u * 1e3), 'nu': nu} )
+#             # scalar = np.real(scalar)
+#             # return True
+#         # else:
+#             # return False
+#         # return scalar.real
+#     energy_u_series.map(check_if_real, na_action='ignore')
+
+
+# scalar = np.real(scalar)
+# return True
+# else:
+# return False
+# return scalar.real
+# energy_u_series.map(check_if_real, na_action='ignore')
+# def check_if_real(scalar,u,nu):
+#     if np.imag(scalar)>tol:
+#         print('none-zero imaginary part for nu=%(nu)i, u=%(u).2fmeV '% {'u': (u * 1e3), 'nu': nu} )
+#         # scalar = np.real(scalar)
+#     return scalar.real
+
+# .apply(check_if_real, result_type='ignore', args=(u,nu))
+
 def transitions_energy_and_fermi_energy_u(energy_u, nu):
     u = energy_u['u']
     energy_u.drop('u', axis=0, inplace=True)
-
+    # energy_u
+    # if check_if_complex(energy_u,u,nu):
+    #     print('here')
+    #     print('here0',check_if_complex(energy_u,u,nu))
+    #     energy_u = energy_u.map(np.real)
+    #     print('here0',check_if_complex(energy_u,u,nu))
+    #     print('here2')
+    # print('here3', check_if_complex(energy_u, u, nu))
+    # print(u,energy_u)
+    # energy_u = energy_u.apply(check_if_real, args=(u, nu)).copy()
     number_occupied_bands = nu + 8
     occupied_states = energy_u.nsmallest(number_occupied_bands, keep='all')
     unoccupied_states = energy_u.nlargest(len(bands) - number_occupied_bands, keep='all')[::-1]  # must be reversed for right fermi_energy
@@ -142,15 +190,35 @@ def transitions_energy_and_fermi_energy_u(energy_u, nu):
     return transitions_energy_and_fermi_energy_u_dict
 
 
+# pd.options.mode.chained_assignment = None  # default='warn'
+def check_if_complex(energy_u_series, u, nu):
+    complex_part = False
+    for energy in energy_u_series.values:
+        if abs(energy.imag) > 0:
+            complex_part = True
+            print('-> warning: none-zero imaginary part energy %(imag).2fmeV for nu=%(nu)i, u=%(u).2fmeV ' % {'u': u, 'nu': nu, 'imag': energy.imag})
+            # return complex_part
+    return complex_part
+
+
 def transitions_energy_fermi_energy(energies, nu):
     transitions_energy = pd.DataFrame([])
     fermi_energy = []
     for ind in energies.index:
         energy_u = energies.loc[ind]
+        if check_if_complex(energy_u, ind, nu):
+            # print('here')
+            # print('here0', check_if_complex(energy_u, ind, nu))
+            energy_u = energy_u.map(np.real)
+            # print('here0', check_if_complex(energy_u, ind, nu))
+            # print('here2')
+        energy_u = energy_u.map(remove_small_imag)
+        # print('here3', check_if_complex(energy_u, ind, nu))
+        # print(ind, energy_u)
         #         print(energy_u,type(energy_u))
         #         print(transitions_energy_and_fermi_energy_u(energy_u))
         transitions_energy_and_fermi_energy_u_dict = transitions_energy_and_fermi_energy_u(energy_u, nu)
-
+        # print(transitions_energy_and_fermi_energy_u_dict)
         transitions_energy_u = transitions_energy_and_fermi_energy_u_dict['transitions_energy_u_df']
         fermi_energy.append(transitions_energy_and_fermi_energy_u_dict['fermi_energy'])
         #         print(transitions_energy_and_fermi_energy_u_dict)
@@ -158,6 +226,8 @@ def transitions_energy_fermi_energy(energies, nu):
         transitions_energy = pd.concat([transitions_energy, transitions_energy_u], axis=0)
     # transitions_energy['u'] = transitions_energy.index.values
     transitions_energy.insert(0, 'u', transitions_energy.index.values)
+    transitions_energy = transitions_energy.reset_index(drop=True)
+    energies = energies.applymap(np.real)
     energies['fermi_energy'] = fermi_energy
     return energies, transitions_energy
 

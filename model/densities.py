@@ -15,12 +15,13 @@ if __name__ == "__main__":
     input_dir = '../input/'
 
 from input.parameters import nu, number_occupied_bands, alpha_rand_full_range, alpha_rand_asymmetric_calcs  # , model_regime
-from config import bands, bands_oct
-from utils import eigen
+from config import bands, base_octet
+from utils import eigen, remove_small_imag
 
 
-# def real_part(x):
-#     return x
+# remove_small_imag = np.vectorize(remove_small_imag)
+# def array_map(x):
+#     return np.vectorize(remove_small_imag)
 
 class Density_Seed:
     def __init__(self, model_regime, nu):
@@ -36,7 +37,7 @@ class Density_Seed:
     filling_order_Unegative = ['LLm2_Km_Sdown', 'LLm2_Km_Sup', 'LLm2_Kp_Sdown', 'LLm2_Kp_Sup', 'LL0_Kp_Sdown', 'LL0_Km_Sdown', 'LL0_Kp_Sup', 'LL0_Km_Sup', 'LL1_Kp_Sdown',
                                'LL1_Km_Sdown', 'LL1_Kp_Sup', 'LL1_Km_Sup', 'LL2_Km_Sdown', 'LL2_Km_Sup']
 
-    # bands_oct = ['LL0_Km_Sdown', 'LL0_Kp_Sdown', 'LL1_Km_Sdown', 'LL1_Kp_Sdown', 'LL0_Km_Sup', 'LL0_Kp_Sup', 'LL1_Km_Sup', 'LL1_Kp_Sup']
+    # base_octet = ['LL0_Km_Sdown', 'LL0_Kp_Sdown', 'LL1_Km_Sdown', 'LL1_Kp_Sdown', 'LL0_Km_Sup', 'LL0_Kp_Sup', 'LL1_Km_Sup', 'LL1_Kp_Sup']
     seed_oct_dict = {-4: (0, 0, 0, 0, 0, 0, 0, 0),
                      -3: (1, 0, 0, 0, 0, 0, 0, 0),
                      -2: (1, 1, 0, 0, 0, 0, 0, 0),
@@ -71,6 +72,7 @@ class Density_Seed:
 
             rhorand16 = rhorand8_zero + zero_rhorand8
 
+
         return rhorand16
 
     def diag_full_regime(self, u_signal):
@@ -96,7 +98,7 @@ class Density_Seed:
         seed_oct = self.seed_oct_dict[self.nu]
         number_occupied_bands_local = sum(seed_oct) + 4
         # number_occupied_bands = nu + 8
-        occupied_octet_states = [bands_oct[i] for i in range(8) if seed_oct[i]]
+        occupied_octet_states = [base_octet[i] for i in range(8) if seed_oct[i]]
 
         filling_order = self.filling_order_Upositive[0:4] + occupied_octet_states + self.filling_order_Upositive[-2::1]
 
@@ -115,11 +117,17 @@ class Density_Seed:
 
     def assign_densities(self):
         if self.model_regime == 'full_range':
-            self.rho0constUp = np.real(self.diag_full_regime(+1))
-            self.rho0constUm = np.real(self.diag_full_regime(-1))
+            self.rho0constUp = remove_small_imag(self.diag_full_regime(+1))
+            self.rho0constUm = remove_small_imag(self.diag_full_regime(-1))
         elif self.model_regime == 'near_zero_dielectric_field':
-            self.rho0constUp = np.real(self.seed_asymmetric_calcs())
-            self.rho0constUm = np.real(self.seed_asymmetric_calcs())
+            self.rho0constUp = remove_small_imag(self.seed_asymmetric_calcs())
+            self.rho0constUm = remove_small_imag(self.seed_asymmetric_calcs())
+        # if self.model_regime == 'full_range':
+        #     self.rho0constUp = remove_small_imag(self.diag_full_regime(+1))
+        #     self.rho0constUm = remove_small_imag(self.diag_full_regime(-1))
+        # elif self.model_regime == 'near_zero_dielectric_field':
+        #     self.rho0constUp = remove_small_imag(self.seed_asymmetric_calcs())
+        #     self.rho0constUm = remove_small_imag(self.seed_asymmetric_calcs())
 
 
 def density_by_model_regime(model_regime):

@@ -4,7 +4,7 @@ from model.densities import density_by_model_regime
 # from model.density_test import rho0constUp, rho0constUm
 from model.exchange_integrals import Xskm, Xskp
 from model.hamiltonians import full_hp, full_hm, full_hpm, full_hmp, idp, idps, idm, idms, mZm, hAp, hBp, hCp
-from utils import eigen, df_round, nonedimmerp, nonedimmerm
+from utils import eigen, df_round, nonedimmerp, nonedimmerm, remove_small_imag
 
 # if model_regime == 'near_zero_dielectric_field':
 #     print('executing hartree_fock_and_regularization to return LL2 and LLm2 for near_zero_dielectric_field regime')
@@ -100,7 +100,7 @@ def loopU(u):
         rho0 = density_by_model_regime(model_regime)['rho0constUp']
     else:
         rho0 = density_by_model_regime(model_regime)['rho0constUm']
-    print('running hartree_fock_and_regularization with nu=%(nu)i u=%(u).2fmeV ' % {'u': (u * 1000), 'nu': nu})
+    print('running hartree_fock_and_regularization with nu=%(nu)i u=%(u).2fmeV ' % {'u': (u * 1e3), 'nu': nu})
     rho = rho0
 
     ################### warping #############################################################
@@ -200,7 +200,7 @@ def loopU(u):
     Et = sum([eigenvalue[i] for i in range(number_occupied_bands)]) + ehf
 
     dict_quantities_u = {'u': u * 1e3,
-                         'eigenvalue': 1e3 * np.real(eigenvalue),  # np.real due to numerical fluctuations
+                         'eigenvalue': 1e3 * remove_small_imag(eigenvalue),  # np.real due to numerical fluctuations
                          'eigenvector': eigenvector,
                          'Et': 1e3 * Et,
                          'h0': df_round(1e3 * h0),

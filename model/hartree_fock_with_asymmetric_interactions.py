@@ -1,9 +1,9 @@
-from config import bands, bands_oct  # , itmax_asymmetric_calcs, alpha_rho
+from config import bands, base_octet, indexes_octet_on_bands  # , itmax_asymmetric_calcs, alpha_rho
 from input.parameters import *
 from model.densities import density_by_model_regime
 from model.exchange_integrals import Xzs, Xzd, Xos, Xod, Xfs, Xfd, Xsts, Xstd
 from model.hamiltonians import mZm, hAp, hBp, hCp  # , asymmetric_h, taux, tauy, tauz
-from utils import eigen, nonedimmerp, nonedimmerm, tau_func, df_round
+from utils import eigen, nonedimmerp, nonedimmerm, tau_func, df_round, remove_small_imag
 
 model_regime = 'near_zero_dielectric_field'
 
@@ -13,9 +13,9 @@ model_regime = 'near_zero_dielectric_field'
 # import time
 # time.sleep(.2)
 map_octet_to_all_LL_index = {}
-for band in bands_oct:
+for band in base_octet:
     #     print(base_oct.index(base)+1,bands.index(base))
-    map_octet_to_all_LL_index[bands_oct.index(band) + 1] = bands.index(band)
+    map_octet_to_all_LL_index[base_octet.index(band) + 1] = bands.index(band)
 
 map_octet_to_all_LL_index_inverse = {}
 for key in map_octet_to_all_LL_index:
@@ -211,23 +211,33 @@ def loopU0(u):
     # print(Hint_longrange)
     # eigenvalue, eigenvector = npla.eig(H) # follows notation (bands list) order
     eigenvalue, eigenvector = eigen(H)
+    rho_diag_octet = np.diag(rho)[indexes_octet_on_bands]
+    trace_rho_diag_octet = round(sum(rho_diag_octet), 3)
+    sum_off_diag_rho_octet = round(np.sum(rho) - trace_rho_diag_octet - 4, 3)
+    rho_diag_octet_real_part = np.real(np.diag(rho)[indexes_octet_on_bands])
+    trace_rho_diag_octet_real_part = round(sum(rho_diag_octet_real_part), 3)
     # print(eigenvalue*1e3)
     # eigenvector = np.transpose(eigenvector)# follows notation (bands list) order
     # eigenvalue_h0, eigenvector = npla.eig(h0+mZm)
     # eigenvalue_H_asym, eigenvector = npla.eig(H_asym)
     #
     #
-    # print(sorted(np.real(eigenvalue_h0)*1e3))
-    # print(sorted(np.real(eigenvalue_H_asym)*1e3))
-    # print(sorted(np.real(eigenvalue)*1e3))
+    # print(sorted(remove_small_imag(eigenvalue_h0)*1e3))
+    # print(sorted(remove_small_imag(eigenvalue_H_asym)*1e3))
+    # print(sorted(remove_small_imag(eigenvalue)*1e3))
 
-    # return [u * 1e3]+ (np.real(eigenvalue) * 1e3).tolist()
+    # return [u * 1e3]+ (remove_small_imag(eigenvalue) * 1e3).tolist()
     dict_quantities_u = {'u': u * 1e3,
-                         'eigenvalue': 1e3 * np.real(eigenvalue),
+                         'eigenvalue': 1e3 * remove_small_imag(eigenvalue),
                          'eigenvector': eigenvector,
                          # 'Et': 1e3 * Et,
                          # 'h0': df_round(1e3 * h0),
-                         'rhoU': df_round(rho),
+                         'rho(density)': df_round(rho),
+                         'rho_diag_octet': rho_diag_octet,
+                         'trace_rho_diag_octet': trace_rho_diag_octet,
+                         'sum_off_diag_rho_octet': sum_off_diag_rho_octet,
+                         'rho_diag_octet_real_part': rho_diag_octet_real_part,
+                         'trace_rho_diag_octet_real_part': trace_rho_diag_octet_real_part
                          # 'Eh_deltaU': 1e3 * k * Eh * deltatb,
                          # 'Hint': df_round(1e3 * Hint),
                          # 'regmatrix': 1e3 * regmatrix
@@ -236,9 +246,9 @@ def loopU0(u):
     #                     exciton_j_to_n_km(1, 2, eigenvectorm_none_interact), exciton_j_to_n_kp(1, 2, eigenvectorp_none_interact)])
 
     # dict_quantities_u['exciton_energy'] = 1e3 * exciton
-    # print(sorted(np.real(eigenvalue_h0)*1e3))
-    # print(sorted(np.real(eigenvalue_H_asym)*1e3))
-    # print(sorted(np.real(eigenvalue)*1e3))
+    # print(sorted(remove_small_imag(eigenvalue_h0)*1e3))
+    # print(sorted(remove_small_imag(eigenvalue_H_asym)*1e3))
+    # print(sorted(remove_small_imag(eigenvalue)*1e3))
 
-    # return [u * 1e3]+ (np.real(eigenvalue) * 1e3).tolist()
+    # return [u * 1e3]+ (remove_small_imag(eigenvalue) * 1e3).tolist()
     return dict_quantities_u
