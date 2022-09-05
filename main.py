@@ -2,6 +2,8 @@ import multiprocessing
 import time
 from datetime import datetime
 
+import numpy as np
+
 t0 = time.time()
 
 import pandas as pd
@@ -103,14 +105,24 @@ if model_regime == 'near_zero_dielectric_field':
     print('approximation mode for LL2 and LLm2: %s' % mode)
 
     energies_df_from_file = pd.read_csv('input/' + 'energies_nu_0_for_LLm2_LL2_HighFieldRange.csv')
-    energies_df_from_file = energies_df_from_file[(energies_df_from_file['u'] >= U0minD * 1e3) & (energies_df_from_file['u'] < U0maxD * 1e3)].reset_index(drop=True)
+
+
+    # energies_df_from_file = energies_df_from_file[(energies_df_from_file['u'] >= U0minD * 1e3) & (energies_df_from_file['u'] < U0maxD * 1e3)].reset_index(drop=True)
 
 
     # print('file \n', energies_df_from_file)
 
     def assign_HighFieldRange(energies, energies_high_u):
-        energies.loc[energies['u'] > u_critical] = energies_high_u.loc[energies_high_u['u'] > u_critical].values
-        energies.loc[energies['u'] < -u_critical] = energies_high_u.loc[energies_high_u['u'] < -u_critical].values
+        # print(frange(U0minD, U0minD_tmp, dU0D) * 1e3)
+        # energies.loc[energies['u'] > u_critical*1e3] = energies_high_u[np.isin(energies_high_u['u'],frange(U0maxD_tmp,U0maxD,dU0D)*1e3)].values
+        # energies.loc[energies['u'] < -u_critical*1e3] = energies_high_u[np.isin(energies_high_u['u'],frange(U0minD,U0minD_tmp,dU0D)*1e3)].values
+
+        energies_high_u_positive = energies_high_u[np.isin(energies_high_u['u'], frange(U0maxD_tmp, U0maxD, dU0D) * 1e3)]
+        energies_high_u_negative = energies_high_u[np.isin(energies_high_u['u'], frange(U0minD, U0minD_tmp, dU0D) * 1e3)]
+        # print(energies_high_u_negative)
+        energies = pd.concat([energies_high_u_negative, energies, energies_high_u_positive]).reset_index(drop=True)
+        # print(energies)
+        # exit()
         return energies
 
 

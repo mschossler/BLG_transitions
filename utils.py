@@ -9,6 +9,27 @@ def frange(start, end, inc):
     return np.round(np.arange(start, end, inc).tolist(), 6)
 
 
+# print(tol_machine_epsilon)
+def remove_small_imag(scalar):
+    # print(scalar)
+    return np.real_if_close(scalar, tol_machine_epsilon)
+
+
+def check_if_complex(energy_iterable, u, nu):
+    complex_part = False
+    # print(u)
+    for energy in energy_iterable:
+        if abs(np.imag(energy)) > 0:
+            complex_part = True
+            # print(u)
+            warning = '-> warning: none-zero imaginary part energy %(imag).4fmeV for nu=%(nu)i, u=%(u).2fmeV ' % {'u': u * 1e3, 'nu': nu, 'imag': energy.imag * 1e3}
+            print(warning)
+            with open(results_dir_path + 'warnings.txt', 'a') as f:
+                print(warning, file=f)
+            # return complex_part
+    return complex_part
+
+
 def eigen(A):
     'returns eigenvalues and respective eigenvectors ordered by np.argsort'
     eigenValues, eigenVectors = npla.eig(A)
@@ -40,10 +61,6 @@ def sort_dict(dict):
 tol_machine_epsilon = tol / np.finfo(float).eps
 
 
-# print(tol_machine_epsilon)
-def remove_small_imag(scalar):
-    # print(scalar)
-    return np.real_if_close(scalar, tol_machine_epsilon)
 
 
 def observable_to_csv(obeservables_dict, obeservable):
@@ -143,20 +160,10 @@ for sector in bands_by_sector:
 
 # .apply(check_if_real, result_type='ignore', args=(u,nu))
 
-def check_if_complex(energy_u_series, u, nu):
-    complex_part = False
-    # print(u)
-    for energy in energy_u_series.values:
-        if abs(energy.imag) > 0:
-            complex_part = True
-            # print(u)
-            print('-> warning: none-zero imaginary part energy %(imag).4fmeV for nu=%(nu)i, u=%(u).2fmeV ' % {'u': u, 'nu': nu, 'imag': energy.imag})
-            # return complex_part
-    return complex_part
-
 
 def transitions_energy_and_fermi_energy_u(energy_u, nu):
     u = energy_u['u']
+    # print(u)
     energy_u.drop('u', axis=0, inplace=True)
     # if check_if_complex(energy_u, u, nu):
     #     # print('here')
@@ -226,16 +233,18 @@ def transitions_energy_and_fermi_energy_u(energy_u, nu):
 def transitions_energy_fermi_energy(energies, nu):
     transitions_energy = pd.DataFrame([])
     fermi_energy = []
-    for ind in energies.index:
-        energy_u = energies.loc[ind]
-        u = np.real(energy_u['u'])
-        if check_if_complex(energy_u, u, nu):
-            # print('here')
-            # print('here0', check_if_complex(energy_u, ind, nu))
-            energy_u = energy_u.map(np.real)
-            # print('here0', check_if_complex(energy_u, ind, nu))
-            # print('here2')
-        energy_u = energy_u.map(remove_small_imag)
+    # for ind in energies.index:
+    for _, energy_u in energies.iterrows():
+        # print(index, energy_u['u'])
+        # energy_u = energies.loc[ind]
+        # u = np.real(energy_u['u'])
+        # if check_if_complex(energy_u, u, nu):
+        #     # print('here')
+        #     # print('here0', check_if_complex(energy_u, ind, nu))
+        #     energy_u = energy_u.map(np.real)
+        #     # print('here0', check_if_complex(energy_u, ind, nu))
+        #     # print('here2')
+        # energy_u = energy_u.map(remove_small_imag)
         # print('here3', check_if_complex(energy_u, ind, nu))
         # print(ind, energy_u)
         #         print(energy_u,type(energy_u))

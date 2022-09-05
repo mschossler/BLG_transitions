@@ -15,22 +15,22 @@ if abs(nu) > 6:
 else:
     print('executing script with nu = %i' % nu)
 
-u_critical = 12  # value of u in meV for phase transition
+u_critical = 12e-3  # value of u in eV for phase transition
 asym = 1
 alpha_Zm = 1  # 0.04227165829987071 # k / alpha_k
 alpha_H_oct_int = 1
 inter = 1
 alpha_x = 1
 
-U0minD = -10e-3
-U0maxD = 45e-3
+U0minD = -18e-3
+U0maxD = 10e-3
 dU0D = 1e-3
 
 u_zero = 1
 u_zero = round(u_zero, 4)
 
-several_tests_mode = 'on'  # change this to off when done with tests
-# several_tests_mode = 'off'
+tests_mode = 'on'  # change this to off when done with tests
+# tests_mode = 'off'
 
 itmax_full_range = 5
 itmax_asymmetric_calcs = int(1e4)
@@ -71,11 +71,13 @@ model_regime = 'near_zero_dielectric_field'
 # model_regime = 'full_range'
 
 #### appoximation mode for LL2 and LLm2 ###
-# mode = 'hartree_fock_and_regularization_calcs'
+mode = 'hartree_fock_and_regularization_calcs'
 # mode = 'fast_none_interact'
 # mode = 'fast_from_file'
-mode = 'fast_from_constant'
+# mode = 'fast_from_constant'
 #########
+# if tests_mode=='off':
+#     mode = 'hartree_fock_and_regularization_calcs'
 
 # alpha_state = 1
 alpha_reg = 1
@@ -129,7 +131,7 @@ k = (np.sqrt(np.pi / 2) * el) / (4 * np.pi * ep0 * epr * Lb) * alpha_k
 
 parameters_to_save = {'nu': nu,
                       'number_occupied_bands': number_occupied_bands,
-                      'u_critical_meV': u_critical,
+                      'u_critical_meV': u_critical * 1e3,
                       'asym': asym,
                       'alpha_H_oct_int': alpha_H_oct_int,
                       'Zm_meV': Zm * 1e3,
@@ -147,7 +149,7 @@ parameters_to_save = {'nu': nu,
                       'uperp_meV': uperp * 1e3,
                       # 'u_zero_meV': u_zero,
                       'range_meV': (U0minD * 1e3, U0maxD * 1e3, dU0D * 1e3),
-                      'several_tests_mode': several_tests_mode
+                      'tests_mode': tests_mode
                       }
 
 # if __name__ == "__main__":

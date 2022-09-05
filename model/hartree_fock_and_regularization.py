@@ -4,7 +4,7 @@ from model.densities import density_by_model_regime
 # from model.density_test import rho0constUp, rho0constUm
 from model.exchange_integrals import Xskm, Xskp
 from model.hamiltonians import full_hp, full_hm, full_hpm, full_hmp, idp, idps, idm, idms, mZm, hAp, hBp, hCp
-from utils import eigen, df_round, nonedimmerp, nonedimmerm, remove_small_imag
+from utils import eigen, df_round, nonedimmerp, nonedimmerm, remove_small_imag, check_if_complex
 
 # if model_regime == 'near_zero_dielectric_field':
 #     print('executing hartree_fock_and_regularization to return LL2 and LLm2 for near_zero_dielectric_field regime')
@@ -189,7 +189,10 @@ def loopU(u):
     #
     # eigenvalue = eigenvalue[idxfunc]
     # eigenvector = eigenvector[:, idxfunc]
-
+    if check_if_complex(eigenvalue, u, nu):
+        # print('here')
+        # print('here0', check_if_complex(energy_u, ind, nu))
+        eigenvalue = np.real(eigenvalue)
     ehf = - sum([Hint[idp(n)][idp(nprime)] * rho[idp(nprime)][idp(n)] for n in setH for nprime in setH] +
                 [Hint[idm(n)][idm(nprime)] * rho[idm(nprime)][idm(n)] for n in setH for nprime in setH] +
                 [Hint[idps(n)][idps(nprime)] * rho[idps(nprime)][idps(n)] for n in setH for nprime in setH] +

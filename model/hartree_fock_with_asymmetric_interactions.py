@@ -3,7 +3,7 @@ from input.parameters import *
 from model.densities import density_by_model_regime
 from model.exchange_integrals import Xzs, Xzd, Xos, Xod, Xfs, Xfd, Xsts, Xstd
 from model.hamiltonians import mZm, hAp, hBp, hCp  # , asymmetric_h, taux, tauy, tauz
-from utils import eigen, nonedimmerp, nonedimmerm, tau_func, df_round, remove_small_imag
+from utils import eigen, nonedimmerp, nonedimmerm, tau_func, df_round, remove_small_imag, check_if_complex
 
 model_regime = 'near_zero_dielectric_field'
 
@@ -213,7 +213,13 @@ def loopU0(u):
     eigenvalue, eigenvector = eigen(H)
     eigenvector_octet = eigenvector[4:12, index_octet_on_bands_oct]
     # print(eigenvector_octet.shape)
-
+    if check_if_complex(eigenvalue, u, nu):
+        # print('here')
+        # print('here0', check_if_complex(energy_u, ind, nu))
+        eigenvalue = np.real(eigenvalue)
+        # print('here0', check_if_complex(energy_u, ind, nu))
+        # print('here2')
+    # eigenvalue = remove_small_imag(eigenvalue)
     # eigenvector_octet_norms = [np.linalg.norm(one_eigenvector_octet) for one_eigenvector_octet in  ]
     eigenvector_octet_norms = np.linalg.norm(eigenvector_octet, axis=1)
 

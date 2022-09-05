@@ -7,7 +7,7 @@ if __name__ == "__main__":
 
     sys.path.append('../')
 
-from config import bands, input_dir_path, dir_path, current_date, several_tests_mode, results_dir_path_plot_vs_nu
+from config import bands, input_dir_path, dir_path, current_date, tests_mode, results_dir_path_plot_vs_nu
 from input.parameters import alpha_tilda, u_zero
 
 style_dict = {'LL0_Kp_Sdown': {'color': 'lightblue', 'line_shape': '-', 'marker_shape': 'v', 'label': '$\\ \\ \\,0\\mathrm{K}^{+}\\downarrow$'},
@@ -51,7 +51,7 @@ def plot_energies(energies, nu):
     plt.rcParams["figure.figsize"] = (10, 5)
     # plt.show()
     number_occupied_bands_local = nu + 8
-    results_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + several_tests_mode
+    results_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + tests_mode
 
     f.savefig(results_dir_path_local + "LL(U)_HF_interactions_w_SE_warping_alpha1_nu_" + str(nu) + ".pdf", bbox_inches='tight')
 
@@ -110,7 +110,7 @@ def plot_transitions(transitions_df, nu):
     plt.rcParams["figure.figsize"] = (10, 5)
     # plt.show()
     number_occupied_bands_local = nu + 8
-    results_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + several_tests_mode
+    results_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + tests_mode
 
     f.savefig(results_dir_path_local + "Transition_nu_" + str(nu) + ".pdf", bbox_inches='tight')
 

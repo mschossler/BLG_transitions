@@ -5,7 +5,7 @@ from datetime import datetime
 import numpy as np
 import pandas as pd
 
-from input.parameters import Zm, asym, x, alpha_H_oct_int, uz, uperp, nu, number_occupied_bands, model_regime, several_tests_mode  # , alpha_state, dens,
+from input.parameters import Zm, asym, x, alpha_H_oct_int, uz, uperp, nu, number_occupied_bands, model_regime, tests_mode  # , alpha_state, dens,
 
 pd.set_option('display.max_columns', 300)
 pd.set_option('display.width', 1000)
@@ -36,12 +36,12 @@ path = os.path.abspath(__file__)
 dir_path = os.path.dirname(path)
 # print(dir_path)
 
-if several_tests_mode == 'on':
-    several_tests_mode = '/' + current_time + '__uz_' + str(round(uz * 1e3, 3)) + '__uperp_' + str(round(uperp * 1e3, 3)) + '/'
-elif several_tests_mode == 'off':
-    several_tests_mode = '/'
+if tests_mode == 'on':
+    tests_mode = '/' + current_time + '__uz_' + str(round(uz * 1e3, 3)) + '__uperp_' + str(round(uperp * 1e3, 3)) + '/'
+elif tests_mode == 'off':
+    tests_mode = '/'
 
-results_dir_path = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands) + several_tests_mode
+results_dir_path = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands) + tests_mode
 results_dir_path_plot_vs_nu = dir_path + '/results/results_' + current_date + '/vs_nu/'
 # results_dir_path = dir_path + '/results_old/occupation_' + str(number_occupied_bands) + '/'
 # print(results_dir_path_plot_vs_nu)
