@@ -22,9 +22,9 @@ alpha_H_oct_int = 1
 inter = 1
 alpha_x = 1
 
-U0minD = -8e-3
-U0maxD = -8e-3
-dU0D = 0.5e-3
+U0minD = -2e-3
+U0maxD = 20e-3
+dU0D = 1e-3
 
 u_zero = 1
 u_zero = round(u_zero, 4)
@@ -71,8 +71,8 @@ model_regime = 'near_zero_dielectric_field'
 # model_regime = 'full_range'
 
 #### appoximation mode for LL2 and LLm2 ###
-# mode = 'hartree_fock_and_regularization_calcs'
-mode = 'fast_none_interact'
+mode = 'hartree_fock_and_regularization_calcs'
+# mode = 'fast_none_interact'
 # mode = 'fast_from_file'
 # mode = 'fast_from_constant'
 #########

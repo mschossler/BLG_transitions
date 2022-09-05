@@ -31,12 +31,38 @@ elif model_regime == 'near_zero_dielectric_field':
     # quantities = a_pool.map(loopU0, [1e-3,2e-3])
 
 
-def energies_and_observable_to_csv(quantities, export_to_file=True):
+def select_quantities_and_save_to_file(quantities_dict, model_regime_local):
+    list_of_us = list(quantities_dict.keys())
+    list_of_observables = list(quantities_dict[list_of_us[0]].keys())
+    list_of_observables.remove('u')
+
+    if bool(model_regime_local):
+        # loop over u
+        for dict_quantities in quantities_dict.values():
+            # loop over keys of each dictionary of u
+            for sub_key in list_of_observables:
+                dict_quantities[sub_key + '_' + model_regime_local] = dict_quantities.pop(sub_key)
+            # print(dict_quantities)
+
+        list_of_observables = [quantity + '_' + model_regime_local for quantity in list_of_observables]
+
+    # print(list_of_observables)
+    for quantity in list_of_observables:
+        observable_to_csv(quantities_dict, quantity)
+
+
+def energies_and_observable_to_csv(quantities, model_regime_local=''):
+    '''
+    identify the highest weight base element in the eigenvector,
+    and orders eigensystem for u propagation.
+    calls function to export observables to csv
+    '''
+
     quantities_dict = {}
     for dict_u in quantities:
         quantities_dict[dict_u['u']] = dict_u
 
-    quantities_dict = sort_dict(quantities_dict)
+    quantities_dict = sort_dict(quantities_dict)  # returns a sorted dictionary of {'u':dict_u}, dict_u are the dictionaries from loopU or loopU0 from the main calculations
 
     energies = []
     # allowed_transitions_nu = {}
@@ -50,13 +76,8 @@ def energies_and_observable_to_csv(quantities, export_to_file=True):
     #
     # for quantity in ['h0', 'rhoU', 'Eh_deltaU', 'Hint', 'Et', 'eigenvector', 'exciton_energy', 'regmatrix']:
     #     observable_to_csv(quantities_dict, quantity)
-    list_of_u = list(quantities_dict.keys())
-    list_of_observables = list(quantities_dict[list_of_u[0]].keys())
-    list_of_observables.remove('u')
-    # print(list_of_observables)
-    if export_to_file:
-        for quantity in list_of_observables:
-            observable_to_csv(quantities_dict, quantity)
+
+    select_quantities_and_save_to_file(quantities_dict, model_regime_local)
 
     energies_df = pd.DataFrame(energies, columns=['u'] + bands)
     return energies_df
@@ -98,7 +119,8 @@ if model_regime == 'near_zero_dielectric_field':
 
         a_pool = multiprocessing.Pool(processes=nprocesses)
         quantities_full_range = a_pool.map(loopU, frange(U0minD, U0maxD, dU0D))
-        energies_df_full_range = energies_and_observable_to_csv(quantities_full_range, False)
+        model_regime_local = 'full_regime'
+        energies_df_full_range = energies_and_observable_to_csv(quantities_full_range, model_regime_local)
 
         energies_df[bands_LLm2_LL2] = energies_df_full_range[bands_LLm2_LL2]
         energies_df = assign_HighFieldRange(energies_df, energies_df_full_range)

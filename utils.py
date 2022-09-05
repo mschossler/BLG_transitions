@@ -47,6 +47,7 @@ def remove_small_imag(scalar):
 
 
 def observable_to_csv(obeservables_dict, obeservable):
+    "takes a dictionary of shape {'u',dict_u} for various u's and exports file of dict_u[observable] to csv"
     obeservable_list = []
     for k, v in obeservables_dict.items():
         obeservable_list.append([round(k, 2), v[obeservable]])
