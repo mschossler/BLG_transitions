@@ -6,7 +6,7 @@ from config import results_dir_path, file_name_csv, bands, tol
 
 
 def frange(start, end, inc):
-    return np.arange(start, end, inc).tolist()
+    return np.round(np.arange(start, end, inc).tolist(), 6)
 
 
 def eigen(A):
@@ -49,7 +49,7 @@ def remove_small_imag(scalar):
 def observable_to_csv(obeservables_dict, obeservable):
     obeservable_list = []
     for k, v in obeservables_dict.items():
-        obeservable_list.append([k, v[obeservable]])
+        obeservable_list.append([round(k, 2), v[obeservable]])
     obeservable_df = pd.DataFrame(obeservable_list)
     obeservable_df = obeservable_df.applymap(remove_small_imag)
     obeservable_df.to_csv(results_dir_path + obeservable + '_' + file_name_csv, index=False, header=False)
@@ -142,9 +142,28 @@ for sector in bands_by_sector:
 
 # .apply(check_if_real, result_type='ignore', args=(u,nu))
 
+def check_if_complex(energy_u_series, u, nu):
+    complex_part = False
+    # print(u)
+    for energy in energy_u_series.values:
+        if abs(energy.imag) > 0:
+            complex_part = True
+            # print(u)
+            print('-> warning: none-zero imaginary part energy %(imag).4fmeV for nu=%(nu)i, u=%(u).2fmeV ' % {'u': u, 'nu': nu, 'imag': energy.imag})
+            # return complex_part
+    return complex_part
+
+
 def transitions_energy_and_fermi_energy_u(energy_u, nu):
     u = energy_u['u']
     energy_u.drop('u', axis=0, inplace=True)
+    # if check_if_complex(energy_u, u, nu):
+    #     # print('here')
+    #     # print('here0', check_if_complex(energy_u, ind, nu))
+    #     energy_u = energy_u.map(np.real)
+    #     # print('here0', check_if_complex(energy_u, ind, nu))
+    #     # print('here2')
+    # energy_u = energy_u.map(remove_small_imag)
     # energy_u
     # if check_if_complex(energy_u,u,nu):
     #     print('here')
@@ -191,14 +210,16 @@ def transitions_energy_and_fermi_energy_u(energy_u, nu):
 
 
 # pd.options.mode.chained_assignment = None  # default='warn'
-def check_if_complex(energy_u_series, u, nu):
-    complex_part = False
-    for energy in energy_u_series.values:
-        if abs(energy.imag) > 0:
-            complex_part = True
-            print('-> warning: none-zero imaginary part energy %(imag).2fmeV for nu=%(nu)i, u=%(u).2fmeV ' % {'u': u, 'nu': nu, 'imag': energy.imag})
-            # return complex_part
-    return complex_part
+# def check_if_complex(energy_u_series, u, nu):
+#     complex_part = False
+#     print(u)
+#     for energy in energy_u_series.values:
+#         if abs(energy.imag) > 0:
+#             complex_part = True
+#             # print(u)
+#             print('-> warning: none-zero imaginary part energy %(imag).4fmeV for nu=%(nu)i, u=%(u).2fmeV ' % {'u': u, 'nu': nu, 'imag': energy.imag})
+#             # return complex_part
+#     return complex_part
 
 
 def transitions_energy_fermi_energy(energies, nu):
@@ -206,7 +227,8 @@ def transitions_energy_fermi_energy(energies, nu):
     fermi_energy = []
     for ind in energies.index:
         energy_u = energies.loc[ind]
-        if check_if_complex(energy_u, ind, nu):
+        u = np.real(energy_u['u'])
+        if check_if_complex(energy_u, u, nu):
             # print('here')
             # print('here0', check_if_complex(energy_u, ind, nu))
             energy_u = energy_u.map(np.real)

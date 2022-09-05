@@ -7,7 +7,7 @@ t0 = time.time()
 import pandas as pd
 
 from config import model_regime, results_dir_path, file_name_csv, nprocesses, bands, bands_LLm2_LL2, bands_LL2, bands_LLm2
-from input.parameters import U0minD, U0maxD, dU0D, nu, u_critical, parameters_to_save
+from input.parameters import U0minD, U0maxD, dU0D, nu, u_critical, parameters_to_save, mode
 from utils import frange, sort_dict, observable_to_csv, idxcalc, transitions_energy_fermi_energy
 
 a_pool = multiprocessing.Pool(processes=nprocesses)
@@ -21,7 +21,13 @@ elif model_regime == 'near_zero_dielectric_field':
     # time.sleep(.1)
     from model.hartree_fock_with_asymmetric_interactions import loopU0
 
-    quantities = a_pool.map(loopU0, frange(U0minD, U0maxD, dU0D))
+    U0minD_tmp = max(U0minD, -u_critical)
+    U0maxD_tmp = min(U0maxD, u_critical)
+    if U0maxD_tmp > U0minD_tmp:
+        quantities = a_pool.map(loopU0, frange(U0minD_tmp, U0maxD_tmp, dU0D))
+    else:
+        print('range of u not compatible with ' + model_regime + '. Change for a valid range (check u_critical)')
+        exit()
     # quantities = a_pool.map(loopU0, [1e-3,2e-3])
 
 
@@ -72,10 +78,6 @@ energies_df = energies_and_observable_to_csv(quantities)
 
 
 if model_regime == 'near_zero_dielectric_field':
-    # mode = 'hartree_fock_and_regularization_calcs'
-    mode = 'fast_none_interact'
-    # mode = 'fast_from_file'
-    # mode = 'fast_from_constant'
 
     print('approximation mode for LL2 and LLm2: %s' % mode)
 

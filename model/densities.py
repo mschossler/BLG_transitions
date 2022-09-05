@@ -123,11 +123,11 @@ class Density_Seed:
             self.rho0constUp = remove_small_imag(self.seed_asymmetric_calcs())
             self.rho0constUm = remove_small_imag(self.seed_asymmetric_calcs())
         # if self.model_regime == 'full_range':
-        #     self.rho0constUp = remove_small_imag(self.diag_full_regime(+1))
-        #     self.rho0constUm = remove_small_imag(self.diag_full_regime(-1))
+        #     self.rho0constUp = np.real(self.diag_full_regime(+1))
+        #     self.rho0constUm = np.real(self.diag_full_regime(-1))
         # elif self.model_regime == 'near_zero_dielectric_field':
-        #     self.rho0constUp = remove_small_imag(self.seed_asymmetric_calcs())
-        #     self.rho0constUm = remove_small_imag(self.seed_asymmetric_calcs())
+        #     self.rho0constUp = np.real(self.seed_asymmetric_calcs())
+        #     self.rho0constUm = np.real(self.seed_asymmetric_calcs())
 
 
 def density_by_model_regime(model_regime):

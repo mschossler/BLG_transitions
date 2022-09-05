@@ -212,7 +212,7 @@ def loopU0(u):
     # eigenvalue, eigenvector = npla.eig(H) # follows notation (bands list) order
     eigenvalue, eigenvector = eigen(H)
     eigenvector_octet = eigenvector[4:12, index_octet_on_bands_oct]
-    print(eigenvector_octet.shape)
+    # print(eigenvector_octet.shape)
 
     # eigenvector_octet_norms = [np.linalg.norm(one_eigenvector_octet) for one_eigenvector_octet in  ]
     eigenvector_octet_norms = np.linalg.norm(eigenvector_octet, axis=1)

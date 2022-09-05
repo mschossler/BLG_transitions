@@ -22,9 +22,9 @@ alpha_H_oct_int = 1
 inter = 1
 alpha_x = 1
 
-U0minD = 0e-3
-U0maxD = 2e-3
-dU0D = 1e-3
+U0minD = -8e-3
+U0maxD = -8e-3
+dU0D = 0.5e-3
 
 u_zero = 1
 u_zero = round(u_zero, 4)
@@ -69,6 +69,14 @@ alpha_k_dic[0] = alpha_k_nu0
 # asymmetry parameters
 model_regime = 'near_zero_dielectric_field'
 # model_regime = 'full_range'
+
+#### appoximation mode for LL2 and LLm2 ###
+# mode = 'hartree_fock_and_regularization_calcs'
+mode = 'fast_none_interact'
+# mode = 'fast_from_file'
+# mode = 'fast_from_constant'
+#########
+
 # alpha_state = 1
 alpha_reg = 1
 # dens = 3
@@ -133,6 +141,7 @@ parameters_to_save = {'nu': nu,
                       'alpha_rho': alpha_rho,
                       'alpha_k': alpha_k_dic[nu],
                       'model_regime': model_regime,
+                      'mode': mode,
                       'alpha_reg': alpha_reg,
                       'uz_meV': uz * 1e3,
                       'uperp_meV': uperp * 1e3,
