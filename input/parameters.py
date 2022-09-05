@@ -33,7 +33,7 @@ several_tests_mode = 'on'  # change this to off when done with tests
 # several_tests_mode = 'off'
 
 itmax_full_range = 5
-itmax_asymmetric_calcs = 1e4
+itmax_asymmetric_calcs = int(1e4)
 if nu == 0:
     alpha_rand_full_range = 0.6
 else:
@@ -134,9 +134,9 @@ parameters_to_save = {'nu': nu,
                       'alpha_k': alpha_k_dic[nu],
                       'model_regime': model_regime,
                       'alpha_reg': alpha_reg,
-                      'uz_meV': uz,
-                      'uperp_meV': uperp,
-                      'u_zero_meV': u_zero,
+                      'uz_meV': uz * 1e3,
+                      'uperp_meV': uperp * 1e3,
+                      # 'u_zero_meV': u_zero,
                       'range_meV': (U0minD * 1e3, U0maxD * 1e3, dU0D * 1e3),
                       'several_tests_mode': several_tests_mode
                       }

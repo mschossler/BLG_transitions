@@ -1,4 +1,4 @@
-from config import bands, base_octet, indexes_octet_on_bands  # , itmax_asymmetric_calcs, alpha_rho
+from config import bands, base_octet, indexes_octet_on_bands, index_octet_on_bands_oct  # , itmax_asymmetric_calcs, alpha_rho
 from input.parameters import *
 from model.densities import density_by_model_regime
 from model.exchange_integrals import Xzs, Xzd, Xos, Xod, Xfs, Xfd, Xsts, Xstd
@@ -211,6 +211,12 @@ def loopU0(u):
     # print(Hint_longrange)
     # eigenvalue, eigenvector = npla.eig(H) # follows notation (bands list) order
     eigenvalue, eigenvector = eigen(H)
+    eigenvector_octet = eigenvector[4:12, index_octet_on_bands_oct]
+    print(eigenvector_octet.shape)
+
+    # eigenvector_octet_norms = [np.linalg.norm(one_eigenvector_octet) for one_eigenvector_octet in  ]
+    eigenvector_octet_norms = np.linalg.norm(eigenvector_octet, axis=1)
+
     rho_diag_octet = np.diag(rho)[indexes_octet_on_bands]
     trace_rho_diag_octet = round(sum(rho_diag_octet), 3)
     sum_off_diag_rho_octet = round(np.sum(rho) - trace_rho_diag_octet - 4, 3)
@@ -230,6 +236,8 @@ def loopU0(u):
     dict_quantities_u = {'u': u * 1e3,
                          'eigenvalue': 1e3 * remove_small_imag(eigenvalue),
                          'eigenvector': eigenvector,
+                         'eigenvector_octet': eigenvector_octet,
+                         'eigenvector_octet_norms': eigenvector_octet_norms,
                          # 'Et': 1e3 * Et,
                          # 'h0': df_round(1e3 * h0),
                          'rho(density)': df_round(rho),
