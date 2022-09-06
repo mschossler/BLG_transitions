@@ -174,7 +174,7 @@ def loopU(u):
 
         Hintdownup = np.vstack((hphpmsdu, hmphmsdu))
 
-        Hint = k * np.vstack((np.hstack((Hintup, Hintupdown)), np.hstack((Hintdownup, Hintdown))))
+        Hint = k * alpha_int_H * np.vstack((np.hstack((Hintup, Hintupdown)), np.hstack((Hintdownup, Hintdown))))
         H = Hint + h0 + mZm + regmatrix  # np.add(Hint, h0)
         eigenvalue_loop, eigenvector_loop = eigen(H)
         rho = sum(np.outer(eigenvector_loop[i, :], eigenvector_loop[i, :]) for i in range(number_occupied_bands))

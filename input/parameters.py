@@ -2,7 +2,7 @@ import sys
 
 import numpy as np
 
-nu_default = 0
+nu_default = 4
 
 if len(sys.argv) == 2:
     nu = int(sys.argv[1])
@@ -19,12 +19,12 @@ u_critical = 12e-3  # value of u in eV for phase transition
 asym = 1
 alpha_Zm = 1  # 0.04227165829987071 # k / alpha_k
 alpha_H_oct_int = 1
-inter = 1
+alpha_int_H = 0
 alpha_x = 1
 
-U0minD = -18e-3
-U0maxD = 10e-3
-dU0D = 1e-3
+U0minD = -12e-3
+U0maxD = 45e-3
+dU0D = 0.5e-3
 
 u_zero = 1
 u_zero = round(u_zero, 4)
@@ -38,8 +38,8 @@ if nu == 0:
     alpha_rand_full_range = 0.6
 else:
     alpha_rand_full_range = 0
-alpha_rand_asymmetric_calcs = 0.01
-alpha_rho = 0  # controls numerical regularization for rho (memory of rho from previews loop)
+alpha_rand_asymmetric_calcs = 0.02
+alpha_rho = 0.05  # controls numerical regularization for rho (memory of rho from previews loop)
 # variables_dict['asym']=asym
 # variables_dict['alpha_Zm']=alpha_Zm
 # variables_dict['alpha_H_oct_int']=alpha_H_oct_int
@@ -80,10 +80,10 @@ mode = 'hartree_fock_and_regularization_calcs'
 #     mode = 'hartree_fock_and_regularization_calcs'
 
 # alpha_state = 1
-alpha_reg = 1
+alpha_reg = 0
 # dens = 3
-uz = 7e0 * 1e-3  # * 0
-uperp = -1.6e0 * 1e-3  # * 0
+uz = 7e0 * 1e-3 * 0
+uperp = -1.6e0 * 1e-3 * 0
 print('uz=%(uz).1fmeV, uperp=%(uperp).1fmeV' % {'uz': uz * 1e3, 'uperp': uperp * 1e3})
 # variables_dict['alpha_rho']=alpha_rho
 # variables_dict['alpha_rand']=alpha_rand
@@ -145,6 +145,7 @@ parameters_to_save = {'nu': nu,
                       'model_regime': model_regime,
                       'mode': mode,
                       'alpha_reg': alpha_reg,
+                      'alpha_int_H': alpha_int_H,
                       'uz_meV': uz * 1e3,
                       'uperp_meV': uperp * 1e3,
                       # 'u_zero_meV': u_zero,

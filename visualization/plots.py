@@ -106,7 +106,7 @@ def plot_transitions(transitions_df, nu):
                                          fillstyle='none', ax=ax)  # print(nu0_exp_transition_energies)
 
     # plt.legend(bbox_to_anchor=(1, 0.55))
-    plt.legend(loc='upper right', bbox_to_anchor=(.55, 1.020))
+    plt.legend(loc='upper right', bbox_to_anchor=(.99, 0.5))
     plt.rcParams["figure.figsize"] = (10, 5)
     # plt.show()
     number_occupied_bands_local = nu + 8
