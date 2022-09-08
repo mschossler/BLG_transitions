@@ -199,7 +199,7 @@ def loopU0(u):
     eigenvectorp = np.array([[1, 0, 0, 0], [0, 1, 0, 0]] + [[0, 0] + x for x in eigenvectorp2.tolist()])
     eigenvectorm = np.array([[1, 0, 0, 0], [0, 1, 0, 0]] + [[0, 0] + x for x in eigenvectorm2.tolist()])
 
-    regmatrix = delta_e_regmatrix(rho0, eigenvectorp, eigenvectorm) * alpha_reg_asym_calcs
+    # regmatrix = delta_e_regmatrix(rho0, eigenvectorp, eigenvectorm) * alpha_reg_asym_calcs
     # print(np.diag(rho.real))
     # print('here')
     # print(k)
@@ -207,7 +207,7 @@ def loopU0(u):
     while it < itmax_asymmetric_calcs:
         Hint_longrange = k * alpha_H_oct_int * Hint_oct(rho)
         H_asym = asymmetric_h(taux, rho, uperp) + asymmetric_h(tauy, rho, uperp) + asymmetric_h(tauz, rho, uz)
-        H = h0 + Hint_longrange + H_asym + mZm + regmatrix
+        H = h0 + Hint_longrange + H_asym + mZm  # + regmatrix
         eigenvalue_loop, eigenvector_loop = eigen(H)
         rhotemp = rho
         rho = sum(np.outer(eigenvector_loop[i, :], eigenvector_loop[i, :]) for i in range(number_occupied_bands))
@@ -217,6 +217,8 @@ def loopU0(u):
 
     # print(Hint_longrange)
     # eigenvalue, eigenvector = npla.eig(H) # follows notation (bands list) order
+    regmatrix = delta_e_regmatrix(rho0, eigenvectorp, eigenvectorm) * alpha_reg_asym_calcs
+    H = H + regmatrix
     eigenvalue, eigenvector = eigen(H)
     eigenvector_octet = eigenvector[4:12, index_octet_on_bands_oct]
     # print(eigenvector_octet.shape)

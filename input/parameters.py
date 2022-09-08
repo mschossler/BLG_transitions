@@ -21,10 +21,10 @@ alpha_Zm = 1  # 0.04227165829987071 # k / alpha_k
 alpha_H_oct_int = 1
 alpha_int_H = 1  # 0 for none int calculations on the full_range model
 alpha_reg = 1
-alpha_reg_asym_calcs = 0
+alpha_reg_asym_calcs = 1
 alpha_x = 1
-uz = 10e0 * 1e-3
-uperp = -1.6e0 * 1e-3
+uz = 7e0 * 1e-3 * 0
+uperp = -1.6e0 * 1e-3 * 0
 
 U0minD = -8e-3
 U0maxD = 40e-3
@@ -42,8 +42,8 @@ if nu == 0:
     alpha_rand_full_range = 0.6
 else:
     alpha_rand_full_range = 0
-alpha_rand_asymmetric_calcs = 0.0
-alpha_rho = 0.0  # controls numerical regularization for rho (memory of rho from previews loop)
+alpha_rand_asymmetric_calcs = 0.01
+alpha_rho = 0.05  # controls numerical regularization for rho (memory of rho from previews loop)
 # variables_dict['asym']=asym
 # variables_dict['alpha_Zm']=alpha_Zm
 # variables_dict['alpha_H_oct_int']=alpha_H_oct_int
