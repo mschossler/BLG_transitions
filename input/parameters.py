@@ -23,8 +23,8 @@ alpha_int_H = 1  # 0 for none int calculations on the full_range model
 alpha_reg = 1
 alpha_reg_asym_calcs = 1
 alpha_x = 1
-uz = 7e0 * 1e-3 * 0
-uperp = -1.6e0 * 1e-3 * 0
+uz = 5e0 * 1e-3
+uperp = -1.6e0 * 1e-3
 
 U0minD = -8e-3
 U0maxD = 40e-3

@@ -1,0 +1,24 @@
+created on (Y-m-d): 2022-09-08 11:47:10 
+alpha_H_oct_int = 1
+alpha_int_H = 1
+alpha_k = 0.26
+alpha_rand_asymmetric_calcs = 0.05
+alpha_rand_full_range = 0.6
+alpha_reg = 1
+alpha_reg_asym_calcs = 0
+alpha_rho = 0.05
+asym = 1
+itmax_asymmetric_calcs = 10000
+itmax_full_range = 5
+mode = fast_none_interact
+model_regime = near_zero_dielectric_field
+nu = 0
+number_occupied_bands = 8
+range_meV = (-8.0, 20.0, 1.0)
+replace_LLm2_LL2_low_u = False
+tests_mode = on
+u_critical_meV = 12.0
+uperp_meV = 1.0
+uz_meV = 7.0
+x = 0.047079691073466746
+Zm_meV = 0.7527
