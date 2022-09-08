@@ -23,9 +23,11 @@ alpha_int_H = 1  # 0 for none int calculations on the full_range model
 alpha_reg = 1
 alpha_reg_asym_calcs = 0
 alpha_x = 1
+uz = 10e0 * 1e-3
+uperp = -1.6e0 * 1e-3
 
 U0minD = -8e-3
-U0maxD = 20e-3
+U0maxD = 40e-3
 dU0D = 1e-3
 
 u_zero = 1
@@ -35,13 +37,13 @@ tests_mode = 'on'  # change this to off when done with tests
 # tests_mode = 'off'
 
 itmax_full_range = 5
-itmax_asymmetric_calcs = int(1e4)
+itmax_asymmetric_calcs = int(3e4)
 if nu == 0:
     alpha_rand_full_range = 0.6
 else:
     alpha_rand_full_range = 0
-alpha_rand_asymmetric_calcs = 0.05
-alpha_rho = 0.05  # controls numerical regularization for rho (memory of rho from previews loop)
+alpha_rand_asymmetric_calcs = 0.0
+alpha_rho = 0.0  # controls numerical regularization for rho (memory of rho from previews loop)
 # variables_dict['asym']=asym
 # variables_dict['alpha_Zm']=alpha_Zm
 # variables_dict['alpha_H_oct_int']=alpha_H_oct_int
@@ -74,9 +76,9 @@ model_regime = 'near_zero_dielectric_field'
 
 #### appoximation mode for LL2 and LLm2 ###
 # mode = 'hartree_fock_and_regularization_calcs'
-add_int_to_bands_LLm2_LL2_low_u = False  # if false this is effectivelly equivalent to fast_none_interact mode for low u regime
-mode = 'fast_none_interact'
-# mode = 'fast_from_file'
+add_int_to_bands_LLm2_LL2_low_u = True  # if false this is effectivelly equivalent to fast_none_interact mode for low u regime
+# mode = 'fast_none_interact'
+mode = 'fast_from_file'
 # mode = 'fast_from_constant'
 #########
 # if tests_mode=='off':
@@ -84,8 +86,6 @@ mode = 'fast_none_interact'
 # alpha_state = 1
 
 # dens = 3
-uz = 7e0 * 1e-3
-uperp = 1.6e0 * 1e-3
 print('uz=%(uz).1fmeV, uperp=%(uperp).1fmeV' % {'uz': uz * 1e3, 'uperp': uperp * 1e3})
 # variables_dict['alpha_rho']=alpha_rho
 # variables_dict['alpha_rand']=alpha_rand
