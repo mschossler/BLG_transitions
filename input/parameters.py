@@ -24,8 +24,8 @@ alpha_reg = 1
 alpha_reg_asym_calcs = 0
 alpha_x = 1
 
-U0minD = 1e-3
-U0maxD = 3e-3
+U0minD = -8e-3
+U0maxD = 20e-3
 dU0D = 1e-3
 
 u_zero = 1
@@ -40,7 +40,7 @@ if nu == 0:
     alpha_rand_full_range = 0.6
 else:
     alpha_rand_full_range = 0
-alpha_rand_asymmetric_calcs = 0.02
+alpha_rand_asymmetric_calcs = 0.05
 alpha_rho = 0.05  # controls numerical regularization for rho (memory of rho from previews loop)
 # variables_dict['asym']=asym
 # variables_dict['alpha_Zm']=alpha_Zm
@@ -146,7 +146,7 @@ parameters_to_plot = {'nu': nu,
                       'model_regime': model_regime,
                       'mode': mode,
                       'alpha_reg': alpha_reg,
-                      'add_int_to_bands_LLm2_LL2_low_u': add_int_to_bands_LLm2_LL2_low_u,
+                      'replace_LLm2_LL2_low_u': add_int_to_bands_LLm2_LL2_low_u,
                       'alpha_int_H': alpha_int_H,
                       'uz_meV': uz * 1e3,
                       'uperp_meV': uperp * 1e3,
@@ -155,6 +155,14 @@ parameters_to_plot = {'nu': nu,
                       # 'tests_mode': tests_mode,
                       # 'add_int_to_bands_LLm2_LL2_low_u':add_int_to_bands_LLm2_LL2_low_u
                       }
+
+parameters_to_plot_text = []
+for key in sorted(list(parameters_to_plot.keys()), key=str.lower):
+    parameters_to_plot_text.append(str('%s: %s' % (key, parameters_to_plot[key])))
+
+parameters_to_folder_text = []
+for key in sorted(list(parameters_to_plot.keys()), key=str.lower):
+    parameters_to_folder_text.append(str('%s' % (parameters_to_plot[key])))
 
 parameters_to_save = {'nu': nu,
                       'number_occupied_bands': number_occupied_bands,
@@ -173,7 +181,7 @@ parameters_to_save = {'nu': nu,
                       'model_regime': model_regime,
                       'mode': mode,
                       'alpha_reg': alpha_reg,
-                      'add_int_to_bands_LLm2_LL2_low_u': add_int_to_bands_LLm2_LL2_low_u,
+                      'replace_LLm2_LL2_low_u': add_int_to_bands_LLm2_LL2_low_u,
                       'alpha_int_H': alpha_int_H,
                       'uz_meV': uz * 1e3,
                       'uperp_meV': uperp * 1e3,

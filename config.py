@@ -5,7 +5,7 @@ from datetime import datetime
 import numpy as np
 import pandas as pd
 
-from input.parameters import Zm, asym, x, alpha_H_oct_int, uz, uperp, nu, number_occupied_bands, model_regime, tests_mode  # , alpha_state, dens,
+from input.parameters import Zm, asym, x, alpha_H_oct_int, uz, uperp, nu, number_occupied_bands, model_regime, tests_mode, parameters_to_folder_text  # , alpha_state, dens,
 
 pd.set_option('display.max_columns', 300)
 pd.set_option('display.width', 1000)
@@ -37,7 +37,8 @@ dir_path = os.path.dirname(path)
 # print(dir_path)
 
 if tests_mode == 'on':
-    tests_mode = '/' + current_time + '__uz_' + str(round(uz * 1e3, 3)) + '__uperp_' + str(round(uperp * 1e3, 3)) + '/'
+    # tests_mode = '/' + current_time + '__uz_' + str(round(uz * 1e3, 3)) + '__uperp_' + str(round(uperp * 1e3, 3)) + '/'
+    tests_mode = '/' + current_time + '__'.join(parameters_to_folder_text) + '/'
 elif tests_mode == 'off':
     tests_mode = '/'
 

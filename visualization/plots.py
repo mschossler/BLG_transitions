@@ -8,7 +8,7 @@ if __name__ == "__main__":
     sys.path.append('../')
 
 from config import bands, input_dir_path, dir_path, current_date, tests_mode, results_dir_path_plot_vs_nu, current_time
-from input.parameters import alpha_tilda, u_zero, parameters_to_plot
+from input.parameters import alpha_tilda, u_zero, parameters_to_plot_text
 
 style_dict = {'LL0_Kp_Sdown': {'color': 'lightblue', 'line_shape': '-', 'marker_shape': 'v', 'label': '$\\ \\ \\,0\\mathrm{K}^{+}\\downarrow$'},
               'LL1_Kp_Sdown': {'color': 'salmon', 'line_shape': '-', 'marker_shape': 'v', 'label': '$\\ \\ \\,1\\mathrm{K}^{+}\\downarrow$'},
@@ -86,10 +86,6 @@ def plot_transitions(transitions_df, nu):
                             label=style_transition['label'], ax=ax)  # , marker='o')
     # print(transitions_df)
     plt.title('Transition nu=' + str(nu) + ' as function of U with self-energy')
-
-    parameters_to_plot_text = []
-    for key in sorted(list(parameters_to_plot.keys()), key=str.lower):
-        parameters_to_plot_text.append(str('%s: %s' % (key, parameters_to_plot[key])))
 
     textstr = '\n'.join(parameters_to_plot_text)
     print(textstr)
