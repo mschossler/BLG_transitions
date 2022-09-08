@@ -7,8 +7,8 @@ if __name__ == "__main__":
 
     sys.path.append('../')
 
-from config import bands, input_dir_path, dir_path, current_date, tests_mode, results_dir_path_plot_vs_nu
-from input.parameters import alpha_tilda, u_zero
+from config import bands, input_dir_path, dir_path, current_date, tests_mode, results_dir_path_plot_vs_nu, current_time
+from input.parameters import alpha_tilda, u_zero, parameters_to_plot
 
 style_dict = {'LL0_Kp_Sdown': {'color': 'lightblue', 'line_shape': '-', 'marker_shape': 'v', 'label': '$\\ \\ \\,0\\mathrm{K}^{+}\\downarrow$'},
               'LL1_Kp_Sdown': {'color': 'salmon', 'line_shape': '-', 'marker_shape': 'v', 'label': '$\\ \\ \\,1\\mathrm{K}^{+}\\downarrow$'},
@@ -53,7 +53,7 @@ def plot_energies(energies, nu):
     number_occupied_bands_local = nu + 8
     results_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + tests_mode
 
-    f.savefig(results_dir_path_local + "LL(U)_HF_interactions_w_SE_warping_alpha1_nu_" + str(nu) + ".pdf", bbox_inches='tight')
+    f.savefig(results_dir_path_local + "LL(U)_HF_interactions_w_SE_warping_alpha1_nu_" + str(nu) + current_time + ".pdf", bbox_inches='tight')
 
 
 transitions_style_dic = {'LL1_Kp_Sdown_to_LL2_Kp_Sdown': {'color': 'tab:blue', 'marker_shape': '2', 'line_shape': '-',
@@ -86,6 +86,14 @@ def plot_transitions(transitions_df, nu):
                             label=style_transition['label'], ax=ax)  # , marker='o')
     # print(transitions_df)
     plt.title('Transition nu=' + str(nu) + ' as function of U with self-energy')
+
+    parameters_to_plot_text = []
+    for key in sorted(list(parameters_to_plot.keys()), key=str.lower):
+        parameters_to_plot_text.append(str('%s: %s' % (key, parameters_to_plot[key])))
+
+    textstr = '\n'.join(parameters_to_plot_text)
+    print(textstr)
+    plt.text(20, 60, textstr, fontsize=6, verticalalignment='top')
     plt.xlabel('U(meV)')
     plt.ylabel('transitions(meV)')
     if nu == 0:
@@ -112,7 +120,7 @@ def plot_transitions(transitions_df, nu):
     number_occupied_bands_local = nu + 8
     results_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + tests_mode
 
-    f.savefig(results_dir_path_local + "Transition_nu_" + str(nu) + ".pdf", bbox_inches='tight')
+    f.savefig(results_dir_path_local + "Transition_nu_" + str(nu) + current_time + ".pdf", bbox_inches='tight')
 
 
 def plot_energies_vs_nu():

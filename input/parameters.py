@@ -21,11 +21,11 @@ alpha_Zm = 1  # 0.04227165829987071 # k / alpha_k
 alpha_H_oct_int = 1
 alpha_int_H = 1  # 0 for none int calculations on the full_range model
 alpha_reg = 1
-alpha_reg_asym_calcs = 1
+alpha_reg_asym_calcs = 0
 alpha_x = 1
 
-U0minD = -8e-3
-U0maxD = 20e-3
+U0minD = 1e-3
+U0maxD = 3e-3
 dU0D = 1e-3
 
 u_zero = 1
@@ -73,9 +73,9 @@ model_regime = 'near_zero_dielectric_field'
 # model_regime = 'full_range'
 
 #### appoximation mode for LL2 and LLm2 ###
-mode = 'hartree_fock_and_regularization_calcs'
-add_int_to_bands_LLm2_LL2_low_u = True  # if false this is effectivelly equivalent to fast_none_interact mode for low u regime
-# mode = 'fast_none_interact'
+# mode = 'hartree_fock_and_regularization_calcs'
+add_int_to_bands_LLm2_LL2_low_u = False  # if false this is effectivelly equivalent to fast_none_interact mode for low u regime
+mode = 'fast_none_interact'
 # mode = 'fast_from_file'
 # mode = 'fast_from_constant'
 #########
@@ -129,7 +129,32 @@ Eh = x / np.sqrt(2 * np.pi)
 k = (np.sqrt(np.pi / 2) * el) / (4 * np.pi * ep0 * epr * Lb) * alpha_k
 
 # Zm = k * 0.0178 #use def above, this is slightly off due to alpha_k
-
+parameters_to_plot = {'nu': nu,
+                      # 'number_occupied_bands': number_occupied_bands,
+                      # 'u_critical_meV': u_critical * 1e3,
+                      'asym': asym,
+                      'alpha_H_oct_int': alpha_H_oct_int,
+                      'alpha_reg_asym_calcs': alpha_reg_asym_calcs,
+                      # 'Zm_meV': Zm * 1e3,
+                      # 'x': x,
+                      # 'itmax_full_range': itmax_full_range,
+                      'itmax_asymmetric_calcs': itmax_asymmetric_calcs,
+                      # 'alpha_rand_full_range': alpha_rand_full_range,
+                      # 'alpha_rand_asymmetric_calcs': alpha_rand_asymmetric_calcs,
+                      # 'alpha_rho': alpha_rho,
+                      # 'alpha_k': alpha_k_dic[nu],
+                      'model_regime': model_regime,
+                      'mode': mode,
+                      'alpha_reg': alpha_reg,
+                      'add_int_to_bands_LLm2_LL2_low_u': add_int_to_bands_LLm2_LL2_low_u,
+                      'alpha_int_H': alpha_int_H,
+                      'uz_meV': uz * 1e3,
+                      'uperp_meV': uperp * 1e3,
+                      # 'u_zero_meV': u_zero,
+                      # 'range_meV': (U0minD * 1e3, U0maxD * 1e3, dU0D * 1e3),
+                      # 'tests_mode': tests_mode,
+                      # 'add_int_to_bands_LLm2_LL2_low_u':add_int_to_bands_LLm2_LL2_low_u
+                      }
 
 parameters_to_save = {'nu': nu,
                       'number_occupied_bands': number_occupied_bands,
