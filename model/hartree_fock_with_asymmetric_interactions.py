@@ -1,7 +1,8 @@
-from config import bands, base_octet, indexes_octet_on_bands, index_octet_on_bands_oct  # , itmax_asymmetric_calcs, alpha_rho
+from config import bands, base_octet, indexes_octet_on_bands, index_octet_on_bands_oct, setH  # , itmax_asymmetric_calcs, alpha_rho
 from input.parameters import *
 from model.densities import density_by_model_regime
-from model.exchange_integrals import Xzs, Xzd, Xos, Xod, Xfs, Xfd, Xsts, Xstd
+from model.exchange_integrals import Xzs, Xzd, Xos, Xod, Xfs, Xfd, Xsts, Xstd, Xskm, Xskp
+# from model.exchange_integrals import Xskm, Xskp
 from model.hamiltonians import mZm, hAp, hBp, hCp  # , asymmetric_h, taux, tauy, tauz
 from utils import eigen, nonedimmerp, nonedimmerm, tau_func, df_round, remove_small_imag, check_if_complex
 
@@ -62,51 +63,53 @@ def Hint_oct(rhotmp):
 
 
 ########################################################################
-# ##########################################################################################################
-# # regularization (self energy) U dependent
-#
-# def delta_e_kp(n, nu0, nu1, num2, nu2, eigenvectorp):
-#     pzm = (nu1 - 1 / 2) * Xskp(n, 1, 1, n, eigenvectorp) + (nu0 - 1 / 2) * Xskp(n, 0, 0, n, eigenvectorp)
-#
-#     m2and2 = nu2 * Xskp(n, 2, 2, n, eigenvectorp) - (1 - num2) * Xskp(n, -2, -2, n, eigenvectorp)
-#
-#     F = (Xskp(n, 2, 2, n, eigenvectorp) - Xskp(n, -2, -2, n, eigenvectorp))
-#
-#     #     F0=Xskp(0, 2, 2, 0, eigenvectorp) - Xskp(0, -2, -2, 0, eigenvectorp)
-#
-#     #     F=F-F0
-#
-#     res = (F / 2 - pzm - m2and2) * k
-#     return res
-#
-#
-# def delta_e_km(n, nu0, nu1, num2, nu2, eigenvectorm):
-#     pzm = (nu1 - 1 / 2) * Xskm(n, 1, 1, n, eigenvectorm) + (nu0 - 1 / 2) * Xskm(n, 0, 0, n, eigenvectorm)
-#
-#     m2and2 = nu2 * Xskm(n, 2, 2, n, eigenvectorm) - (1 - num2) * Xskm(n, -2, -2, n, eigenvectorm)
-#
-#     F = (Xskm(n, 2, 2, n, eigenvectorm) - Xskm(n, -2, -2, n, eigenvectorm))
-#
-#     #     F0=Xskm(0, 2, 2, 0, eigenvectorm) - Xskm(0, -2, -2, 0, eigenvectorm)
-#
-#     #     F=F-F0
-#
-#     res = (F / 2 - pzm - m2and2) * k
-#     return res
-#
-#
-# def delta_e_regmatrix(rho0const, eigenvectorp, eigenvectorm):
-#     # print('here3 ', np.diag(rho0const))
-#     nu0kp, nu1kp, num2kp, nu2kp, nu0km, nu1km, num2km, nu2km = tuple(np.diag(rho0const)[:8])
-#     # print('here4')
-#     regmatrixUmspindown = [delta_e_kp(n, nu0kp, nu1kp, num2kp, nu2kp, eigenvectorp) for n in setH] + [delta_e_km(n, nu0km, nu1km, num2km, nu2km, eigenvectorm) for n in setH]
-#
-#     nu0kp, nu1kp, num2kp, nu2kp, nu0km, nu1km, num2km, nu2km = tuple(np.diag(rho0const)[8:16])
-#     regmatrixUmspinup = [delta_e_kp(n, nu0kp, nu1kp, num2kp, nu2kp, eigenvectorp) for n in setH] + [delta_e_km(n, nu0km, nu1km, num2km, nu2km, eigenvectorm) for n in setH]
-#     return np.diag(np.array(regmatrixUmspindown + regmatrixUmspinup))
-#
-#
-# ##########################################################################################################
+##########################################################################################################
+# regularization (self energy) U dependent
+
+def delta_e_kp(n, nu0, nu1, num2, nu2, eigenvectorp):
+    # Shizuya, PRB 2020, eq. 32 /  Shizuya, PRB 2012 eq. 27
+    pzm = (nu1 - 1 / 2) * Xskp(n, 1, 1, n, eigenvectorp) + (nu0 - 1 / 2) * Xskp(n, 0, 0, n, eigenvectorp)
+
+    m2and2 = nu2 * Xskp(n, 2, 2, n, eigenvectorp) - (1 - num2) * Xskp(n, -2, -2, n, eigenvectorp)
+
+    F = (Xskp(n, 2, 2, n, eigenvectorp) - Xskp(n, -2, -2, n, eigenvectorp))
+
+    #     F0=Xskp(0, 2, 2, 0, eigenvectorp) - Xskp(0, -2, -2, 0, eigenvectorp)
+
+    #     F=F-F0
+
+    res = (F / 2 - pzm - m2and2) * k
+    return res
+
+
+def delta_e_km(n, nu0, nu1, num2, nu2, eigenvectorm):
+    # Shizuya, PRB 2020, eq. 32 /  Shizuya, PRB 2012 eq. 27
+    pzm = (nu1 - 1 / 2) * Xskm(n, 1, 1, n, eigenvectorm) + (nu0 - 1 / 2) * Xskm(n, 0, 0, n, eigenvectorm)
+
+    m2and2 = nu2 * Xskm(n, 2, 2, n, eigenvectorm) - (1 - num2) * Xskm(n, -2, -2, n, eigenvectorm)
+
+    F = (Xskm(n, 2, 2, n, eigenvectorm) - Xskm(n, -2, -2, n, eigenvectorm))
+
+    #     F0=Xskm(0, 2, 2, 0, eigenvectorm) - Xskm(0, -2, -2, 0, eigenvectorm)
+
+    #     F=F-F0
+
+    res = (F / 2 - pzm - m2and2) * k
+    return res
+
+
+def delta_e_regmatrix(rho0const, eigenvectorp, eigenvectorm):
+    # print('here3 ', np.diag(rho0const))
+    nu0kp, nu1kp, num2kp, nu2kp, nu0km, nu1km, num2km, nu2km = tuple(np.diag(rho0const)[:8])
+    # print('here4')
+    regmatrixUmspindown = [delta_e_kp(n, nu0kp, nu1kp, num2kp, nu2kp, eigenvectorp) for n in setH] + [delta_e_km(n, nu0km, nu1km, num2km, nu2km, eigenvectorm) for n in setH]
+
+    nu0kp, nu1kp, num2kp, nu2kp, nu0km, nu1km, num2km, nu2km = tuple(np.diag(rho0const)[8:16])
+    regmatrixUmspinup = [delta_e_kp(n, nu0kp, nu1kp, num2kp, nu2kp, eigenvectorp) for n in setH] + [delta_e_km(n, nu0km, nu1km, num2km, nu2km, eigenvectorm) for n in setH]
+    return np.diag(np.array(regmatrixUmspindown + regmatrixUmspinup))
+
+
+##########################################################################################################
 #
 # def exciton_j_to_n_km(n, j, eigenvectorm):
 #     A_nj = Xskm(n, n, j, j, eigenvectorm) * k * alpha_k
@@ -193,7 +196,10 @@ def loopU0(u):
 
     # print(h0)
 
-    # regmatrix = delta_e_regmatrix(rho0, eigenvectorp, eigenvectorm) * alpha_reg
+    eigenvectorp = np.array([[1, 0, 0, 0], [0, 1, 0, 0]] + [[0, 0] + x for x in eigenvectorp2.tolist()])
+    eigenvectorm = np.array([[1, 0, 0, 0], [0, 1, 0, 0]] + [[0, 0] + x for x in eigenvectorm2.tolist()])
+
+    regmatrix = delta_e_regmatrix(rho0, eigenvectorp, eigenvectorm) * alpha_reg_asym_calcs
     # print(np.diag(rho.real))
     # print('here')
     # print(k)
@@ -201,11 +207,12 @@ def loopU0(u):
     while it < itmax_asymmetric_calcs:
         Hint_longrange = k * alpha_H_oct_int * Hint_oct(rho)
         H_asym = asymmetric_h(taux, rho, uperp) + asymmetric_h(tauy, rho, uperp) + asymmetric_h(tauz, rho, uz)
-        H = h0 + Hint_longrange + H_asym + mZm
+        H = h0 + Hint_longrange + H_asym + mZm + regmatrix
         eigenvalue_loop, eigenvector_loop = eigen(H)
         rhotemp = rho
         rho = sum(np.outer(eigenvector_loop[i, :], eigenvector_loop[i, :]) for i in range(number_occupied_bands))
         rho = (1 - alpha_rho) * rho + alpha_rho * rhotemp
+        # regmatrix = delta_e_regmatrix(rho, eigenvectorp, eigenvectorm) * alpha_reg_asym_calcs # we should not update regmatrix here, won't affect nu=4 besides a small imag part
         it += 1
 
     # print(Hint_longrange)
@@ -244,6 +251,7 @@ def loopU0(u):
                          'eigenvector': eigenvector,
                          'eigenvector_octet': eigenvector_octet,
                          'eigenvector_octet_norms': eigenvector_octet_norms,
+                         'regmatrix': 1e3 * np.diag(regmatrix),
                          # 'Et': 1e3 * Et,
                          # 'h0': df_round(1e3 * h0),
                          'rho(density)': df_round(rho),

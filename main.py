@@ -9,7 +9,7 @@ t0 = time.time()
 import pandas as pd
 
 from config import model_regime, results_dir_path, file_name_csv, nprocesses, bands, bands_LLm2_LL2, bands_LL2, bands_LLm2
-from input.parameters import U0minD, U0maxD, dU0D, nu, u_critical, parameters_to_save, mode
+from input.parameters import U0minD, U0maxD, dU0D, nu, u_critical, parameters_to_save, mode, add_int_to_bands_LLm2_LL2_low_u
 from utils import frange, sort_dict, observable_to_csv, idxcalc, transitions_energy_fermi_energy
 
 a_pool = multiprocessing.Pool(processes=nprocesses)
@@ -134,7 +134,8 @@ if model_regime == 'near_zero_dielectric_field':
         model_regime_local = 'full_regime'
         energies_df_full_range = energies_and_observable_to_csv(quantities_full_range, model_regime_local)
 
-        energies_df[bands_LLm2_LL2] = energies_df_full_range[bands_LLm2_LL2]
+        if add_int_to_bands_LLm2_LL2_low_u:
+            energies_df[bands_LLm2_LL2] = energies_df_full_range[bands_LLm2_LL2]
         energies_df = assign_HighFieldRange(energies_df, energies_df_full_range)
 
     elif mode == 'fast_none_interact':

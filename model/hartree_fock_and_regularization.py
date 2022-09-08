@@ -38,6 +38,7 @@ def hmp(n, nprime, s1, s2):
 # regularization (self energy) U dependent
 
 def delta_e_kp(n, nu0, nu1, num2, nu2, eigenvectorp):
+    # Shizuya, PRB 2020, eq. 32 /  Shizuya, PRB 2012 eq. 27
     pzm = (nu1 - 1 / 2) * Xskp(n, 1, 1, n, eigenvectorp) + (nu0 - 1 / 2) * Xskp(n, 0, 0, n, eigenvectorp)
 
     m2and2 = nu2 * Xskp(n, 2, 2, n, eigenvectorp) - (1 - num2) * Xskp(n, -2, -2, n, eigenvectorp)
@@ -53,6 +54,7 @@ def delta_e_kp(n, nu0, nu1, num2, nu2, eigenvectorp):
 
 
 def delta_e_km(n, nu0, nu1, num2, nu2, eigenvectorm):
+    #Shizuya, PRB 2020, eq. 32 /  Shizuya, PRB 2012 eq. 27
     pzm = (nu1 - 1 / 2) * Xskm(n, 1, 1, n, eigenvectorm) + (nu0 - 1 / 2) * Xskm(n, 0, 0, n, eigenvectorm)
 
     m2and2 = nu2 * Xskm(n, 2, 2, n, eigenvectorm) - (1 - num2) * Xskm(n, -2, -2, n, eigenvectorm)
@@ -177,9 +179,11 @@ def loopU(u):
         Hint = k * alpha_int_H * np.vstack((np.hstack((Hintup, Hintupdown)), np.hstack((Hintdownup, Hintdown))))
         H = Hint + h0 + mZm + regmatrix  # np.add(Hint, h0)
         eigenvalue_loop, eigenvector_loop = eigen(H)
+        # rhotemp = rho
         rho = sum(np.outer(eigenvector_loop[i, :], eigenvector_loop[i, :]) for i in range(number_occupied_bands))
+        # rho = (1 - alpha_rho) * rho + alpha_rho * rhotemp
 
-        # regmatrix = delta_e_regmatrix(rho, eigenvectorp, eigenvectorm) * alpha_reg # we should not update regmatrix here, make results_old for nu=0 bad and won't affect nu=4
+        # regmatrix = delta_e_regmatrix(rho, eigenvectorp, eigenvectorm) * alpha_reg # we should not update regmatrix here, won't affect nu=4
 
         it += 1
 
@@ -210,7 +214,7 @@ def loopU(u):
                          'rhoU': df_round(rho),
                          'Eh_deltaU': 1e3 * k * Eh * deltatb,
                          'Hint': df_round(1e3 * Hint),
-                         'regmatrix': 1e3 * regmatrix
+                         'regmatrix': 1e3 * np.diag(regmatrix)
                          }
     ############################# exciton ####################
     # eigenvaluep2, eigenvectorp2 = eigen(hAp(u))[0][1:3], eigen(hAp(u))[1][1:3]

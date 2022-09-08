@@ -2,7 +2,7 @@ import sys
 
 import numpy as np
 
-nu_default = 4
+nu_default = 0
 
 if len(sys.argv) == 2:
     nu = int(sys.argv[1])
@@ -19,12 +19,14 @@ u_critical = 12e-3  # value of u in eV for phase transition
 asym = 1
 alpha_Zm = 1  # 0.04227165829987071 # k / alpha_k
 alpha_H_oct_int = 1
-alpha_int_H = 0
+alpha_int_H = 1  # 0 for none int calculations on the full_range model
+alpha_reg = 1
+alpha_reg_asym_calcs = 1
 alpha_x = 1
 
-U0minD = -12e-3
-U0maxD = 45e-3
-dU0D = 0.5e-3
+U0minD = -8e-3
+U0maxD = 20e-3
+dU0D = 1e-3
 
 u_zero = 1
 u_zero = round(u_zero, 4)
@@ -72,18 +74,18 @@ model_regime = 'near_zero_dielectric_field'
 
 #### appoximation mode for LL2 and LLm2 ###
 mode = 'hartree_fock_and_regularization_calcs'
+add_int_to_bands_LLm2_LL2_low_u = True  # if false this is effectivelly equivalent to fast_none_interact mode for low u regime
 # mode = 'fast_none_interact'
 # mode = 'fast_from_file'
 # mode = 'fast_from_constant'
 #########
 # if tests_mode=='off':
 #     mode = 'hartree_fock_and_regularization_calcs'
-
 # alpha_state = 1
-alpha_reg = 0
+
 # dens = 3
-uz = 7e0 * 1e-3 * 0
-uperp = -1.6e0 * 1e-3 * 0
+uz = 7e0 * 1e-3
+uperp = 1.6e0 * 1e-3
 print('uz=%(uz).1fmeV, uperp=%(uperp).1fmeV' % {'uz': uz * 1e3, 'uperp': uperp * 1e3})
 # variables_dict['alpha_rho']=alpha_rho
 # variables_dict['alpha_rand']=alpha_rand
@@ -134,6 +136,7 @@ parameters_to_save = {'nu': nu,
                       'u_critical_meV': u_critical * 1e3,
                       'asym': asym,
                       'alpha_H_oct_int': alpha_H_oct_int,
+                      'alpha_reg_asym_calcs': alpha_reg_asym_calcs,
                       'Zm_meV': Zm * 1e3,
                       'x': x,
                       'itmax_full_range': itmax_full_range,
@@ -145,12 +148,14 @@ parameters_to_save = {'nu': nu,
                       'model_regime': model_regime,
                       'mode': mode,
                       'alpha_reg': alpha_reg,
+                      'add_int_to_bands_LLm2_LL2_low_u': add_int_to_bands_LLm2_LL2_low_u,
                       'alpha_int_H': alpha_int_H,
                       'uz_meV': uz * 1e3,
                       'uperp_meV': uperp * 1e3,
                       # 'u_zero_meV': u_zero,
                       'range_meV': (U0minD * 1e3, U0maxD * 1e3, dU0D * 1e3),
-                      'tests_mode': tests_mode
+                      'tests_mode': tests_mode,
+                      # 'add_int_to_bands_LLm2_LL2_low_u':add_int_to_bands_LLm2_LL2_low_u
                       }
 
 # if __name__ == "__main__":
