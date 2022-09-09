@@ -14,47 +14,64 @@ xdFF = xdFF.loc[(abs(xdFF['res']) > tol)].reset_index()
 
 
 def vplf(n, eigenvectorp):
-    if n == 0:
-        return 0
-    elif n == 1:
-        return 0
-    elif n == -2:
-        return eigenvectorp[2][2]
-    elif n == 2:
-        return eigenvectorp[3][2]
+    vplf_dict = {0: 0, 1: 0, -2: eigenvectorp[2][2], 2: eigenvectorp[3][2]}
+    return vplf_dict[n]
 
+
+# def vplf(n, eigenvectorp):
+#     if n == 0:
+#         return 0
+#     elif n == 1:
+#         return 0
+#     elif n == -2:
+#         return eigenvectorp[2][2]
+#     elif n == 2:
+#         return eigenvectorp[3][2]
 
 def uplf(n, eigenvectorp):
-    if n == 0:
-        return 1
-    elif n == 1:
-        return 1
-    elif n == -2:
-        return eigenvectorp[2][3]
-    elif n == 2:
-        return eigenvectorp[3][3]
+    uplf_dict = {0: 1, 1: 1, -2: eigenvectorp[2][3], 2: eigenvectorp[3][3]}
+    return uplf_dict[n]
 
+
+# def uplf(n, eigenvectorp):
+#     if n == 0:
+#         return 1
+#     elif n == 1:
+#         return 1
+#     elif n == -2:
+#         return eigenvectorp[2][3]
+#     elif n == 2:
+#         return eigenvectorp[3][3]
 
 def vmnf(n, eigenvectorm):
-    if n == 0:
-        return 0
-    elif n == 1:
-        return 0
-    elif n == -2:
-        return eigenvectorm[2][3]
-    elif n == 2:
-        return eigenvectorm[3][3]
+    vmnf_dict = {0: 0, 1: 0, -2: eigenvectorm[2][3], 2: eigenvectorm[3][3]}
+    return vmnf_dict[n]
 
+
+# def vmnf(n, eigenvectorm):
+#     if n == 0:
+#         return 0
+#     elif n == 1:
+#         return 0
+#     elif n == -2:
+#         return eigenvectorm[2][3]
+#     elif n == 2:
+#         return eigenvectorm[3][3]
 
 def umnf(n, eigenvectorm):
-    if n == 0:
-        return 1
-    elif n == 1:
-        return 1
-    elif n == -2:
-        return eigenvectorm[2][2]
-    elif n == 2:
-        return eigenvectorm[3][2]
+    umnf_dict = {0: 1, 1: 1, -2: eigenvectorm[2][2], 2: eigenvectorm[3][2]}
+    return umnf_dict[n]
+
+
+# def umnf(n, eigenvectorm):
+#     if n == 0:
+#         return 1
+#     elif n == 1:
+#         return 1
+#     elif n == -2:
+#         return eigenvectorm[2][2]
+#     elif n == 2:
+#         return eigenvectorm[3][2]
 
 
 def xsFFfunc(n2, nprime, n, n1):
