@@ -70,7 +70,7 @@ def observable_to_csv(obeservables_dict, obeservable):
         obeservable_list.append([round(k, 2), v[obeservable]])
     obeservable_df = pd.DataFrame(obeservable_list)
     obeservable_df = obeservable_df.applymap(remove_small_imag)
-    obeservable_df.to_csv(results_dir_path + obeservable + '_' + file_name_csv, index=False, header=False)
+    obeservable_df.round(8).to_csv(results_dir_path + obeservable + '_' + file_name_csv, index=False, header=False)
 
 
 # ['0p-', '1p-', '-2p-', '2p-', '0m-', '1m-', '-2m-', '2m-', '0p+', '1p+', '-2p+', '2p+', '0m+', '1m+', '-2m+', '2m+']

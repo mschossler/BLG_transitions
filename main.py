@@ -173,8 +173,8 @@ if model_regime == 'near_zero_dielectric_field':
 # print('after')
 energies_df, transition_energy_df = transitions_energy_fermi_energy(energies_df, nu)  # add fermi_energy to energies_df
 
-energies_df.to_csv(results_dir_path + 'energies_' + file_name_csv, index=False)
-transition_energy_df.to_csv(results_dir_path + 'transitions_' + file_name_csv, index=False)
+energies_df.round(8).to_csv(results_dir_path + 'energies_' + file_name_csv, index=False)
+transition_energy_df.round(8).to_csv(results_dir_path + 'transitions_' + file_name_csv, index=False)
 
 from visualization.plots import plot_energies, plot_transitions
 
@@ -194,7 +194,7 @@ print('files ' + file_name_csv + ' saved')
 
 import filecmp
 
-file1 = 'results/results_09092022/occupation_' + str(nu + 8) + '/energies_nu_' + str(nu) + '_v0.csv'
+file1 = 'results/results_10092022/occupation_' + str(nu + 8) + '/energies_nu_' + str(nu) + '_to_compare.csv'
 file2 = 'results/results_' + current_date + '/occupation_' + str(nu + 8) + '/energies_' + file_name_csv
 print('same as previews results : %s' % filecmp.cmp(file1, file2))
 print('working duration for nu=%(nu)i: %(t).1fs' % {'t': time.time() - t0, 'nu': nu})

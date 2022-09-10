@@ -17,8 +17,8 @@ from input.parameters import x
 xsFF = pd.read_csv(model_dir + 'xsFF.csv', names=['res', 'n2', 'np', 'n', 'n1'])
 xsFF = xsFF.loc[(abs(xsFF['res']) > tol)].reset_index()
 
-# xsFF['res'] = xsFF['res'].round(int(-np.log10(tol)))
-xsFF['res'] = xsFF['res']  # .round(30)
+xsFF['res'] = xsFF['res'].round(int(-np.log10(tol)))
+# xsFF['res'] = xsFF['res'].round(15)
 # print(xsFF)
 keys_xsFF = xsFF.drop(columns=['index', 'res']).to_records(index=False)
 values_xsFF = xsFF['res'].round(int(-np.log10(tol))).to_list()
