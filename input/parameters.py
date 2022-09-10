@@ -2,7 +2,7 @@ import sys
 
 import numpy as np
 
-nu_default = 0
+nu_default = 4
 
 if len(sys.argv) == 2:
     nu = int(sys.argv[1])
@@ -23,27 +23,27 @@ alpha_int_H = 1  # 0 for none int calculations on the full_range model
 alpha_reg = 1
 alpha_reg_asym_calcs = 1
 alpha_x = 1
-uz = 5e0 * 1e-3
+uz = 7e0 * 1e-3
 uperp = -1.6e0 * 1e-3
 
-U0minD = -8e-3
-U0maxD = 40e-3
-dU0D = 1e-3
+U0minD = -4e-3
+U0maxD = 5e-3
+dU0D = 4e-3
 
 u_zero = 1
 u_zero = round(u_zero, 4)
 
-tests_mode = 'on'  # change this to off when done with tests
+tests_mode = 'off'  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = 5
-itmax_asymmetric_calcs = int(3e4)
+itmax_full_range = 3
+itmax_asymmetric_calcs = int(1e4)
 if nu == 0:
-    alpha_rand_full_range = 0.6
+    alpha_rand_full_range = 0.6  # 0.6
 else:
     alpha_rand_full_range = 0
-alpha_rand_asymmetric_calcs = 0.01
-alpha_rho = 0.05  # controls numerical regularization for rho (memory of rho from previews loop)
+alpha_rand_asymmetric_calcs = 0.005
+alpha_rho = 0.005  # controls numerical regularization for rho (memory of rho from previews loop)
 # variables_dict['asym']=asym
 # variables_dict['alpha_Zm']=alpha_Zm
 # variables_dict['alpha_H_oct_int']=alpha_H_oct_int
@@ -71,15 +71,15 @@ alpha_k_dic[0] = alpha_k_nu0
 #                }
 
 # asymmetry parameters
-model_regime = 'near_zero_dielectric_field'
-# model_regime = 'full_range'
+# model_regime = 'near_zero_dielectric_field'
+model_regime = 'full_range'
 
 #### appoximation mode for LL2 and LLm2 ###
-# mode = 'hartree_fock_and_regularization_calcs'
+mode = 'hartree_fock_and_regularization_calcs'
 add_int_to_bands_LLm2_LL2_low_u = True  # if false this is effectivelly equivalent to fast_none_interact mode for low u regime
 # mode = 'fast_none_interact'
-mode = 'fast_from_file'
-# mode = 'fast_from_constant'
+# mode = 'fast_from_file' # L2 and LLm2 are set by fully interacting hamiltonian (no asymmetric int)
+# mode = 'fast_from_constant' # LL2 and LLm2 are set by none-interacting hamiltonian + constant (from avereage LL2 and LLm2 set by interacting hamiltonian)
 #########
 # if tests_mode=='off':
 #     mode = 'hartree_fock_and_regularization_calcs'

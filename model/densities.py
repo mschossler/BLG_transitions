@@ -91,6 +91,9 @@ class Density_Seed:
         #     filling_order = filling_order_Unegative
         # seed_dict = {'rho0constUp': rho0constUp, 'rho0constUm': rho0constUm}
         rhorand16 = self.ramdom_16x16_density()
+        # if nu==0:
+        #     return np.diag([1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0])
+        # return np.diag([0.618, 0.618, 1, 0, 0.618, 0.618, 1, 0, 0.382, 0.382, 1, 0, 0.382, 0.382, 1, 0])
         return (1 - alpha_rand_full_range) * np.diag(diag) + alpha_rand_full_range * rhorand16
         # return np.diag(diag)
 

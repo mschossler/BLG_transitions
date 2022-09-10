@@ -3,13 +3,29 @@ import math
 import numpy as np
 import pandas as pd
 
+model_dir = 'model/'
+if __name__ == "__main__":
+    # setting path
+    import sys
+
+    sys.path.append('../')
+    model_dir = '../model/'
+
 from config import tol
 from input.parameters import x
 
-xsFF = pd.read_csv('model/' + 'xsFF.csv', names=['res', 'n2', 'np', 'n', 'n1'])
+xsFF = pd.read_csv(model_dir + 'xsFF.csv', names=['res', 'n2', 'np', 'n', 'n1'])
 xsFF = xsFF.loc[(abs(xsFF['res']) > tol)].reset_index()
 
-xdFF = pd.read_csv('model/' + 'xdFF.csv', names=['res', 'n2', 'np', 'n', 'n1'])
+# xsFF['res'] = xsFF['res'].round(int(-np.log10(tol)))
+xsFF['res'] = xsFF['res']  # .round(30)
+# print(xsFF)
+keys_xsFF = xsFF.drop(columns=['index', 'res']).to_records(index=False)
+values_xsFF = xsFF['res'].round(int(-np.log10(tol))).to_list()
+# print(values_xsFF)
+# dict(zip())
+
+xdFF = pd.read_csv(model_dir + 'xdFF.csv', names=['res', 'n2', 'np', 'n', 'n1'])
 xdFF = xdFF.loc[(abs(xdFF['res']) > tol)].reset_index()
 
 

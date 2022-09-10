@@ -8,7 +8,7 @@ t0 = time.time()
 
 import pandas as pd
 
-from config import model_regime, results_dir_path, file_name_csv, nprocesses, bands, bands_LLm2_LL2, bands_LL2, bands_LLm2
+from config import model_regime, results_dir_path, file_name_csv, nprocesses, bands, bands_LLm2_LL2, bands_LL2, bands_LLm2, current_date
 from input.parameters import U0minD, U0maxD, dU0D, nu, u_critical, parameters_to_save, mode, add_int_to_bands_LLm2_LL2_low_u
 from utils import frange, sort_dict, observable_to_csv, idxcalc, transitions_energy_fermi_energy
 
@@ -191,4 +191,10 @@ with open(results_dir_path + 'parameters.txt', 'w') as parameters_file:
         parameters_file.write('%s = %s\n' % (key, parameters_to_save[key]))
 
 print('files ' + file_name_csv + ' saved')
+
+import filecmp
+
+file1 = 'results/results_09092022/occupation_' + str(nu + 8) + '/energies_nu_' + str(nu) + '_v0.csv'
+file2 = 'results/results_' + current_date + '/occupation_' + str(nu + 8) + '/energies_' + file_name_csv
+print('same as previews results : %s' % filecmp.cmp(file1, file2))
 print('working duration for nu=%(nu)i: %(t).1fs' % {'t': time.time() - t0, 'nu': nu})
