@@ -22,11 +22,19 @@ xsFF['res'] = xsFF['res'].round(int(-np.log10(tol)))
 # print(xsFF)
 keys_xsFF = xsFF.drop(columns=['index', 'res']).to_records(index=False)
 values_xsFF = xsFF['res'].round(int(-np.log10(tol))).to_list()
-# print(values_xsFF)
-# dict(zip())
+# print(type(keys_xsFF[1]))
+# dict(zip(keys_xsFF,values_xsFF))
+xsFF_dict = dict([(tuple(keys_xsFF[i]), values_xsFF[i]) for i in range(len(values_xsFF))])
+# print(xsFF.shape)
+# print(dict([(tuple(keys_xsFF[i]), values_xsFF[i]) for i in range(len(values_xsFF))]))
 
 xdFF = pd.read_csv(model_dir + 'xdFF.csv', names=['res', 'n2', 'np', 'n', 'n1'])
 xdFF = xdFF.loc[(abs(xdFF['res']) > tol)].reset_index()
+
+xdFF['res'] = xdFF['res'].round(int(-np.log10(tol)))
+keys_xdFF = xdFF.drop(columns=['index', 'res']).to_records(index=False)
+values_xdFF = xdFF['res'].round(int(-np.log10(tol))).to_list()
+xdFF_dict = dict([(tuple(keys_xdFF[i]), values_xdFF[i]) for i in range(len(values_xdFF))])
 
 
 def vplf(n, eigenvectorp):
