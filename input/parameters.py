@@ -2,7 +2,7 @@ import sys
 
 import numpy as np
 
-nu_default = 4
+nu_default = 0
 
 if len(sys.argv) == 2:
     nu = int(sys.argv[1])
@@ -36,7 +36,7 @@ u_zero = round(u_zero, 4)
 tests_mode = 'off'  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = 3
+itmax_full_range = int(1e3)
 itmax_asymmetric_calcs = int(1e4)
 if nu == 0:
     alpha_rand_full_range = 0.6  # 0.6

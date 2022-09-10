@@ -1,8 +1,0 @@
--> warning: none-zero imaginary part energy 2.8330meV for nu=0, u=0.00meV 
--> warning: none-zero imaginary part energy 2.8330meV for nu=0, u=0.00meV 
--> warning: none-zero imaginary part energy 2.4565meV for nu=0, u=0.00meV 
--> warning: none-zero imaginary part energy 2.4565meV for nu=0, u=0.00meV 
--> warning: none-zero imaginary part energy -0.0001meV for nu=0, u=0.00meV 
--> warning: none-zero imaginary part energy -0.0001meV for nu=0, u=0.00meV 
--> warning: none-zero imaginary part energy 0.0007meV for nu=0, u=0.00meV 
--> warning: none-zero imaginary part energy 0.0007meV for nu=0, u=0.00meV 

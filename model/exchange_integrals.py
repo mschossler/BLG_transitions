@@ -14,26 +14,22 @@ if __name__ == "__main__":
 from config import tol
 from input.parameters import x
 
+decimals_round = int(-np.log10(tol))
+
 xsFF = pd.read_csv(model_dir + 'xsFF.csv', names=['res', 'n2', 'np', 'n', 'n1'])
 xsFF = xsFF.loc[(abs(xsFF['res']) > tol)].reset_index()
 
-xsFF['res'] = xsFF['res'].round(int(-np.log10(tol)))
-# xsFF['res'] = xsFF['res'].round(15)
-# print(xsFF)
+xsFF['res'] = xsFF['res'].round(decimals_round)
 keys_xsFF = xsFF.drop(columns=['index', 'res']).to_records(index=False)
-values_xsFF = xsFF['res'].round(int(-np.log10(tol))).to_list()
-# print(type(keys_xsFF[1]))
-# dict(zip(keys_xsFF,values_xsFF))
+values_xsFF = xsFF['res'].round(decimals_round).to_list()
 xsFF_dict = dict([(tuple(keys_xsFF[i]), values_xsFF[i]) for i in range(len(values_xsFF))])
-# print(xsFF.shape)
-# print(dict([(tuple(keys_xsFF[i]), values_xsFF[i]) for i in range(len(values_xsFF))]))
 
 xdFF = pd.read_csv(model_dir + 'xdFF.csv', names=['res', 'n2', 'np', 'n', 'n1'])
 xdFF = xdFF.loc[(abs(xdFF['res']) > tol)].reset_index()
 
-xdFF['res'] = xdFF['res'].round(int(-np.log10(tol)))
+xdFF['res'] = xdFF['res'].round()
 keys_xdFF = xdFF.drop(columns=['index', 'res']).to_records(index=False)
-values_xdFF = xdFF['res'].round(int(-np.log10(tol))).to_list()
+values_xdFF = xdFF['res'].round(decimals_round).to_list()
 xdFF_dict = dict([(tuple(keys_xdFF[i]), values_xdFF[i]) for i in range(len(values_xdFF))])
 
 
@@ -96,19 +92,22 @@ def umnf(n, eigenvectorm):
 #         return eigenvectorm[2][2]
 #     elif n == 2:
 #         return eigenvectorm[3][2]
-
-
 def xsFFfunc(n2, nprime, n, n1):
-    restmp = xsFF.loc[
-        (xsFF['n2'] == n2) & (xsFF['np'] == nprime) & (xsFF['n'] == n) & (xsFF['n1'] == n1)].values.tolist()
-    if len(restmp) == 0:
-        restmp = 0
-    elif len(restmp) > 1:
-        print('error with', n2, nprime, n, n1)
-        exit()
-    else:
-        restmp = restmp[0][1]
+    restmp = xsFF_dict.get((n2, nprime, n, n1), 0)
     return restmp
+
+
+# def xsFFfunc(n2, nprime, n, n1):
+#     restmp = xsFF.loc[
+#         (xsFF['n2'] == n2) & (xsFF['np'] == nprime) & (xsFF['n'] == n) & (xsFF['n1'] == n1)].values.tolist()
+#     if len(restmp) == 0:
+#         restmp = 0
+#     elif len(restmp) > 1:
+#         print('error with', n2, nprime, n, n1)
+#         exit()
+#     else:
+#         restmp = restmp[0][1]
+#     return restmp
 
 
 def Xskp(n2, nprime, n, n1, eigenvectorp):
@@ -164,16 +163,21 @@ def Xskm(n2, nprime, n, n1, eigenvectorm):
 
 
 def xdFFfunc(n2, nprime, n, n1):
-    restmp = xdFF.loc[
-        (xdFF['n2'] == n2) & (xdFF['np'] == nprime) & (xdFF['n'] == n) & (xdFF['n1'] == n1)].values.tolist()
-    if len(restmp) == 0:
-        restmp = 0
-    elif len(restmp) > 1:
-        print('error with', n2, nprime, n, n1)
-        exit()
-    else:
-        restmp = restmp[0][1]
+    restmp = xdFF_dict.get((n2, nprime, n, n1), 0)
     return restmp
+
+
+# def xdFFfunc(n2, nprime, n, n1):
+#     restmp = xdFF.loc[
+#         (xdFF['n2'] == n2) & (xdFF['np'] == nprime) & (xdFF['n'] == n) & (xdFF['n1'] == n1)].values.tolist()
+#     if len(restmp) == 0:
+#         restmp = 0
+#     elif len(restmp) > 1:
+#         print('error with', n2, nprime, n, n1)
+#         exit()
+#     else:
+#         restmp = restmp[0][1]
+#     return restmp
 
 
 def Xdkpm(n2, nprime, n, n1, eigenvectorp, eigenvectorm):
@@ -199,8 +203,7 @@ def Xdkpm(n2, nprime, n, n1, eigenvectorp, eigenvectorm):
           vpl(n2) * vpl(nprime) * umn(n) * umn(n1) * xdFFfunc(absn2 - 2, absnp - 2, absn, absn1) + \
           vpl(n2) * vpl(nprime) * vmn(n) * vmn(n1) * xdFFfunc(absn2 - 2, absnp - 2, absn - 2, absn1 - 2)
 
-    if abs(res) < tol:
-        res = 0
+    res = round(res, decimals_round)
     return res
 
 
@@ -227,8 +230,7 @@ def Xdkmp(n2, nprime, n, n1, eigenvectorm, eigenvectorp):
           vmn(n2) * vmn(nprime) * upl(n) * upl(n1) * xdFFfunc(absn2 - 2, absnp - 2, absn, absn1) + \
           vmn(n2) * vmn(nprime) * vpl(n) * vpl(n1) * xdFFfunc(absn2 - 2, absnp - 2, absn - 2, absn1 - 2)
 
-    if abs(res) < tol:
-        res = 0
+    res = round(res, decimals_round)
     return res
 
 
