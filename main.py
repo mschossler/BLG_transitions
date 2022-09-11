@@ -195,7 +195,7 @@ print('files ' + file_name_csv + ' saved')
 
 import filecmp
 
-file1 = 'results/results_10092022/occupation_' + str(nu + 8) + '/energies_nu_' + str(nu) + '_to_compare.csv'
+file1 = 'results/results_11092022/occupation_' + str(nu + 8) + '/energies_nu_' + str(nu) + '_to_compare.csv'
 file2 = 'results/results_' + current_date + '/occupation_' + str(nu + 8) + tests_mode + 'energies_' + file_name_csv
 print('same as previews results : %s' % filecmp.cmp(file1, file2))
 print('working duration for nu=%(nu)i: %(t).1fs' % {'t': time.time() - t0, 'nu': nu})

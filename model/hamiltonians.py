@@ -35,7 +35,6 @@ def H0(u):
     return [m + [0, 0, 0, 0] for m in h0p(u)] + [[0, 0, 0, 0] + m for m in h0m(u)]
 
 
-
 def hAp(u):
     "LL: -2, 2,...  - plot color: Black"
     if u < 0:
@@ -43,10 +42,8 @@ def hAp(u):
     else:
         Delta_ab_local = Delta_ab
 
-    hamtx = [[-u / 2 + Delta_ab_local, -omega, eta4 * omega, 0],
-             [-omega, - u / 2 + Delta - Delta_ab_local, gamma1, np.sqrt(2) * eta4 * omega],
-             [eta4 * omega, gamma1, u / 2 + Delta + Delta_ab_local, -np.sqrt(2) * omega],
-             [0, np.sqrt(2) * eta4 * omega, -np.sqrt(2) * omega, u / 2 - Delta_ab_local]]
+    hamtx = [[-u / 2 + Delta_ab_local, -omega, eta4 * omega, 0], [-omega, - u / 2 + Delta - Delta_ab_local, gamma1, np.sqrt(2) * eta4 * omega],
+             [eta4 * omega, gamma1, u / 2 + Delta + Delta_ab_local, -np.sqrt(2) * omega], [0, np.sqrt(2) * eta4 * omega, -np.sqrt(2) * omega, u / 2 - Delta_ab_local]]
     return hamtx
 
 
@@ -57,8 +54,7 @@ def hCp(u):
     else:
         Delta_ab_local = Delta_ab
 
-    hamtx = [[u / 2 - Delta_ab_local, eta3 * omega, 0, 0, 0],
-             [eta3 * omega, -u / 2 + Delta_ab_local, -np.sqrt(2) * omega, np.sqrt(2) * eta4 * omega, 0],
+    hamtx = [[u / 2 - Delta_ab_local, eta3 * omega, 0, 0, 0], [eta3 * omega, -u / 2 + Delta_ab_local, -np.sqrt(2) * omega, np.sqrt(2) * eta4 * omega, 0],
              [0, -np.sqrt(2) * omega, - u / 2 + Delta - Delta_ab_local, gamma1, np.sqrt(3) * eta4 * omega],
              [0, np.sqrt(2) * eta4 * omega, gamma1, u / 2 + Delta + Delta_ab_local, -np.sqrt(3) * omega],
              [0, 0, np.sqrt(3) * eta4 * omega, -np.sqrt(3) * omega, u / 2 - Delta_ab_local]]
@@ -72,13 +68,11 @@ def hBp(u):
     else:
         Delta_ab_local = Delta_ab
 
-    hamtx = [[- u / 2 + Delta - Delta_ab_local, gamma1, eta4 * omega, 0, 0, 0, 0],
-             [gamma1, u / 2 + Delta + Delta_ab_local, -omega, 0, 0, 0, 0],
+    hamtx = [[- u / 2 + Delta - Delta_ab_local, gamma1, eta4 * omega, 0, 0, 0, 0], [gamma1, u / 2 + Delta + Delta_ab_local, -omega, 0, 0, 0, 0],
              [eta4 * omega, - omega, u / 2 - Delta_ab_local, np.sqrt(2) * eta3 * omega, 0, 0, 0],
              [0, 0, np.sqrt(2) * eta3 * omega, -u / 2 + Delta_ab_local, -np.sqrt(3) * omega, np.sqrt(3) * eta4 * omega, 0],
              [0, 0, 0, -np.sqrt(3) * omega, - u / 2 + Delta - Delta_ab_local, gamma1, 2 * eta4 * omega],
-             [0, 0, 0, np.sqrt(3) * eta4 * omega, gamma1, u / 2 + Delta + Delta_ab_local, -2 * omega],
-             [0, 0, 0, 0, 2 * eta4 * omega, - 2 * omega, u / 2 - Delta_ab_local]]
+             [0, 0, 0, np.sqrt(3) * eta4 * omega, gamma1, u / 2 + Delta + Delta_ab_local, -2 * omega], [0, 0, 0, 0, 2 * eta4 * omega, - 2 * omega, u / 2 - Delta_ab_local]]
 
     return hamtx
 
@@ -117,10 +111,14 @@ def capacitance_energy_func(n, nprime, s1, s2, Eh, deltatb):
     return 0
 
 
+# def id_i(n, s, idx, idxs):
+#     idxfsu = round((1 + s) / 2)
+#     idxfsd = round((1 - s) / 2)
+#     return idxfsu * idx(n) + idxfsd * idxs(n)
+
 def id_i(n, s, idx, idxs):
-    idxfsu = round((1 + s) / 2)
-    idxfsd = round((1 - s) / 2)
-    return idxfsu * idx(n) + idxfsd * idxs(n)
+    res_dict = {1: idx(n), -1: idxs(n)}
+    return res_dict[s]
 
 
 def full_hp(n, nprime, s1, s2, Eh, deltatb, eigenvectorp, rho):
@@ -175,6 +173,7 @@ def full_hmp(n, nprime, s1, s2, eigenvectorp, eigenvectorm, rho):
     res = -sum([Xdkmp(n2, nprime, n, n1, eigenvectorm, eigenvectorp) * rho[id1(n2)][id2(n1)] for n1 in [0, 1] for n2 in [0, 1]] + [
         Xdkmp(n2, nprime, n, n1, eigenvectorm, eigenvectorp) * rho[id1(n2)][id2(n1)] for n1 in [-2, 2] for n2 in [-2, 2]])
     return res
+
 
 def tau_func(tau):
     tau = np.array(tau)

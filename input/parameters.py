@@ -37,7 +37,7 @@ u_zero = round(u_zero, 4)
 tests_mode = 'on'  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(3)
+itmax_full_range = int(500)
 itmax_asymmetric_calcs = int(500)
 if nu == 0:
     alpha_rand_full_range = 0.6  # 0.6
