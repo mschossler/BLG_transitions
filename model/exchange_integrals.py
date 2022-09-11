@@ -28,7 +28,7 @@ xsFF_dict = dict([(tuple(keys_xsFF[i]), values_xsFF[i]) for i in range(len(value
 xdFF = pd.read_csv(model_dir + 'xdFF.csv', names=['res', 'n2', 'np', 'n', 'n1'])
 xdFF = xdFF.loc[(abs(xdFF['res']) > tol)].reset_index()
 
-xdFF['res'] = xdFF['res'].round()
+xdFF['res'] = xdFF['res'].round(decimals_round)
 keys_xdFF = xdFF.drop(columns=['index', 'res']).to_records(index=False)
 values_xdFF = xdFF['res'].round(decimals_round).to_list()
 xdFF_dict = dict([(tuple(keys_xdFF[i]), values_xdFF[i]) for i in range(len(values_xdFF))])
