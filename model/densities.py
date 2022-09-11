@@ -50,6 +50,7 @@ class Density_Seed:
                      }
 
     def ramdom_16x16_density(self):
+        # if (self.model_regime == 'full_range_error') and (self.nu == 0):
         if (self.model_regime == 'full_range') and (self.nu == 0):
             # print('inside condition (model_regime == full_range) and (nu == 0)')
             rhorand8 = pd.read_csv(input_dir + 'rho0phbroken.csv', header=None).values.tolist()
@@ -106,8 +107,9 @@ class Density_Seed:
         filling_order = self.filling_order_Upositive[0:4] + occupied_octet_states + self.filling_order_Upositive[-2::1]
 
         diag = [(1 if band in filling_order[0:number_occupied_bands_local] else 0) for band in bands]
-        if sum(diag) != number_occupied_bands:
-            print('Wrong filling factor for nu %i', self.nu)
+        # diag= [0.618, 0.618, 1, 0, 0.618, 0.618, 1, 0, 0.382, 0.382, 1, 0, 0.382, 0.382, 1, 0]
+        if round(sum(diag)) != number_occupied_bands:
+            print('Wrong filling factor for nu %i' % self.nu)
             exit()
         # print('here_seed_asymmetric')
         # import time
@@ -135,6 +137,7 @@ class Density_Seed:
 
 def density_by_model_regime(model_regime):
     densities = Density_Seed(model_regime, nu)
+    # densities = Density_Seed('near_zero_dielectric_field', nu)
     densities.assign_densities()
     rho0constUp = densities.rho0constUp
     rho0constUm = densities.rho0constUm

@@ -24,6 +24,7 @@ keys_xsFF = xsFF.drop(columns=['index', 'res']).to_records(index=False)
 values_xsFF = xsFF['res'].round(decimals_round).to_list()
 xsFF_dict = dict([(tuple(keys_xsFF[i]), values_xsFF[i]) for i in range(len(values_xsFF))])
 
+
 xdFF = pd.read_csv(model_dir + 'xdFF.csv', names=['res', 'n2', 'np', 'n', 'n1'])
 xdFF = xdFF.loc[(abs(xdFF['res']) > tol)].reset_index()
 
@@ -131,8 +132,7 @@ def Xskp(n2, nprime, n, n1, eigenvectorp):
           vpl(n2) * vpl(nprime) * upl(n) * upl(n1) * xsFFfunc(absn2 - 2, absnp - 2, absn, absn1) + \
           vpl(n2) * vpl(nprime) * vpl(n) * vpl(n1) * xsFFfunc(absn2 - 2, absnp - 2, absn - 2, absn1 - 2)
 
-    if abs(res) < tol:
-        res = 0
+    res = round(res, decimals_round)
     return res
 
 
@@ -157,8 +157,7 @@ def Xskm(n2, nprime, n, n1, eigenvectorm):
           vmn(n2) * vmn(nprime) * umn(n) * umn(n1) * xsFFfunc(absn2 - 2, absnp - 2, absn, absn1) + \
           vmn(n2) * vmn(nprime) * vmn(n) * vmn(n1) * xsFFfunc(absn2 - 2, absnp - 2, absn - 2, absn1 - 2)
 
-    if abs(res) < tol:
-        res = 0
+    res = round(res, decimals_round)
     return res
 
 

@@ -20,6 +20,7 @@ asym = 1
 alpha_Zm = 1  # 0.04227165829987071 # k / alpha_k
 alpha_H_oct_int = 1
 alpha_int_H = 1  # 0 for none int calculations on the full_range model
+apha_H_asym = 0
 alpha_reg = 1
 alpha_reg_asym_calcs = 1
 alpha_x = 1
@@ -33,11 +34,11 @@ dU0D = 4e-3
 u_zero = 1
 u_zero = round(u_zero, 4)
 
-tests_mode = 'off'  # change this to off when done with tests
+tests_mode = 'on'  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(1e3)
-itmax_asymmetric_calcs = int(1e4)
+itmax_full_range = int(3)
+itmax_asymmetric_calcs = int(500)
 if nu == 0:
     alpha_rand_full_range = 0.6  # 0.6
 else:
@@ -134,6 +135,7 @@ parameters_to_plot = {'nu': nu,
                       # 'u_critical_meV': u_critical * 1e3,
                       'asym': asym,
                       'alpha_H_oct_int': alpha_H_oct_int,
+                      'apha_H_asym': apha_H_asym,
                       'alpha_reg_asym_calcs': alpha_reg_asym_calcs,
                       # 'Zm_meV': Zm * 1e3,
                       # 'x': x,
@@ -169,6 +171,7 @@ parameters_to_save = {'nu': nu,
                       'u_critical_meV': u_critical * 1e3,
                       'asym': asym,
                       'alpha_H_oct_int': alpha_H_oct_int,
+                      'apha_H_asym': apha_H_asym,
                       'alpha_reg_asym_calcs': alpha_reg_asym_calcs,
                       'Zm_meV': Zm * 1e3,
                       'x': x,

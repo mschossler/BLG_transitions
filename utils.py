@@ -110,18 +110,6 @@ def nonedimmerm(vectors):
         newvectors.append((np.array(tmp) / npla.norm(tmp)).tolist())
     return np.array(newvectors)
 
-
-def tau_func(tau):
-    tau = np.array(tau)
-    temp = np.zeros((8, 8), dtype='float_')
-    for i in range(2):
-        temp[i, i] = tau[0, 0]
-        temp[i, i + 4] = tau[0, 1]
-        temp[i + 4, i] = tau[1, 0]
-        temp[i + 4, i + 4] = tau[1, 1]
-    return np.kron(np.eye(2, dtype=int), temp)
-
-
 bands_by_sector = [list(t) for t in zip(*[iter(bands)] * 4)]
 
 allowed_transitions = []

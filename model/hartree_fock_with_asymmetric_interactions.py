@@ -3,8 +3,8 @@ from input.parameters import *
 from model.densities import density_by_model_regime
 from model.exchange_integrals import Xzs, Xzd, Xos, Xod, Xfs, Xfd, Xsts, Xstd, Xskm, Xskp
 # from model.exchange_integrals import Xskm, Xskp
-from model.hamiltonians import mZm, hAp, hBp, hCp  # , asymmetric_h, taux, tauy, tauz
-from utils import eigen, nonedimmerp, nonedimmerm, tau_func, df_round, remove_small_imag, check_if_complex
+from model.hamiltonians import mZm, hAp, hBp, hCp, tau_func  # , asymmetric_h, taux, tauy, tauz
+from utils import eigen, nonedimmerp, nonedimmerm, df_round, remove_small_imag, check_if_complex
 
 model_regime = 'near_zero_dielectric_field'
 

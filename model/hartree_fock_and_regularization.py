@@ -1,9 +1,9 @@
-from config import setH  # itmax_full_range,
+from config import setH, indexes_octet_on_bands, index_octet_on_bands_oct  # itmax_full_range,
 from input.parameters import *
 from model.densities import density_by_model_regime
 # from model.density_test import rho0constUp, rho0constUm
 from model.exchange_integrals import Xskm, Xskp
-from model.hamiltonians import full_hp, full_hm, full_hpm, full_hmp, idp, idps, idm, idms, mZm, hAp, hBp, hCp
+from model.hamiltonians import full_hp, full_hm, full_hpm, full_hmp, idp, idps, idm, idms, mZm, hAp, hBp, hCp, tau_func
 from utils import eigen, df_round, nonedimmerp, nonedimmerm, remove_small_imag, check_if_complex
 
 # if model_regime == 'near_zero_dielectric_field':
@@ -96,6 +96,18 @@ def exciton_j_to_n_kp(n, j, eigenvectorp):
     return -(nu_j - nu_n) * A_nj
 
 
+########################################################################################
+taux = tau_func([[0, 1], [1, 0]])
+tauy = tau_func([[0, -1], [1, 0]]) * 1j
+tauz = tau_func([[1, 0], [0, -1]])
+
+
+def asymmetric_h(tau, rho, u):
+    first = u * np.trace(tau @ rho) * (tau @ rho)
+    second = - u * tau @ rho @ tau @ rho
+    return first + second
+
+
 def loopU(u):
     global eigenvectorp, eigenvectorm, deltatb, rho
     if u >= 0:
@@ -177,7 +189,8 @@ def loopU(u):
         Hintdownup = np.vstack((hphpmsdu, hmphmsdu))
 
         Hint = k * alpha_int_H * np.vstack((np.hstack((Hintup, Hintupdown)), np.hstack((Hintdownup, Hintdown))))
-        H = Hint + h0 + mZm + regmatrix  # np.add(Hint, h0)
+        H_asym = asymmetric_h(taux, rho, uperp) + asymmetric_h(tauy, rho, uperp) + asymmetric_h(tauz, rho, uz)
+        H = Hint + h0 + mZm + regmatrix + H_asym * apha_H_asym  # np.add(Hint, h0)
         eigenvalue_loop, eigenvector_loop = eigen(H)
         # rhotemp = rho
         rho = sum(np.outer(eigenvector_loop[i, :], eigenvector_loop[i, :]) for i in range(number_occupied_bands))
@@ -188,15 +201,31 @@ def loopU(u):
         it += 1
 
     eigenvalue, eigenvector = eigen(H)
+    eigenvector_octet = eigenvector[4:12, index_octet_on_bands_oct]
+    # print(eigenvector_octet.shape)
+    if check_if_complex(eigenvalue, u, nu):
+        # print('here')
+        # print('here0', check_if_complex(energy_u, ind, nu))
+        eigenvalue = np.real(eigenvalue)
+        # print('here0', check_if_complex(energy_u, ind, nu))
+        # print('here2')
+
+    eigenvector_octet_norms = np.linalg.norm(eigenvector_octet, axis=1)
+
+    rho_diag_octet = np.diag(rho)[indexes_octet_on_bands]
+    trace_rho_diag_octet = round(sum(rho_diag_octet), 3)
+    sum_off_diag_rho_octet = round(np.sum(rho) - trace_rho_diag_octet - 4, 3)
+    rho_diag_octet_real_part = np.real(np.diag(rho)[indexes_octet_on_bands])
+    trace_rho_diag_octet_real_part = round(sum(rho_diag_octet_real_part), 3)
     # eigenvalue, eigenvector = npla.eig(H)
     # idxfunc = np.argsort(eigenvalue)
     #
     # eigenvalue = eigenvalue[idxfunc]
     # eigenvector = eigenvector[:, idxfunc]
-    if check_if_complex(eigenvalue, u, nu):
-        # print('here')
-        # print('here0', check_if_complex(energy_u, ind, nu))
-        eigenvalue = np.real(eigenvalue)
+    # if check_if_complex(eigenvalue, u, nu):
+    #     # print('here')
+    #     # print('here0', check_if_complex(energy_u, ind, nu))
+    #     eigenvalue = np.real(eigenvalue)
     ehf = - sum([Hint[idp(n)][idp(nprime)] * rho[idp(nprime)][idp(n)] for n in setH for nprime in setH] +
                 [Hint[idm(n)][idm(nprime)] * rho[idm(nprime)][idm(n)] for n in setH for nprime in setH] +
                 [Hint[idps(n)][idps(nprime)] * rho[idps(nprime)][idps(n)] for n in setH for nprime in setH] +
@@ -209,6 +238,14 @@ def loopU(u):
     dict_quantities_u = {'u': u * 1e3,
                          'eigenvalue': 1e3 * remove_small_imag(eigenvalue),  # np.real due to numerical fluctuations
                          'eigenvector': eigenvector,
+                         'eigenvector_octet': eigenvector_octet,
+                         'eigenvector_octet_norms': eigenvector_octet_norms,
+                         'rho(density)': df_round(rho),
+                         'rho_diag_octet': rho_diag_octet,
+                         'trace_rho_diag_octet': trace_rho_diag_octet,
+                         'sum_off_diag_rho_octet': sum_off_diag_rho_octet,
+                         'rho_diag_octet_real_part': rho_diag_octet_real_part,
+                         'trace_rho_diag_octet_real_part': trace_rho_diag_octet_real_part,
                          'Et': 1e3 * Et,
                          'h0': df_round(1e3 * h0),
                          'rhoU': df_round(rho),
