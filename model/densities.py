@@ -136,8 +136,8 @@ class Density_Seed:
 
 
 def density_by_model_regime(model_regime):
-    densities = Density_Seed(model_regime, nu)
-    # densities = Density_Seed('near_zero_dielectric_field', nu)
+    # densities = Density_Seed(model_regime, nu)
+    densities = Density_Seed('near_zero_dielectric_field', nu)
     densities.assign_densities()
     rho0constUp = densities.rho0constUp
     rho0constUm = densities.rho0constUm

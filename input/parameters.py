@@ -20,15 +20,15 @@ asym = 1
 alpha_Zm = 1  # 0.04227165829987071 # k / alpha_k
 alpha_H_oct_int = 1
 alpha_int_H = 1  # 0 for none int calculations on the full_range model
-apha_H_asym = 0
+apha_H_asym = 1
 alpha_reg = 1
 alpha_reg_asym_calcs = 1
 alpha_x = 1
 uz = 7e0 * 1e-3
 uperp = -1.6e0 * 1e-3
 
-U0minD = -10e-3
-U0maxD = 25e-3
+U0minD = -15e-3
+U0maxD = 32e-3
 dU0D = 1e-3
 
 u_zero = 1
