@@ -122,6 +122,7 @@ def id_i(n, s, idx, idxs):
 
 
 def full_hp(n, nprime, s1, s2, Eh, deltatb, eigenvectorp, rho):
+    """ interacting hamiltonian for valley k^p """
     electrostatic_energy = capacitance_energy_func(n, nprime, s1, s2, Eh, deltatb)
 
     def id1(n):
@@ -130,13 +131,15 @@ def full_hp(n, nprime, s1, s2, Eh, deltatb, eigenvectorp, rho):
     def id2(n):
         return id_i(n, s2, idp, idps)
 
-    res = -sum(
-        [Xskp(n2, nprime, n, n1, eigenvectorp) * rho[id1(n2)][id2(n1)] for n1 in [0, 1] for n2 in [0, 1]] + [Xskp(n2, nprime, n, n1, eigenvectorp) * rho[id1(n2)][id2(n1)] for n1 in
-                                                                                                             [-2, 2] for n2 in [-2, 2]]) - electrostatic_energy
+    res = [Xskp(n2, nprime, n, n1, eigenvectorp) * rho[id1(n2)][id2(n1)] for n1 in [0, 1] for n2 in [0, 1]] + [Xskp(n2, nprime, n, n1, eigenvectorp) * rho[id1(n2)][id2(n1)] for n1
+                                                                                                               in [-2, 2] for n2 in [-2, 2]]
+
+    res = -sum(res) - electrostatic_energy
     return res
 
 
 def full_hm(n, nprime, s1, s2, Eh, deltatb, eigenvectorm, rho):
+    """ interacting hamiltonian for valley k^m """
     electrostatic_energy = capacitance_energy_func(n, nprime, s1, s2, Eh, deltatb)
 
     def id1(n):
@@ -145,13 +148,15 @@ def full_hm(n, nprime, s1, s2, Eh, deltatb, eigenvectorm, rho):
     def id2(n):
         return id_i(n, s2, idm, idms)
 
-    res = -sum(
-        [Xskm(n2, nprime, n, n1, eigenvectorm) * rho[id1(n2)][id2(n1)] for n1 in [0, 1] for n2 in [0, 1]] + [Xskm(n2, nprime, n, n1, eigenvectorm) * rho[id1(n2)][id2(n1)] for n1 in
-                                                                                                             [-2, 2] for n2 in [-2, 2]]) + electrostatic_energy
+    res = [Xskm(n2, nprime, n, n1, eigenvectorm) * rho[id1(n2)][id2(n1)] for n1 in [0, 1] for n2 in [0, 1]] + [Xskm(n2, nprime, n, n1, eigenvectorm) * rho[id1(n2)][id2(n1)] for n1
+                                                                                                               in [-2, 2] for n2 in [-2, 2]]
+    res = -sum(res) + electrostatic_energy
     return res
 
 
 def full_hpm(n, nprime, s1, s2, eigenvectorp, eigenvectorm, rho):
+    """ interacting hamiltonian for valley k^p x  k^m """
+
     def id1(n):
         return id_i(n, s1, idp, idps)
 
@@ -164,6 +169,8 @@ def full_hpm(n, nprime, s1, s2, eigenvectorp, eigenvectorm, rho):
 
 
 def full_hmp(n, nprime, s1, s2, eigenvectorp, eigenvectorm, rho):
+    """ interacting hamiltonian for valley k^m x  k^p """
+
     def id1(n):
         return id_i(n, s1, idm, idms)
 

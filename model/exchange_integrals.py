@@ -117,9 +117,9 @@ def Xskp(n2, nprime, n, n1, eigenvectorp):
     absn = abs(n)
     absn1 = abs(n1)
 
-    if abs((eigenvectorp[2][2]) ** 2 + (eigenvectorp[2][3]) ** 2 - 1) > tol:
-        print('error with eigenvectorp', n2, nprime, n, n1)
-        exit()
+    # if abs((eigenvectorp[2][2]) ** 2 + (eigenvectorp[2][3]) ** 2 - 1) > tol:
+    #     print('error with eigenvectorp', n2, nprime, n, n1)
+    #     exit()
 
     def vpl(n):
         return vplf(n, eigenvectorp)
@@ -233,11 +233,11 @@ def Xdkmp(n2, nprime, n, n1, eigenvectorm, eigenvectorp):
     return res
 
 
-Xzs = 1;
-Xzd = np.exp((x ** 2) / 2) * math.erfc(x / (np.sqrt(2)));
-Xos = 3 / 4;
-Xod = (1 / 8) * np.sqrt(2 / np.pi) * (-2 * x * (1 + x ** 2) + np.exp((x ** 2) / 2) * np.sqrt(2 * np.pi) * (3 + 2 * x ** 2 + x ** 4) * math.erfc(x / (np.sqrt(2))));
-Xfs = 1 / 2;
-Xfd = (1 / 4) * np.sqrt(2 / np.pi) * (-2 * x + np.exp((x ** 2) / 2) * np.sqrt(2 * np.pi) * (1 + x ** 2) * math.erfc(x / (np.sqrt(2))));
-Xsts = 1 / 2;
-Xstd = (1 / 4) * np.sqrt(2 / np.pi) * (2 * x - np.exp((x ** 2) / 2) * np.sqrt(2 * np.pi) * (-1 + x ** 2) * math.erfc(x / (np.sqrt(2))));
+Xzs = 1
+Xzd = np.exp((x ** 2) / 2) * math.erfc(x / (np.sqrt(2)))
+Xos = 3 / 4
+Xod = (1 / 8) * np.sqrt(2 / np.pi) * (-2 * x * (1 + x ** 2) + np.exp((x ** 2) / 2) * np.sqrt(2 * np.pi) * (3 + 2 * x ** 2 + x ** 4) * math.erfc(x / (np.sqrt(2))))
+Xfs = 1 / 2
+Xfd = (1 / 4) * np.sqrt(2 / np.pi) * (-2 * x + np.exp((x ** 2) / 2) * np.sqrt(2 * np.pi) * (1 + x ** 2) * math.erfc(x / (np.sqrt(2))))
+Xsts = 1 / 2
+Xstd = (1 / 4) * np.sqrt(2 / np.pi) * (2 * x - np.exp((x ** 2) / 2) * np.sqrt(2 * np.pi) * (-1 + x ** 2) * math.erfc(x / (np.sqrt(2))))

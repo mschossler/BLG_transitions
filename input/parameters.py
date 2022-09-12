@@ -27,8 +27,8 @@ alpha_x = 1
 uz = 7e0 * 1e-3
 uperp = -1.6e0 * 1e-3
 
-U0minD = -15e-3
-U0maxD = 31e-3
+U0minD = -4e-3
+U0maxD = 6e-3
 dU0D = 1e-3
 
 u_zero = 1
@@ -37,12 +37,12 @@ u_zero = round(u_zero, 4)
 tests_mode = 'on'  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(1e5)
-itmax_asymmetric_calcs = int(500)
+itmax_full_range = int(500)
+itmax_asymmetric_calcs = int(1e4)
 if nu == 0:
-    alpha_rand_full_range = 0.6  # 0.6
+    alpha_rand_full_range = 0.6 * 0  # 0.6
 else:
-    alpha_rand_full_range = 0
+    alpha_rand_full_range = 0.6
 alpha_rand_asymmetric_calcs = 0.005
 alpha_rho = 0.005  # controls numerical regularization for rho (memory of rho from previews loop)
 # variables_dict['asym']=asym
@@ -75,10 +75,10 @@ alpha_k_dic[0] = alpha_k_nu0
 # model_regime = 'near_zero_dielectric_field'
 model_regime = 'full_range'
 
-#### appoximation mode for LL2 and LLm2 ###
-mode = 'hartree_fock_and_regularization_calcs'
+### appoximation mode for LL2 and LLm2 ###
+# mode = 'hartree_fock_and_regularization_calcs'
 add_int_to_bands_LLm2_LL2_low_u = True  # if false this is effectivelly equivalent to fast_none_interact mode for low u regime
-# mode = 'fast_none_interact'
+mode = 'fast_none_interact'
 # mode = 'fast_from_file' # L2 and LLm2 are set by fully interacting hamiltonian (no asymmetric int)
 # mode = 'fast_from_constant' # LL2 and LLm2 are set by none-interacting hamiltonian + constant (from avereage LL2 and LLm2 set by interacting hamiltonian)
 #########

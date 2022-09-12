@@ -3,7 +3,7 @@ from input.parameters import *
 from model.densities import density_by_model_regime
 # from model.density_test import rho0constUp, rho0constUm
 from model.exchange_integrals import Xskm, Xskp
-from model.hamiltonians import full_hp, full_hm, full_hpm, full_hmp, idp, idps, idm, idms, mZm, hAp, hBp, hCp, tau_func
+from model.hamiltonians import full_hp, full_hm, idp, idps, idm, idms, mZm, hAp, hBp, hCp, tau_func
 from utils import eigen, df_round, nonedimmerp, nonedimmerm, remove_small_imag, check_if_complex
 
 # if model_regime == 'near_zero_dielectric_field':
@@ -19,20 +19,25 @@ model_regime = 'full_range'
 # # time.sleep(.2)
 
 def hp(n, nprime, s1, s2):
+    """ interacting hamiltonian for valley k^p """
     return full_hp(n, nprime, s1, s2, Eh, deltatb, eigenvectorp, rho)
 
 
 def hm(n, nprime, s1, s2):
+    """ interacting hamiltonian for valley k^m """
     return full_hm(n, nprime, s1, s2, Eh, deltatb, eigenvectorm, rho)
 
 
 def hpm(n, nprime, s1, s2):
-    return full_hpm(n, nprime, s1, s2, eigenvectorp, eigenvectorm, rho)
+    """ interacting hamiltonian for valley k^p x k^m """
+    # return full_hpm(n, nprime, s1, s2, eigenvectorp, eigenvectorm, rho)
+    return 0
 
 
 def hmp(n, nprime, s1, s2):
-    return full_hmp(n, nprime, s1, s2, eigenvectorp, eigenvectorm, rho)
-
+    """ interacting hamiltonian for valley k^m x k^p """
+    # return full_hmp(n, nprime, s1, s2, eigenvectorp, eigenvectorm, rho)
+    return 0
 
 ##########################################################################################################
 # regularization (self energy) U dependent
@@ -159,9 +164,7 @@ def loopU(u):
     # print('here2')
     ######
 
-    ###### regularization (self energy) U dependent
-    regmatrix = delta_e_regmatrix(rho0, eigenvectorp, eigenvectorm) * alpha_reg
-    ######
+
 
     it = 1
     while it < itmax_full_range:
@@ -190,7 +193,7 @@ def loopU(u):
 
         Hint = k * alpha_int_H * np.vstack((np.hstack((Hintup, Hintupdown)), np.hstack((Hintdownup, Hintdown))))
         H_asym = asymmetric_h(taux, rho, uperp) + asymmetric_h(tauy, rho, uperp) + asymmetric_h(tauz, rho, uz)
-        H = Hint + h0 + mZm + regmatrix + H_asym * apha_H_asym  # np.add(Hint, h0)
+        H = Hint + h0 + mZm + H_asym * apha_H_asym  # np.add(Hint, h0)
         eigenvalue_loop, eigenvector_loop = eigen(H)
         # rhotemp = rho
         rho = sum(np.outer(eigenvector_loop[i, :], eigenvector_loop[i, :]) for i in range(number_occupied_bands))
@@ -199,7 +202,10 @@ def loopU(u):
         # regmatrix = delta_e_regmatrix(rho, eigenvectorp, eigenvectorm) * alpha_reg # we should not update regmatrix here, won't affect nu=4
 
         it += 1
-
+    ###### regularization (self energy) U dependent
+    regmatrix = delta_e_regmatrix(rho0, eigenvectorp, eigenvectorm) * alpha_reg
+    ######
+    H = H + regmatrix
     eigenvalue, eigenvector = eigen(H)
     eigenvector_octet = eigenvector[4:12, index_octet_on_bands_oct]
     # print(eigenvector_octet.shape)
