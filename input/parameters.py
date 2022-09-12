@@ -27,9 +27,9 @@ alpha_x = 1
 uz = 7e0 * 1e-3
 uperp = -1.6e0 * 1e-3
 
-U0minD = -4e-3
-U0maxD = 5e-3
-dU0D = 4e-3
+U0minD = -10e-3
+U0maxD = 25e-3
+dU0D = 1e-3
 
 u_zero = 1
 u_zero = round(u_zero, 4)
@@ -37,7 +37,7 @@ u_zero = round(u_zero, 4)
 tests_mode = 'on'  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(500)
+itmax_full_range = int(1e5)
 itmax_asymmetric_calcs = int(500)
 if nu == 0:
     alpha_rand_full_range = 0.6  # 0.6
