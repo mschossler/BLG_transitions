@@ -28,7 +28,7 @@ uz = 7e0 * 1e-3
 uperp = -1.6e0 * 1e-3
 
 U0minD = -15e-3
-U0maxD = 32e-3
+U0maxD = 31e-3
 dU0D = 1e-3
 
 u_zero = 1
