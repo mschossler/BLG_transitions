@@ -37,12 +37,9 @@ u_zero = round(u_zero, 4)
 tests_mode = 'on'  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(50)
+itmax_full_range = int(2e3)
 itmax_asymmetric_calcs = int(1e4)
-if nu == 0:
-    alpha_rand_full_range = 0.83  # * 0  # 0.6
-else:
-    alpha_rand_full_range = 0.05
+alpha_rand_full_range = 0.05
 alpha_rand_asymmetric_calcs = 0.01
 alpha_rho = 0  # controls numerical regularization for rho (memory of rho from previews loop)
 # variables_dict['asym']=asym
@@ -72,12 +69,15 @@ alpha_k_dic[0] = alpha_k_nu0
 #                }
 
 # asymmetry parameters
-# model_regime = 'near_zero_dielectric_field'
 model_regime = 'full_range'
+use_file_seed = 0
+if use_file_seed:
+    alpha_rand_full_range = 0.6
 
+# model_regime = 'near_zero_dielectric_field'
 ### appoximation mode for LL2 and LLm2 ###
 mode = 'hartree_fock_and_regularization_calcs'
-add_int_to_bands_LLm2_LL2_low_u = True  # if false this is effectivelly equivalent to fast_none_interact mode for low u regime
+add_int_to_bands_LLm2_LL2_low_u = 1  # if false this is effectivelly equivalent to fast_none_interact mode for low u regime
 # mode = 'fast_none_interact'
 # mode = 'fast_from_file' # L2 and LLm2 are set by fully interacting hamiltonian (no asymmetric int)
 # mode = 'fast_from_constant' # LL2 and LLm2 are set by none-interacting hamiltonian + constant (from avereage LL2 and LLm2 set by interacting hamiltonian)
@@ -128,7 +128,7 @@ x = dlayer / Lb * alpha_x
 epr = 6
 Eh = x / np.sqrt(2 * np.pi)
 k = (np.sqrt(np.pi / 2) * el) / (4 * np.pi * ep0 * epr * Lb) * alpha_k
-
+valley_mixing = 0
 # Zm = k * 0.0178 #use def above, this is slightly off due to alpha_k
 parameters_to_plot = {'nu': nu,
                       # 'number_occupied_bands': number_occupied_bands,
@@ -137,6 +137,7 @@ parameters_to_plot = {'nu': nu,
                       'alpha_H_oct_int': alpha_H_oct_int,
                       'apha_H_asym': apha_H_asym,
                       'alpha_reg_asym_calcs': alpha_reg_asym_calcs,
+                      'use_file_seed': use_file_seed,
                       # 'Zm_meV': Zm * 1e3,
                       # 'x': x,
                       'itmax_full_range': itmax_full_range,
@@ -173,6 +174,7 @@ parameters_to_save = {'nu': nu,
                       'alpha_H_oct_int': alpha_H_oct_int,
                       'apha_H_asym': apha_H_asym,
                       'alpha_reg_asym_calcs': alpha_reg_asym_calcs,
+                      'use_file_seed': use_file_seed,
                       'Zm_meV': Zm * 1e3,
                       'x': x,
                       'itmax_full_range': itmax_full_range,
@@ -191,6 +193,7 @@ parameters_to_save = {'nu': nu,
                       # 'u_zero_meV': u_zero,
                       'range_meV': (U0minD * 1e3, U0maxD * 1e3, dU0D * 1e3),
                       'tests_mode': tests_mode,
+                      'valley_mixing': valley_mixing
                       # 'add_int_to_bands_LLm2_LL2_low_u':add_int_to_bands_LLm2_LL2_low_u
                       }
 

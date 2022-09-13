@@ -3,7 +3,7 @@ from input.parameters import *
 from model.densities import density_by_model_regime
 # from model.density_test import rho0constUp, rho0constUm
 from model.exchange_integrals import Xskm, Xskp
-from model.hamiltonians import full_hp, full_hm, idp, idps, idm, idms, mZm, hAp, hBp, hCp, tau_func
+from model.hamiltonians import full_hp, full_hm, full_hpm, full_hmp, idp, idps, idm, idms, mZm, hAp, hBp, hCp, tau_func
 from utils import eigen, df_round, nonedimmerp, nonedimmerm, remove_small_imag, check_if_complex
 
 # if model_regime == 'near_zero_dielectric_field':
@@ -30,14 +30,18 @@ def hm(n, nprime, s1, s2):
 
 def hpm(n, nprime, s1, s2):
     """ interacting hamiltonian for valley k^p x k^m """
-    # return full_hpm(n, nprime, s1, s2, eigenvectorp, eigenvectorm, rho)
-    return 0
+    if valley_mixing:
+        return full_hpm(n, nprime, s1, s2, eigenvectorp, eigenvectorm, rho)
+    else:
+        return 0
 
 
 def hmp(n, nprime, s1, s2):
     """ interacting hamiltonian for valley k^m x k^p """
-    # return full_hmp(n, nprime, s1, s2, eigenvectorp, eigenvectorm, rho)
-    return 0
+    if valley_mixing:
+        return full_hmp(n, nprime, s1, s2, eigenvectorp, eigenvectorm, rho)
+    else:
+        return 0
 
 ##########################################################################################################
 # regularization (self energy) U dependent
