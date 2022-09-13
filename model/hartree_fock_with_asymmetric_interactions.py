@@ -232,6 +232,7 @@ def loopU0(u):
     # eigenvector_octet_norms = [np.linalg.norm(one_eigenvector_octet) for one_eigenvector_octet in  ]
     eigenvector_octet_norms = np.linalg.norm(eigenvector_octet, axis=1)
 
+    rho_diag = np.diag(rho)
     rho_diag_octet = np.diag(rho)[indexes_octet_on_bands]
     trace_rho_diag_octet = round(sum(rho_diag_octet), 3)
     sum_off_diag_rho_octet = round(np.sum(rho) - trace_rho_diag_octet - 4, 3)
@@ -257,6 +258,7 @@ def loopU0(u):
                          # 'Et': 1e3 * Et,
                          # 'h0': df_round(1e3 * h0),
                          'rho(density)': df_round(rho),
+                         'rho_diag': rho_diag,
                          'rho_diag_octet': rho_diag_octet,
                          'trace_rho_diag_octet': trace_rho_diag_octet,
                          'sum_off_diag_rho_octet': sum_off_diag_rho_octet,
