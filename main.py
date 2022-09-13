@@ -5,7 +5,6 @@ from datetime import datetime
 import numpy as np
 
 t0 = time.time()
-
 import pandas as pd
 
 from config import model_regime, results_dir_path, file_name_csv, nprocesses, bands, bands_LLm2_LL2, bands_LL2, bands_LLm2, current_date, tests_mode
@@ -198,4 +197,5 @@ import filecmp
 file1 = 'results/results_11092022/occupation_' + str(nu + 8) + '/energies_nu_' + str(nu) + '_to_compare.csv'
 file2 = 'results/results_' + current_date + '/occupation_' + str(nu + 8) + tests_mode + 'energies_' + file_name_csv
 print('same as previews results : %s' % filecmp.cmp(file1, file2))
-print('working duration for nu=%(nu)i: %(t).1fs' % {'t': time.time() - t0, 'nu': nu})
+
+print('running time for nu=%(nu)i: %(t).1fs' % {'t': time.time() - t0, 'nu': nu})

@@ -5,6 +5,9 @@ from numpy import linalg as npla
 from config import results_dir_path, file_name_csv, bands, tol
 
 
+# import globals
+
+
 def frange(start, end, inc):
     return np.round(np.arange(start, end, inc).tolist(), 6)
 
@@ -15,14 +18,20 @@ def remove_small_imag(scalar):
     return np.real_if_close(scalar, tol_machine_epsilon)
 
 
+energy_imag_max = 0
+
+
 def check_if_complex(energy_iterable, u, nu):
+    global energy_imag_max
     complex_part = False
     # print(u)
     for energy in energy_iterable:
         if abs(np.imag(energy)) > 0:
+            energy_imag_max = max(energy_imag_max, abs(energy.imag * 1e3))
             complex_part = True
             # print(u)
-            warning = '-> warning: none-zero imaginary part energy %(imag).4fmeV for nu=%(nu)i, u=%(u).2fmeV ' % {'u': u * 1e3, 'nu': nu, 'imag': energy.imag * 1e3}
+            warning_dict = {'u': u * 1e3, 'nu': nu, 'imag': energy.imag * 1e3, 'max_imag': energy_imag_max}
+            warning = '-> warning: none-zero imaginary part energy %(imag).4fmeV for nu=%(nu)i, u=%(u).2fmeV. max abs imaginary part: %(max_imag).4fmeV' % warning_dict
             print(warning)
             with open(results_dir_path + 'warnings.txt', 'a') as f:
                 print(warning, file=f)
@@ -59,8 +68,6 @@ def sort_dict(dict):
 
 # returns real part if imag<tol
 tol_machine_epsilon = tol / np.finfo(float).eps
-
-
 
 
 def observable_to_csv(obeservables_dict, obeservable):
@@ -109,6 +116,7 @@ def nonedimmerm(vectors):
         tmp = [-x[3], x[0]]
         newvectors.append((np.array(tmp) / npla.norm(tmp)).tolist())
     return np.array(newvectors)
+
 
 bands_by_sector = [list(t) for t in zip(*[iter(bands)] * 4)]
 

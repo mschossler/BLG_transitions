@@ -37,10 +37,10 @@ u_zero = round(u_zero, 4)
 tests_mode = 'on'  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(2e3)
+itmax_full_range = int(5e1)
 itmax_asymmetric_calcs = int(1e4)
-alpha_rand_full_range = 0.05
-alpha_rand_asymmetric_calcs = 0.01
+alpha_rand_full_range = 0.1
+alpha_rand_asymmetric_calcs = 00.1
 alpha_rho = 0  # controls numerical regularization for rho (memory of rho from previews loop)
 # variables_dict['asym']=asym
 # variables_dict['alpha_Zm']=alpha_Zm
@@ -72,7 +72,7 @@ alpha_k_dic[0] = alpha_k_nu0
 model_regime = 'full_range'
 use_file_seed = 0
 if use_file_seed:
-    alpha_rand_full_range = 0.6
+    alpha_rand_full_range = 0.6  # 0.83
 
 # model_regime = 'near_zero_dielectric_field'
 ### appoximation mode for LL2 and LLm2 ###
