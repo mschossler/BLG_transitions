@@ -2,7 +2,7 @@ import sys
 
 import numpy as np
 
-nu_default = 0
+nu_default = 4
 
 if len(sys.argv) == 2:
     nu = int(sys.argv[1])
@@ -27,7 +27,7 @@ alpha_x = 1
 uz = 7e0 * 1e-3
 uperp = -1.6e0 * 1e-3
 
-U0minD = -10e-3
+U0minD = -25e-3
 U0maxD = 50e-3
 dU0D = 1e-3
 
@@ -70,12 +70,16 @@ alpha_k_dic[0] = alpha_k_nu0
 
 
 # model_regime = 'near_zero_dielectric_field'
-model_regime = 'full_range'
-apha_H_asym = 1
-seed_large_u = 0
+# model_regime = 'full_range'
+model_regime = 'full_range_multiple_seeds'
+
+seed_large_u = 1
+if seed_large_u and model_regime != 'near_zero_dielectric_field':
+    apha_H_asym = 0
 use_file_seed = 0
 if use_file_seed:
-    alpha_rand_full_range = 0.6  # 0.83
+    alpha_rand_full_range = 0.6
+    # alpha_rand_full_range = 0.83
 
 ### appoximation mode for LL2 and LLm2 ###
 mode = 'hartree_fock_and_regularization_calcs'
