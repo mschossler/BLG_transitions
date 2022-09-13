@@ -51,7 +51,7 @@ class Density_Seed:
 
     def ramdom_16x16_density(self):
         # if (self.model_regime == 'full_range_error') and (self.nu == 0):
-        if (self.model_regime == 'full_range') and (self.nu == 30):
+        if (self.model_regime == 'full_range') and (self.nu == 0):
             # print('inside condition (model_regime == full_range) and (nu == 0)')
             rhorand8 = pd.read_csv(input_dir + 'rho0phbroken.csv', header=None).values.tolist()
 
@@ -145,10 +145,10 @@ class Density_Seed:
 
     def assign_densities(self):
         if self.model_regime == 'full_range':
-            # self.rho0constUp = remove_small_imag(self.diag_full_regime(+1))
-            # self.rho0constUm = remove_small_imag(self.diag_full_regime(-1))
-            self.rho0constUp = remove_small_imag(self.diag_full_regime_v2())
-            self.rho0constUm = remove_small_imag(self.diag_full_regime_v2())
+            self.rho0constUp = remove_small_imag(self.diag_full_regime(+1))
+            self.rho0constUm = remove_small_imag(self.diag_full_regime(-1))
+            # self.rho0constUp = remove_small_imag(self.diag_full_regime_v2())
+            # self.rho0constUm = remove_small_imag(self.diag_full_regime_v2())
         elif self.model_regime == 'near_zero_dielectric_field':
             self.rho0constUp = remove_small_imag(self.seed_asymmetric_calcs())
             self.rho0constUm = remove_small_imag(self.seed_asymmetric_calcs())
