@@ -51,7 +51,7 @@ class Density_Seed:
 
     def ramdom_16x16_density(self):
         # if (self.model_regime == 'full_range_error') and (self.nu == 0):
-        if (self.model_regime == 'full_range') and (self.nu == 0):
+        if (self.model_regime == 'full_range') and (self.nu == 30):
             # print('inside condition (model_regime == full_range) and (nu == 0)')
             rhorand8 = pd.read_csv(input_dir + 'rho0phbroken.csv', header=None).values.tolist()
 

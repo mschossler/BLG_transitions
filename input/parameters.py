@@ -2,7 +2,7 @@ import sys
 
 import numpy as np
 
-nu_default = 4
+nu_default = 0
 
 if len(sys.argv) == 2:
     nu = int(sys.argv[1])
@@ -40,11 +40,11 @@ tests_mode = 'on'  # change this to off when done with tests
 itmax_full_range = int(50)
 itmax_asymmetric_calcs = int(1e4)
 if nu == 0:
-    alpha_rand_full_range = 0.1  # * 0  # 0.6
+    alpha_rand_full_range = 0.01  # * 0  # 0.6
 else:
     alpha_rand_full_range = 0.05
 alpha_rand_asymmetric_calcs = 0.01
-alpha_rho = 0.00005  # controls numerical regularization for rho (memory of rho from previews loop)
+alpha_rho = 0  # controls numerical regularization for rho (memory of rho from previews loop)
 # variables_dict['asym']=asym
 # variables_dict['alpha_Zm']=alpha_Zm
 # variables_dict['alpha_H_oct_int']=alpha_H_oct_int
