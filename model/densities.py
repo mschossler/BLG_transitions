@@ -14,7 +14,7 @@ if __name__ == "__main__":
     sys.path.append('../')
     input_dir = '../input/'
 
-from input.parameters import nu, number_occupied_bands, alpha_rand_full_range, alpha_rand_asymmetric_calcs, use_file_seed  # , model_regime
+from input.parameters import nu, number_occupied_bands, alpha_rand_full_range, alpha_rand_asymmetric_calcs, use_file_seed, seed_large_u  # , model_regime
 from config import bands, base_octet, tol
 from utils import eigen, remove_small_imag
 
@@ -77,13 +77,23 @@ class Density_Seed:
         return rhorand16
 
     def diag_full_regime(self, u_signal):
-        if u_signal >= 0:
-            filling_order = self.filling_order_Upositive
-        if u_signal < 0:
-            filling_order = self.filling_order_Unegative
-        diag = [(1 if band in filling_order[0:self.number_occupied_bands] else 0) for band in bands]
-        if sum(diag) != self.number_occupied_bands:
-            print('is the filling factor right?:', sum(diag) == number_occupied_bands, 'u_signal:', u_signal)
+        if seed_large_u:
+            if u_signal >= 0:
+                filling_order = self.filling_order_Upositive
+            if u_signal < 0:
+                filling_order = self.filling_order_Unegative
+            diag = [(1 if band in filling_order[0:self.number_occupied_bands] else 0) for band in bands]
+        else:
+            seed_oct = self.seed_oct_dict[self.nu]
+            number_occupied_bands_local = sum(seed_oct) + 4
+            # number_occupied_bands = nu + 8
+            occupied_octet_states = [base_octet[i] for i in range(8) if seed_oct[i]]
+
+            filling_order = self.filling_order_Upositive[0:4] + occupied_octet_states + self.filling_order_Upositive[-2::1]
+
+            diag = [(1 if band in filling_order[0:number_occupied_bands_local] else 0) for band in bands]
+        if abs(sum(diag) - self.number_occupied_bands) > tol:
+            print('Wrong filling factor for nu %i' % self.nu)
             exit()
 
         # if u_signal >= 0:
@@ -99,27 +109,27 @@ class Density_Seed:
 
     #     # return np.diag(diag)
 
-    def diag_full_regime_v2(self):
-        seed_oct = self.seed_oct_dict[self.nu]
-        number_occupied_bands_local = sum(seed_oct) + 4
-        # number_occupied_bands = nu + 8
-        occupied_octet_states = [base_octet[i] for i in range(8) if seed_oct[i]]
-
-        filling_order = self.filling_order_Upositive[0:4] + occupied_octet_states + self.filling_order_Upositive[-2::1]
-
-        diag = [(1 if band in filling_order[0:number_occupied_bands_local] else 0) for band in bands]
-        # diag= [0.618, 0.618, 1, 0, 0.618, 0.618, 1, 0, 0.382, 0.382, 1, 0, 0.382, 0.382, 1, 0]
-        if abs(sum(diag) - number_occupied_bands) > tol:
-            print('Wrong filling factor for nu %i' % self.nu)
-            exit()
-        # print('here_seed_asymmetric')
-        # import time
-        # time.sleep(.1)
-        rhorand16 = self.ramdom_16x16_density()
-
-        rho0const = (1 - alpha_rand_full_range) * np.diag(diag) + alpha_rand_full_range * rhorand16
-
-        return rho0const
+    # def diag_full_regime_v2(self):
+    #     seed_oct = self.seed_oct_dict[self.nu]
+    #     number_occupied_bands_local = sum(seed_oct) + 4
+    #     # number_occupied_bands = nu + 8
+    #     occupied_octet_states = [base_octet[i] for i in range(8) if seed_oct[i]]
+    #
+    #     filling_order = self.filling_order_Upositive[0:4] + occupied_octet_states + self.filling_order_Upositive[-2::1]
+    #
+    #     diag = [(1 if band in filling_order[0:number_occupied_bands_local] else 0) for band in bands]
+    #     # diag= [0.618, 0.618, 1, 0, 0.618, 0.618, 1, 0, 0.382, 0.382, 1, 0, 0.382, 0.382, 1, 0]
+    #     if abs(sum(diag) - number_occupied_bands) > tol:
+    #         print('Wrong filling factor for nu %i' % self.nu)
+    #         exit()
+    #     # print('here_seed_asymmetric')
+    #     # import time
+    #     # time.sleep(.1)
+    #     rhorand16 = self.ramdom_16x16_density()
+    #
+    #     rho0const = (1 - alpha_rand_full_range) * np.diag(diag) + alpha_rand_full_range * rhorand16
+    #
+    #     return rho0const
 
     def seed_asymmetric_calcs(self):
         seed_oct = self.seed_oct_dict[self.nu]

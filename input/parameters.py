@@ -20,7 +20,7 @@ asym = 1
 alpha_Zm = 1  # 0.04227165829987071 # k / alpha_k
 alpha_H_oct_int = 1
 alpha_int_H = 1  # 0 for none int calculations on the full_range model
-apha_H_asym = 0
+
 alpha_reg = 1
 alpha_reg_asym_calcs = 1
 alpha_x = 1
@@ -37,10 +37,10 @@ u_zero = round(u_zero, 4)
 tests_mode = 'on'  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(5e1)
+itmax_full_range = int(1e2)
 itmax_asymmetric_calcs = int(1e4)
-alpha_rand_full_range = 0.1
-alpha_rand_asymmetric_calcs = 00.1
+alpha_rand_full_range = 0.01
+alpha_rand_asymmetric_calcs = 0.1
 alpha_rho = 0  # controls numerical regularization for rho (memory of rho from previews loop)
 # variables_dict['asym']=asym
 # variables_dict['alpha_Zm']=alpha_Zm
@@ -68,13 +68,15 @@ alpha_k_dic[0] = alpha_k_nu0
 #                6: alpha_k_nu4
 #                }
 
-# asymmetry parameters
+
+# model_regime = 'near_zero_dielectric_field'
 model_regime = 'full_range'
+apha_H_asym = 1
+seed_large_u = 0
 use_file_seed = 0
 if use_file_seed:
     alpha_rand_full_range = 0.6  # 0.83
 
-# model_regime = 'near_zero_dielectric_field'
 ### appoximation mode for LL2 and LLm2 ###
 mode = 'hartree_fock_and_regularization_calcs'
 add_int_to_bands_LLm2_LL2_low_u = 1  # if false this is effectivelly equivalent to fast_none_interact mode for low u regime
@@ -138,6 +140,7 @@ parameters_to_plot = {'nu': nu,
                       'apha_H_asym': apha_H_asym,
                       'alpha_reg_asym_calcs': alpha_reg_asym_calcs,
                       'use_file_seed': use_file_seed,
+                      'seed_large_u': seed_large_u,
                       # 'Zm_meV': Zm * 1e3,
                       # 'x': x,
                       'itmax_full_range': itmax_full_range,
@@ -175,6 +178,7 @@ parameters_to_save = {'nu': nu,
                       'apha_H_asym': apha_H_asym,
                       'alpha_reg_asym_calcs': alpha_reg_asym_calcs,
                       'use_file_seed': use_file_seed,
+                      'seed_large_u': seed_large_u,
                       'Zm_meV': Zm * 1e3,
                       'x': x,
                       'itmax_full_range': itmax_full_range,
