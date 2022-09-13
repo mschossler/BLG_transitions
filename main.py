@@ -13,12 +13,11 @@ from utils import frange, sort_dict, observable_to_csv, idxcalc, transitions_ene
 
 a_pool = multiprocessing.Pool(processes=nprocesses)
 
-
-def by_range_calcs(range_u, seed_large_u):
-    from model.hartree_fock_and_regularization import loopU
-    a_pool = multiprocessing.Pool(processes=nprocesses)
-    quantities = a_pool.map(loopU, range_u)
-    return quantities
+# def by_range_calcs(range_u, seed_large_u):
+#     from model.hartree_fock_and_regularization import loopU
+#     a_pool = multiprocessing.Pool(processes=nprocesses)
+#     quantities = a_pool.map(loopU, range_u)
+#     return quantities
 
 
 if model_regime == 'full_range':
@@ -39,29 +38,31 @@ elif model_regime == 'near_zero_dielectric_field':
         print('range of u not compatible with ' + model_regime + '. Change for a valid range (check u_critical)')
         exit()
     # quantities = a_pool.map(loopU0, [1e-3,2e-3])
-elif model_regime == 'full_range_multiple_seeds':
-    # print('here_condition_near_zero_calcs')
-    # import time
-    # time.sleep(.1)
-    # from model.hartree_fock_and_regularization import loopU
-    # if U0maxD_tmp > U0minD_tmp:
-    #     quantities = a_pool.map(loopU, frange(U0minD_tmp, U0maxD_tmp, dU0D))
-    # else:
-    #     print('range of u not compatible with ' + model_regime + '. Change it for a valid range (check u_critical)')
-    #     exit()
-    U0minD_tmp = max(U0minD, -u_critical)
-    U0maxD_tmp = min(U0maxD, u_critical)
-    hig_u_positive = frange(U0maxD_tmp, U0maxD, dU0D)
-    hig_u_negative = frange(U0minD, U0minD_tmp, dU0D)
-    small_u = frange(U0minD_tmp, U0maxD_tmp, dU0D)
-    seed_large_u = 1
-    quantities = by_range_calcs(hig_u_negative, seed_large_u)
 
-    seed_large_u = 0
-    quantities = quantities + by_range_calcs(small_u, seed_large_u)
 
-    seed_large_u = 1
-    quantities = quantities + by_range_calcs(hig_u_positive, seed_large_u)
+# elif model_regime == 'full_range_multiple_seeds':
+#     # print('here_condition_near_zero_calcs')
+#     # import time
+#     # time.sleep(.1)
+#     # from model.hartree_fock_and_regularization import loopU
+#     # if U0maxD_tmp > U0minD_tmp:
+#     #     quantities = a_pool.map(loopU, frange(U0minD_tmp, U0maxD_tmp, dU0D))
+#     # else:
+#     #     print('range of u not compatible with ' + model_regime + '. Change it for a valid range (check u_critical)')
+#     #     exit()
+#     U0minD_tmp = max(U0minD, -u_critical)
+#     U0maxD_tmp = min(U0maxD, u_critical)
+#     hig_u_positive = frange(U0maxD_tmp, U0maxD, dU0D)
+#     hig_u_negative = frange(U0minD, U0minD_tmp, dU0D)
+#     small_u = frange(U0minD_tmp, U0maxD_tmp, dU0D)
+#     seed_large_u = 1
+#     quantities = by_range_calcs(hig_u_negative, seed_large_u)
+#
+#     seed_large_u = 0
+#     quantities = quantities + by_range_calcs(small_u, seed_large_u)
+#
+#     seed_large_u = 1
+#     quantities = quantities + by_range_calcs(hig_u_positive, seed_large_u)
 
 def select_quantities_and_save_to_file(quantities_dict, model_regime_local):
     list_of_us = list(quantities_dict.keys())

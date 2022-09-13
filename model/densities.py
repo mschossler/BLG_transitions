@@ -14,7 +14,7 @@ if __name__ == "__main__":
     sys.path.append('../')
     input_dir = '../input/'
 
-from input.parameters import nu, number_occupied_bands, alpha_rand_full_range, alpha_rand_asymmetric_calcs, use_file_seed, seed_large_u  # , model_regime
+from input.parameters import nu, number_occupied_bands, alpha_rand_full_range, alpha_rand_asymmetric_calcs, use_file_seed  # , seed_large_u  # , model_regime
 from config import bands, base_octet, tol
 from utils import eigen, remove_small_imag
 
@@ -73,25 +73,39 @@ class Density_Seed:
 
             rhorand16 = rhorand8_zero + zero_rhorand8
 
-
         return rhorand16
 
-    def diag_full_regime(self, u_signal):
-        if seed_large_u:
-            if u_signal >= 0:
-                filling_order = self.filling_order_Upositive
-            if u_signal < 0:
-                filling_order = self.filling_order_Unegative
-            diag = [(1 if band in filling_order[0:self.number_occupied_bands] else 0) for band in bands]
-        else:
-            seed_oct = self.seed_oct_dict[self.nu]
-            number_occupied_bands_local = sum(seed_oct) + 4
-            # number_occupied_bands = nu + 8
-            occupied_octet_states = [base_octet[i] for i in range(8) if seed_oct[i]]
+    def diag_full_regime_high_u(self, u_signal):
 
-            filling_order = self.filling_order_Upositive[0:4] + occupied_octet_states + self.filling_order_Upositive[-2::1]
+        if u_signal >= 0:
+            filling_order = self.filling_order_Upositive
+        if u_signal < 0:
+            filling_order = self.filling_order_Unegative
+        diag = [(1 if band in filling_order[0:self.number_occupied_bands] else 0) for band in bands]
+        if abs(sum(diag) - self.number_occupied_bands) > tol:
+            print('Wrong filling factor for nu %i' % self.nu)
+            exit()
 
-            diag = [(1 if band in filling_order[0:number_occupied_bands_local] else 0) for band in bands]
+        # if u_signal >= 0:
+        #     rho0const = rho0constUp
+        # if u_signal < 0:
+        #     filling_order = filling_order_Unegative
+        # seed_dict = {'rho0constUp': rho0constUp, 'rho0constUm': rho0constUm}
+        rhorand16 = self.ramdom_16x16_density()
+        # if nu==0:
+        #     return np.diag([1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0])
+        # return np.diag([0.618, 0.618, 1, 0, 0.618, 0.618, 1, 0, 0.382, 0.382, 1, 0, 0.382, 0.382, 1, 0])
+        return (1 - alpha_rand_full_range) * np.diag(diag) + alpha_rand_full_range * rhorand16
+
+    def diag_full_regime_small_u(self):
+        seed_oct = self.seed_oct_dict[self.nu]
+        number_occupied_bands_local = sum(seed_oct) + 4
+        # number_occupied_bands = nu + 8
+        occupied_octet_states = [base_octet[i] for i in range(8) if seed_oct[i]]
+
+        filling_order = self.filling_order_Upositive[0:4] + occupied_octet_states + self.filling_order_Upositive[-2::1]
+
+        diag = [(1 if band in filling_order[0:number_occupied_bands_local] else 0) for band in bands]
         if abs(sum(diag) - self.number_occupied_bands) > tol:
             print('Wrong filling factor for nu %i' % self.nu)
             exit()
@@ -155,10 +169,15 @@ class Density_Seed:
 
     def assign_densities(self):
         if self.model_regime == 'full_range':
-            self.rho0constUp = remove_small_imag(self.diag_full_regime(+1))
-            self.rho0constUm = remove_small_imag(self.diag_full_regime(-1))
+            self.rho0constUp = remove_small_imag(self.diag_full_regime_high_u(+1))
+            self.rho0constUm = remove_small_imag(self.diag_full_regime_high_u(-1))
+            self.rho0const_small_u = remove_small_imag(self.diag_full_regime_small_u())
             # self.rho0constUp = remove_small_imag(self.diag_full_regime_v2())
             # self.rho0constUm = remove_small_imag(self.diag_full_regime_v2())
+        # elif self.model_regime == 'full_range':
+        #     self.rho0constUp = remove_small_imag(self.diag_full_regime_high_u(+1))
+        #     self.rho0constUm = remove_small_imag(self.diag_full_regime_high_u(-1))
+        #     self.rho0const_small_u = remove_small_imag(self.diag_full_regime_small_u(-1))
         elif self.model_regime == 'near_zero_dielectric_field':
             self.rho0constUp = remove_small_imag(self.seed_asymmetric_calcs())
             self.rho0constUm = remove_small_imag(self.seed_asymmetric_calcs())
@@ -176,7 +195,8 @@ def density_by_model_regime(model_regime):
     densities.assign_densities()
     rho0constUp = densities.rho0constUp
     rho0constUm = densities.rho0constUm
+    rho0const_small_u = densities.rho0const_small_u
 
-    return {'rho0constUp': rho0constUp, 'rho0constUm': rho0constUm}
+    return {'rho0constUp': rho0constUp, 'rho0constUm': rho0constUm, 'rho0const_small_u': rho0const_small_u}
 
 # print(density_by_model_regime('near_zero_dielectric_field'))

@@ -2,7 +2,7 @@ import sys
 
 import numpy as np
 
-nu_default = 4
+nu_default = 0
 
 if len(sys.argv) == 2:
     nu = int(sys.argv[1])
@@ -15,20 +15,24 @@ if abs(nu) > 6:
 else:
     print('executing script with nu = %i' % nu)
 
-u_critical = 12e-3  # value of u in eV for phase transition
+u_critical = 10e-3  # value of u in eV for phase transition
 asym = 1
 alpha_Zm = 1  # 0.04227165829987071 # k / alpha_k
 alpha_H_oct_int = 1
 alpha_int_H = 1  # 0 for none int calculations on the full_range model
+apha_H_asym_small_u = 1
 
 alpha_reg = 1
 alpha_reg_asym_calcs = 1
 alpha_x = 1
 uz = 7e0 * 1e-3
 uperp = -1.6e0 * 1e-3
+if not apha_H_asym_small_u:
+    uz = 7e0 * 1e-3
+    uperp = -1.6e0 * 1e-3
 
-U0minD = -25e-3
-U0maxD = 50e-3
+U0minD = -15e-3
+U0maxD = 45e-3
 dU0D = 1e-3
 
 u_zero = 1
@@ -37,11 +41,11 @@ u_zero = round(u_zero, 4)
 tests_mode = 'on'  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(1e2)
+itmax_full_range = int(5e2)
 itmax_asymmetric_calcs = int(1e4)
-alpha_rand_full_range = 0.01
+alpha_rand_full_range = 0
 alpha_rand_asymmetric_calcs = 0.1
-alpha_rho = 0  # controls numerical regularization for rho (memory of rho from previews loop)
+alpha_rho = 0.005  # controls numerical regularization for rho (memory of rho from previews loop)
 # variables_dict['asym']=asym
 # variables_dict['alpha_Zm']=alpha_Zm
 # variables_dict['alpha_H_oct_int']=alpha_H_oct_int
@@ -70,12 +74,12 @@ alpha_k_dic[0] = alpha_k_nu0
 
 
 # model_regime = 'near_zero_dielectric_field'
-# model_regime = 'full_range'
-model_regime = 'full_range_multiple_seeds'
+model_regime = 'full_range'
+# model_regime = 'full_range_multiple_seeds'
 
-seed_large_u = 1
-if seed_large_u and model_regime != 'near_zero_dielectric_field':
-    apha_H_asym = 0
+# seed_large_u = 1
+# if seed_large_u and model_regime != 'near_zero_dielectric_field':
+#     apha_H_asym = 0
 use_file_seed = 0
 if use_file_seed:
     alpha_rand_full_range = 0.6
@@ -141,10 +145,10 @@ parameters_to_plot = {'nu': nu,
                       # 'u_critical_meV': u_critical * 1e3,
                       'asym': asym,
                       'alpha_H_oct_int': alpha_H_oct_int,
-                      'apha_H_asym': apha_H_asym,
+                      'apha_H_asym_small_u': apha_H_asym_small_u,
                       'alpha_reg_asym_calcs': alpha_reg_asym_calcs,
                       'use_file_seed': use_file_seed,
-                      'seed_large_u': seed_large_u,
+                      # 'seed_large_u': seed_large_u,
                       # 'Zm_meV': Zm * 1e3,
                       # 'x': x,
                       'itmax_full_range': itmax_full_range,
@@ -179,10 +183,10 @@ parameters_to_save = {'nu': nu,
                       'u_critical_meV': u_critical * 1e3,
                       'asym': asym,
                       'alpha_H_oct_int': alpha_H_oct_int,
-                      'apha_H_asym': apha_H_asym,
+                      'apha_H_asym_small_u': apha_H_asym_small_u,
                       'alpha_reg_asym_calcs': alpha_reg_asym_calcs,
                       'use_file_seed': use_file_seed,
-                      'seed_large_u': seed_large_u,
+                      # 'seed_large_u': seed_large_u,
                       'Zm_meV': Zm * 1e3,
                       'x': x,
                       'itmax_full_range': itmax_full_range,

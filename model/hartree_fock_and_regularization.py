@@ -119,10 +119,15 @@ def asymmetric_h(tau, rho, u):
 
 def loopU(u):
     global eigenvectorp, eigenvectorm, deltatb, rho
-    if u >= 0:
-        rho0 = density_by_model_regime(model_regime)['rho0constUp']
-    else:
+    if u <= -u_critical:
         rho0 = density_by_model_regime(model_regime)['rho0constUm']
+        apha_H_asym = 0
+    elif (u > -u_critical) and (u < u_critical):
+        rho0 = density_by_model_regime(model_regime)['rho0const_small_u']
+        apha_H_asym = apha_H_asym_small_u
+    elif u >= -u_critical:
+        rho0 = density_by_model_regime(model_regime)['rho0constUp']
+        apha_H_asym = 0
     print('running hartree_fock_and_regularization with nu=%(nu)i u=%(u).2fmeV ' % {'u': (u * 1e3), 'nu': nu})
     rho = rho0
 
