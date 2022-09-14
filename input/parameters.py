@@ -25,15 +25,15 @@ apha_H_asym_small_u = 1
 alpha_reg = 1
 alpha_reg_asym_calcs = 1
 alpha_x = 1
-uz = 7e-3
-uperp = -1.6e-3
+uz = 14e-3
+uperp = -3.2e-3
 
 if not apha_H_asym_small_u:
-    uz = 7e0 * 1e-3
-    uperp = -1.6e0 * 1e-3
+    uz = 0
+    uperp = 0
 
-U0minD = -10e-3
-U0maxD = 30e-3
+U0minD = -5e-3
+U0maxD = 18e-3
 dU0D = 1e-3
 
 u_zero = 1
@@ -43,7 +43,7 @@ tests_mode = 'on'
 save_folder_name = 1  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(1e2)
+itmax_full_range = int(2e2)
 itmax_asymmetric_calcs = int(1e4)
 alpha_rand_full_range = 0
 alpha_rand_asymmetric_calcs = 0.1

@@ -1,6 +1,8 @@
 import pandas as pd
 from matplotlib import pyplot as plt
 
+# import warnings
+# warnings.filterwarnings( "ignore", module = "pandas/plotting/_matplotlib\..*" )
 if __name__ == "__main__":
     # setting path
     # import numpy as np
@@ -102,24 +104,30 @@ def plot_transitions(transitions_df, nu):
     if nu == 0:
         nu0_exp_transition_energies = pd.read_csv(input_dir_path + 'DGBLG_nu0_data.csv')
         nu0_exp_transition_energies['u'] = nu0_exp_transition_energies['D_mV_per_nm'] * alpha_tilda
+
         nu0_exp_transition_energies.plot(x='u', y=['peak_A_meV', 'peak_B_meV', 'peak_C_meV'], linestyle='None', label=['experiment', '_nolegend_', '_nolegend_'], color='green',
                                          marker='o', fillstyle='none', ax=ax)  # print(nu0_exp_transition_energies)
+
         # print('here')
         # print(nu0_exp_transition_energies)
 
     if nu == 4:
-        nu0_exp_transition_energies = pd.read_csv(input_dir_path + 'DGBLG122118_nu4_peak_energies.csv')
+        nu4_exp_transition_energies = pd.read_csv(input_dir_path + 'DGBLG122118_nu4_peak_energies.csv')
         # print(nu0_exp_transition_energies)
-        nu0_exp_transition_energies['u'] = nu0_exp_transition_energies['e_nu4'] * alpha_tilda
+        nu4_exp_transition_energies['u'] = nu4_exp_transition_energies['e_nu4'] * alpha_tilda
         # nu0_exp_transition_energies.plot(x='u', y=['peak_A_meV', 'peak_B_meV', 'peak_C_meV'], linestyle='None', label=['experiment', '_nolegend_', '_nolegend_'], color='green',
         #                                  marker='o', fillstyle='none', ax=ax)
-        nu0_exp_transition_energies.plot(x='u', y=['peak_nu4_HIGH', 'peak_nu4_LOW'], linestyle='None', label=['experiment', '_nolegend_'], color='green', marker='o',
-                                         fillstyle='none', ax=ax)  # print(nu0_exp_transition_energies)
+
+        nu4_exp_transition_energies.plot(x='u', y=['peak_nu4_HIGH', 'peak_nu4_LOW'], linestyle='None', label=['experiment', '_nolegend_'], color='green', marker='o',
+                                         fillstyle='none', ax=ax)
+
+    # print(nu0_exp_transition_energies)
 
     # plt.legend(bbox_to_anchor=(1, 0.55))
+
+    # plt.show()
     plt.legend(loc='upper right', bbox_to_anchor=(.99, 0.5))
     plt.rcParams["figure.figsize"] = (10, 5)
-    # plt.show()
     number_occupied_bands_local = nu + 8
     results_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + tests_mode
 
@@ -320,8 +328,8 @@ def plot_total_hf_energy(nu):
         total_energy_df.to_csv(results_dir_path_local + '/total_hf_energy.csv', index=False)
 
         f = plt.figure()
-        font = {'size': 15}
-        plt.rc('font', **font)
+        # font = {'size': 15}
+        # plt.rc('font', **font)
         ax = plt.gca()
         plt.rcParams['figure.dpi'] = 150
         # transitions.plot(x='nu', linestyle=':', linewidth=1, markersize=12, ax=ax)
@@ -329,7 +337,6 @@ def plot_total_hf_energy(nu):
         #     line.set_marker(markers_list[i])
         #     line.set_label(label_list[i])
         #     line.set_color(color_list[i])
-        total_energy_df.columns[total_energy_df.columns.str.contains(pat='spike')]
         for total_energy in total_energy_df.filter(like='real', axis=1).columns:
             # style_transition = transitions_style_dic.get(transition)
             total_energy_df.plot(x='u', y=total_energy, label=total_energy, ax=ax)  # , marker='o')
