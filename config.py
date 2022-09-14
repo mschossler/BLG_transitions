@@ -80,8 +80,13 @@ if not os.path.isdir(results_dir_path):
 if not os.path.isdir(results_dir_path_plot_vs_nu):
     os.makedirs(results_dir_path_plot_vs_nu)
 
-# if os.path.isfile('screenlog.0'):
-#     os.remove(results_dir_path + 'screenlog.0')
+try:
+    os.remove(results_dir_path + 'screenlog.0')
+    # if os.path.isfile('screenlog.0'):
+    #     os.remove(results_dir_path + 'screenlog.0')
+    #     os.remove(results_dir_path + 'screenlog.0')
+except FileNotFoundError:
+    pass
 
 print(infos)
 with open(results_dir_path + 'progress.txt', 'a') as f:

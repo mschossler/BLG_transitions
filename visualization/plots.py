@@ -287,55 +287,59 @@ def plot_transitions_vs_nu():
 def plot_total_hf_energy(nu):
     number_occupied_bands_local = nu + 8
     results_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local)
-    folder_names_file = open(results_dir_path_local + '/folder_list.txt', 'r').read()
-    folder_names_list = folder_names_file.splitlines()
-    # print(folder_names_list)
-    total_energy_df = pd.DataFrame([], columns=['u'])
-    for index, folder, in enumerate(folder_names_list):
-        total_energy_file = results_dir_path_local + folder + 'Et_' + 'nu_' + str(nu) + '.csv'
-        tmp = pd.read_csv(total_energy_file, names=['u', 'Et_' + str(index)])  # ,header=None
-        tmp['Et_' + str(index) + '_real'] = tmp['Et_' + str(index)].apply(lambda x: complex(x).real)
-        tmp['Et_' + str(index) + '_imag'] = tmp['Et_' + str(index)].apply(lambda x: complex(x).imag)
-        # tmp.index=tmp['u']
-        tmp.drop(columns=['Et_' + str(index)], inplace=True)
-        # tmp.drop(columns=['Et_'+str(index),'u'],inplace=True)
-        # tmp.insert(0, 'nu', nu)
-        # tmp = tmp[round(tmp['u'], 4) == u_zero]
-        # if tmp.empty:
-        #     print('u_zero=' + str(u_zero) + 'meV not found for transitions at nu=' + str(nu))
-        # tmp.drop('u',axis=1,inplace=True)
-        # total_energy_df = pd.concat([total_energy_df, tmp])
-        # total_energy_df = total_energy_df.merge(tmp,how='outer',on=['u'])
-        # total_energy_df = pd.merge_ordered(total_energy_df,tmp,how='outer',on=['u'])
-        try:
-            total_energy_df = pd.merge_ordered(total_energy_df, tmp, how='outer', on='u')
-        except ValueError:
-            total_energy_df = pd.concat([total_energy_df, tmp])
-    # tmp = pd.read_csv(results_dir_path_local + 'energies_' + 'nu_' + str(nu) + '.csv')  # ,header=None
-    print(total_energy_df)
-    total_energy_df.to_csv(results_dir_path_local + '/total_hf_energy.csv', index=False)
+    try:
+        folder_names_file = open(results_dir_path_local + '/folder_list.txt', 'r').read()
+    except FileNotFoundError:
+        print('add file folders to plot total hartree_fock energy')
+    else:
+        folder_names_list = folder_names_file.splitlines()
+        # print(folder_names_list)
+        total_energy_df = pd.DataFrame([], columns=['u'])
+        for index, folder, in enumerate(folder_names_list):
+            total_energy_file = results_dir_path_local + folder + 'Et_' + 'nu_' + str(nu) + '.csv'
+            tmp = pd.read_csv(total_energy_file, names=['u', 'Et_' + str(index)])  # ,header=None
+            tmp['Et_' + str(index) + '_real'] = tmp['Et_' + str(index)].apply(lambda x: complex(x).real)
+            tmp['Et_' + str(index) + '_imag'] = tmp['Et_' + str(index)].apply(lambda x: complex(x).imag)
+            # tmp.index=tmp['u']
+            tmp.drop(columns=['Et_' + str(index)], inplace=True)
+            # tmp.drop(columns=['Et_'+str(index),'u'],inplace=True)
+            # tmp.insert(0, 'nu', nu)
+            # tmp = tmp[round(tmp['u'], 4) == u_zero]
+            # if tmp.empty:
+            #     print('u_zero=' + str(u_zero) + 'meV not found for transitions at nu=' + str(nu))
+            # tmp.drop('u',axis=1,inplace=True)
+            # total_energy_df = pd.concat([total_energy_df, tmp])
+            # total_energy_df = total_energy_df.merge(tmp,how='outer',on=['u'])
+            # total_energy_df = pd.merge_ordered(total_energy_df,tmp,how='outer',on=['u'])
+            try:
+                total_energy_df = pd.merge_ordered(total_energy_df, tmp, how='outer', on='u')
+            except ValueError:
+                total_energy_df = pd.concat([total_energy_df, tmp])
+        # tmp = pd.read_csv(results_dir_path_local + 'energies_' + 'nu_' + str(nu) + '.csv')  # ,header=None
+        print(total_energy_df)
+        total_energy_df.to_csv(results_dir_path_local + '/total_hf_energy.csv', index=False)
 
-    f = plt.figure()
-    font = {'size': 15}
-    plt.rc('font', **font)
-    ax = plt.gca()
-    plt.rcParams['figure.dpi'] = 150
-    # transitions.plot(x='nu', linestyle=':', linewidth=1, markersize=12, ax=ax)
-    # for i, line in enumerate(ax.get_lines()):
-    #     line.set_marker(markers_list[i])
-    #     line.set_label(label_list[i])
-    #     line.set_color(color_list[i])
-    total_energy_df.columns[total_energy_df.columns.str.contains(pat='spike')]
-    for total_energy in total_energy_df.filter(like='real', axis=1).columns:
-        # style_transition = transitions_style_dic.get(transition)
-        total_energy_df.plot(x='u', y=total_energy, label=total_energy, ax=ax)  # , marker='o')
+        f = plt.figure()
+        font = {'size': 15}
+        plt.rc('font', **font)
+        ax = plt.gca()
+        plt.rcParams['figure.dpi'] = 150
+        # transitions.plot(x='nu', linestyle=':', linewidth=1, markersize=12, ax=ax)
+        # for i, line in enumerate(ax.get_lines()):
+        #     line.set_marker(markers_list[i])
+        #     line.set_label(label_list[i])
+        #     line.set_color(color_list[i])
+        total_energy_df.columns[total_energy_df.columns.str.contains(pat='spike')]
+        for total_energy in total_energy_df.filter(like='real', axis=1).columns:
+            # style_transition = transitions_style_dic.get(transition)
+            total_energy_df.plot(x='u', y=total_energy, label=total_energy, ax=ax)  # , marker='o')
 
-    plt.legend(bbox_to_anchor=(0.62, 1))
-    plt.rcParams["figure.figsize"] = (10, 5)
-    plt.title('total energies ', fontsize=19, y=-0.24, x=0.55)
-    plt.xlabel(r'$u$(meV)')
-    plt.ylabel('Total Hartree-Fock energy (meV)')
-    f.savefig(results_dir_path_local + '/total_hf_energy.pdf', bbox_inches='tight')
+        plt.legend(bbox_to_anchor=(0.62, 1))
+        plt.rcParams["figure.figsize"] = (10, 5)
+        plt.title('total energies ', fontsize=19, y=-0.24, x=0.55)
+        plt.xlabel(r'$u$(meV)')
+        plt.ylabel('Total Hartree-Fock energy (meV)')
+        f.savefig(results_dir_path_local + '/total_hf_energy.pdf', bbox_inches='tight')
 
 
 if __name__ == "__main__":
