@@ -112,8 +112,8 @@ tauz = tau_func([[1, 0], [0, -1]])
 
 
 def asymmetric_h(tau, rho, u):
-    first = u * np.trace(tau @ rho) * (tau @ rho)
-    second = - u * tau @ rho @ tau @ rho
+    first = u * np.trace(tau @ rho) * (tau @ rho) / 2
+    second = - u * tau @ rho @ tau @ rho / 2
     return first + second
 
 
