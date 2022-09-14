@@ -14,7 +14,7 @@ if __name__ == "__main__":
     sys.path.append('../')
     input_dir = '../input/'
 
-from input.parameters import nu, number_occupied_bands, alpha_rand_full_range, alpha_rand_asymmetric_calcs, use_file_seed  # , seed_large_u  # , model_regime
+from input.parameters import nu, number_occupied_bands, alpha_rand_full_range, alpha_rand_asymmetric_calcs, file_seed  # , seed_large_u  # , model_regime
 from config import bands, base_octet, tol
 from utils import eigen, remove_small_imag
 
@@ -51,7 +51,7 @@ class Density_Seed:
 
     def ramdom_16x16_density(self):
         # if (self.model_regime == 'full_range_error') and (self.nu == 0):
-        if (self.model_regime == 'full_range') and (self.nu == 0) and use_file_seed:
+        if (self.model_regime == 'full_range') and (self.nu == 0) and file_seed:
             # print('inside condition (model_regime == full_range) and (nu == 0)')
             rhorand8 = pd.read_csv(input_dir + 'rho0phbroken.csv', header=None).values.tolist()
 

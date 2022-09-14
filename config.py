@@ -35,14 +35,14 @@ cwd = os.getcwd()  # working directory
 path = os.path.abspath(__file__)
 dir_path = os.path.dirname(path)
 # print(dir_path)
-
+results_dir_path = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands)
 if tests_mode == 'on':
     # tests_mode = '/' + current_time + '__uz_' + str(round(uz * 1e3, 3)) + '__uperp_' + str(round(uperp * 1e3, 3)) + '/'
     tests_mode = '/' + current_time + '__'.join(parameters_to_folder_text) + '/'
 elif tests_mode == 'off':
     tests_mode = '/'
 
-results_dir_path = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands) + tests_mode
+results_dir_path = results_dir_path + tests_mode
 results_dir_path_plot_vs_nu = dir_path + '/results/results_' + current_date + '/vs_nu/'
 # results_dir_path = dir_path + '/results_old/occupation_' + str(number_occupied_bands) + '/'
 # print(results_dir_path_plot_vs_nu)

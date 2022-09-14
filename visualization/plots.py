@@ -3,12 +3,19 @@ from matplotlib import pyplot as plt
 
 if __name__ == "__main__":
     # setting path
+    # import numpy as np
     import sys
 
     sys.path.append('../')
 
-from config import bands, input_dir_path, dir_path, current_date, tests_mode, results_dir_path_plot_vs_nu, current_time
+from config import bands, input_dir_path, dir_path, current_date, tests_mode, results_dir_path_plot_vs_nu, current_time, results_dir_path
 from input.parameters import alpha_tilda, u_zero, parameters_to_plot_text
+
+if __name__ == '__main__':
+    import os
+
+    os.remove(results_dir_path + '/progress.txt')
+    os.rmdir(results_dir_path)
 
 style_dict = {'LL0_Kp_Sdown': {'color': 'lightblue', 'line_shape': '-', 'marker_shape': 'v', 'label': '$\\ \\ \\,0\\mathrm{K}^{+}\\downarrow$'},
               'LL1_Kp_Sdown': {'color': 'salmon', 'line_shape': '-', 'marker_shape': 'v', 'label': '$\\ \\ \\,1\\mathrm{K}^{+}\\downarrow$'},
@@ -133,7 +140,7 @@ def plot_energies_vs_nu():
         # tmp.drop('u',axis=1,inplace=True)
         energies_df = pd.concat([energies_df, tmp], ignore_index=True)
     energies_df.to_csv(results_dir_path_plot_vs_nu + 'energies_vs_nu.csv', index=False)
-    print(energies_df)
+    print(energies_df.dtypes)
 
     f = plt.figure()
     font = {'size': 15}
@@ -277,14 +284,68 @@ def plot_transitions_vs_nu():
 #     # #     eigenU.plot(x='u', y=x, color=styleX[0], style=styleX[1],marker='.', markersize=.5,markerfacecolor='Black', linestyle = 'None', label=styleX[3], ax=ax)#, marker='o')
 #     # # fermi_energy.plot(x='u', y='fermi_energy', color='purple', style='-', markersize=3, linewidth=1, label=r'Fermi energy', ax=ax)
 
+def plot_total_hf_energy(nu):
+    number_occupied_bands_local = nu + 8
+    results_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local)
+    folder_names_file = open(results_dir_path_local + '/folder_list.txt', 'r').read()
+    folder_names_list = folder_names_file.splitlines()
+    # print(folder_names_list)
+    total_energy_df = pd.DataFrame([], columns=['u'])
+    for index, folder, in enumerate(folder_names_list):
+        total_energy_file = results_dir_path_local + folder + 'Et_' + 'nu_' + str(nu) + '.csv'
+        tmp = pd.read_csv(total_energy_file, names=['u', 'Et_' + str(index)])  # ,header=None
+        tmp['Et_' + str(index) + '_real'] = tmp['Et_' + str(index)].apply(lambda x: complex(x).real)
+        tmp['Et_' + str(index) + '_imag'] = tmp['Et_' + str(index)].apply(lambda x: complex(x).imag)
+        # tmp.index=tmp['u']
+        tmp.drop(columns=['Et_' + str(index)], inplace=True)
+        # tmp.drop(columns=['Et_'+str(index),'u'],inplace=True)
+        # tmp.insert(0, 'nu', nu)
+        # tmp = tmp[round(tmp['u'], 4) == u_zero]
+        # if tmp.empty:
+        #     print('u_zero=' + str(u_zero) + 'meV not found for transitions at nu=' + str(nu))
+        # tmp.drop('u',axis=1,inplace=True)
+        # total_energy_df = pd.concat([total_energy_df, tmp])
+        # total_energy_df = total_energy_df.merge(tmp,how='outer',on=['u'])
+        # total_energy_df = pd.merge_ordered(total_energy_df,tmp,how='outer',on=['u'])
+        try:
+            total_energy_df = pd.merge_ordered(total_energy_df, tmp, how='outer', on='u')
+        except ValueError:
+            total_energy_df = pd.concat([total_energy_df, tmp])
+    # tmp = pd.read_csv(results_dir_path_local + 'energies_' + 'nu_' + str(nu) + '.csv')  # ,header=None
+    print(total_energy_df)
+    total_energy_df.to_csv(results_dir_path_local + '/total_hf_energy.csv', index=False)
+
+    f = plt.figure()
+    font = {'size': 15}
+    plt.rc('font', **font)
+    ax = plt.gca()
+    plt.rcParams['figure.dpi'] = 150
+    # transitions.plot(x='nu', linestyle=':', linewidth=1, markersize=12, ax=ax)
+    # for i, line in enumerate(ax.get_lines()):
+    #     line.set_marker(markers_list[i])
+    #     line.set_label(label_list[i])
+    #     line.set_color(color_list[i])
+    total_energy_df.columns[total_energy_df.columns.str.contains(pat='spike')]
+    for total_energy in total_energy_df.filter(like='real', axis=1).columns:
+        # style_transition = transitions_style_dic.get(transition)
+        total_energy_df.plot(x='u', y=total_energy, label=total_energy, ax=ax)  # , marker='o')
+
+    plt.legend(bbox_to_anchor=(0.62, 1))
+    plt.rcParams["figure.figsize"] = (10, 5)
+    plt.title('total energies ', fontsize=19, y=-0.24, x=0.55)
+    plt.xlabel(r'$u$(meV)')
+    plt.ylabel('Total Hartree-Fock energy (meV)')
+    f.savefig(results_dir_path_local + '/total_hf_energy.pdf', bbox_inches='tight')
+
 
 if __name__ == "__main__":
-    # energies_df = pd.read_csv(results_dir_path + 'energies_' + file_name_csv)
-    # transitions_df = pd.read_csv(results_dir_path + 'transitions_' + file_name_csv)
-    # print(energies_df)
-    # plot_energies(energies_df)
-    # # plot_transitions(transitions_df)
-
-    # plot_energies_with_asymmetry(nu=0)
-    plot_energies_vs_nu()
-    plot_transitions_vs_nu()
+    # # energies_df = pd.read_csv(results_dir_path + 'energies_' + file_name_csv)
+    # # transitions_df = pd.read_csv(results_dir_path + 'transitions_' + file_name_csv)
+    # # print(energies_df)
+    # # plot_energies(energies_df)
+    # # # plot_transitions(transitions_df)
+    #
+    # # plot_energies_with_asymmetry(nu=0)
+    # plot_energies_vs_nu()
+    # plot_transitions_vs_nu()
+    plot_total_hf_energy(0)
