@@ -43,7 +43,7 @@ tests_mode = 'on'
 save_folder_name = 1  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(2e2)
+itmax_full_range = int(5e2)
 itmax_asymmetric_calcs = int(1e4)
 alpha_rand_full_range = 0
 alpha_rand_asymmetric_calcs = 0.1

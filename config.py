@@ -28,6 +28,7 @@ now = datetime.now()
 current_time_formated = now.strftime("%Y-%m-%d %H:%M:%S")
 current_time = now.strftime("%d%m%Y%H%M%S")
 current_date = now.strftime("%d%m%Y")
+# current_date = '13092022'
 
 # current_date = 'server'
 
