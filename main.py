@@ -7,7 +7,7 @@ import numpy as np
 t0 = time.time()
 import pandas as pd
 
-from config import model_regime, results_dir_path, file_name_csv, nprocesses, bands, bands_LLm2_LL2, bands_LL2, bands_LLm2, current_date, tests_mode
+from config import model_regime, results_dir_path, file_name_csv, nprocesses, bands, bands_LLm2_LL2, bands_LL2, bands_LLm2, tests_mode
 from input.parameters import U0minD, U0maxD, dU0D, nu, u_critical, parameters_to_save, mode, add_int_to_bands_LLm2_LL2_low_u, save_folder_name
 from utils import frange, sort_dict, observable_to_csv, idxcalc, transitions_energy_fermi_energy
 
@@ -229,10 +229,8 @@ if save_folder_name:
     with open(results_dir_path + '/../folder_list.txt', 'a') as f:
         print(tests_mode, file=f)
 
-import filecmp
-
-file1 = 'results/results_11092022/occupation_' + str(nu + 8) + '/energies_nu_' + str(nu) + '_to_compare.csv'
-file2 = 'results/results_' + current_date + '/occupation_' + str(nu + 8) + tests_mode + 'energies_' + file_name_csv
-print('same as previews results : %s' % filecmp.cmp(file1, file2))
+# file1 = 'results/results_11092022/occupation_' + str(nu + 8) + '/energies_nu_' + str(nu) + '_to_compare.csv'
+# file2 = 'results/results_' + current_date + '/occupation_' + str(nu + 8) + tests_mode + 'energies_' + file_name_csv
+# print('same as previews results : %s' % filecmp.cmp(file1, file2))
 
 print('running time for nu=%(nu)i: %(t).1fs' % {'t': time.time() - t0, 'nu': nu})

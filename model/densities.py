@@ -98,8 +98,16 @@ class Density_Seed:
         return (1 - alpha_rand_full_range) * np.diag(diag) + alpha_rand_full_range * rhorand16
 
     def diag_full_regime_small_u(self):
-        seed_oct = self.seed_oct_dict[self.nu]
-        number_occupied_bands_local = sum(seed_oct) + 4
+        if self.nu <= -4:
+            seed_oct = self.seed_oct_dict[-4]
+            number_occupied_bands_local = self.nu + 8
+        elif abs(self.nu) < 4:
+            seed_oct = self.seed_oct_dict[nu]
+            number_occupied_bands_local = sum(seed_oct) + 4
+        elif self.nu >= 4:
+            seed_oct = self.seed_oct_dict[4]
+            number_occupied_bands_local = self.nu + 8
+        # number_occupied_bands_local = sum(seed_oct) + 4
         # number_occupied_bands = nu + 8
         occupied_octet_states = [base_octet[i] for i in range(8) if seed_oct[i]]
 

@@ -2,7 +2,7 @@ import sys
 
 import numpy as np
 
-nu_default = 0
+nu_default = -6
 
 if len(sys.argv) == 2:
     nu = int(sys.argv[1])
@@ -20,21 +20,21 @@ asym = 1
 alpha_Zm = 1  # 0.04227165829987071 # k / alpha_k
 alpha_H_oct_int = 1
 alpha_int_H = 1  # 0 for none int calculations on the full_range model
-apha_H_asym_small_u = 1
+apha_H_asym_small_u = 0
 
 alpha_reg = 1
 alpha_reg_asym_calcs = 1
 alpha_x = 1
-uz = 14e-3
-uperp = -3.2e-3
+uz = 15e-3
+uperp = -4e-3
 
 if not apha_H_asym_small_u:
     uz = 0
     uperp = 0
 
-U0minD = -5e-3
-U0maxD = 18e-3
-dU0D = 1e-3
+U0minD = -7e-3
+U0maxD = 7e-3
+dU0D = 0.25e-3
 
 u_zero = 1
 u_zero = round(u_zero, 4)
@@ -43,9 +43,9 @@ tests_mode = 'on'
 save_folder_name = 1  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(5e2)
+itmax_full_range = int(1e2)
 itmax_asymmetric_calcs = int(1e4)
-alpha_rand_full_range = 0
+alpha_rand_full_range = 0.1
 alpha_rand_asymmetric_calcs = 0.1
 alpha_rho = 0.005  # controls numerical regularization for rho (memory of rho from previews loop)
 # variables_dict['asym']=asym
@@ -110,7 +110,7 @@ print('uz=%(uz).1fmeV, uperp=%(uperp).1fmeV' % {'uz': uz * 1e3, 'uperp': uperp *
 # variables_dict['uz']=uz
 
 B = 13
-omega = 35 * np.sqrt(B) / 1000
+omega = 35 * np.sqrt(B) / 1e3
 gamma0 = 3
 gamma1 = 0.41
 gamma4 = 0.15 * asym
@@ -128,10 +128,10 @@ number_occupied_bands = nu + 8  # nu = 8 is the charge neutrality point in this 
 alpha_k = alpha_k_dic[nu]
 
 clight = 299792458
-hbar = (6.62607 * 10 ** (-34)) / (2 * np.pi)
-el = 1.602176634 * 10 ** (-19)
-dlayer = 3.35 * 10 ** (-10)
-ep0 = 8.8541878128 * 10 ** (-12)
+hbar = 6.62607e-34 / (2 * np.pi)
+el = 1.602176634e-19
+dlayer = 3.35e-10
+ep0 = 8.8541878128e-12
 
 alpha_tilda = alpha_k * (dlayer * 10 ** 9)
 
@@ -160,7 +160,7 @@ parameters_to_plot = {'nu': nu,
                       'alpha_rho': alpha_rho,
                       # 'alpha_k': alpha_k_dic[nu],
                       'model_regime': model_regime,
-                      'mode': mode,
+                      # 'mode': mode,
                       'alpha_reg': alpha_reg,
                       'replace_LLm2_LL2_low_u': add_int_to_bands_LLm2_LL2_low_u,
                       'alpha_int_H': alpha_int_H,

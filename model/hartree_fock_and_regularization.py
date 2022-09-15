@@ -119,13 +119,16 @@ def asymmetric_h(tau, rho, u):
 
 def loopU(u):
     global eigenvectorp, eigenvectorm, deltatb, rho
-    if u <= -u_critical:
+    if (u <= -u_critical) or ((abs(nu) > 4) and u < 0):
+        print('negative u')
         rho0 = density_by_model_regime(model_regime)['rho0constUm']
         apha_H_asym = 0
-    elif (u > -u_critical) and (u < u_critical):
+    elif (u > -u_critical) and (u < u_critical) and (abs(nu) <= 4):
+        print('small u')
         rho0 = density_by_model_regime(model_regime)['rho0const_small_u']
         apha_H_asym = apha_H_asym_small_u
-    elif u >= -u_critical:
+    elif u >= -u_critical or ((abs(nu) > 4) and u >= 0):
+        print('positive u')
         rho0 = density_by_model_regime(model_regime)['rho0constUp']
         apha_H_asym = 0
     print('running hartree_fock_and_regularization with nu=%(nu)i u=%(u).2fmeV ' % {'u': (u * 1e3), 'nu': nu})
@@ -200,9 +203,9 @@ def loopU(u):
 
         Hintdownup = np.vstack((hphpmsdu, hmphmsdu))
 
-        Hint = k * alpha_int_H * np.vstack((np.hstack((Hintup, Hintupdown)), np.hstack((Hintdownup, Hintdown))))
         H_asym = asymmetric_h(taux, rho, uperp) + asymmetric_h(tauy, rho, uperp) + asymmetric_h(tauz, rho, uz)
-        H = Hint + h0 + mZm + H_asym * apha_H_asym  # np.add(Hint, h0)
+        Hint = k * alpha_int_H * np.vstack((np.hstack((Hintup, Hintupdown)), np.hstack((Hintdownup, Hintdown)))) + H_asym * apha_H_asym
+        H = Hint + h0 + mZm  # np.add(Hint, h0)
         eigenvalue_loop, eigenvector_loop = eigen(H)
         # rhotemp = rho
         rho = sum(np.outer(eigenvector_loop[i, :], eigenvector_loop[i, :]) for i in range(number_occupied_bands))
@@ -241,14 +244,36 @@ def loopU(u):
     #     # print('here')
     #     # print('here0', check_if_complex(energy_u, ind, nu))
     #     eigenvalue = np.real(eigenvalue)
-    ehf = - sum([Hint[idp(n)][idp(nprime)] * rho[idp(nprime)][idp(n)] for n in setH for nprime in setH] +
-                [Hint[idm(n)][idm(nprime)] * rho[idm(nprime)][idm(n)] for n in setH for nprime in setH] +
-                [Hint[idps(n)][idps(nprime)] * rho[idps(nprime)][idps(n)] for n in setH for nprime in setH] +
-                [Hint[idms(n)][idms(nprime)] * rho[idms(nprime)][idms(n)] for n in setH for nprime in setH] +
-                [2 * Hint[idp(n)][idps(nprime)] * rho[idp(nprime)][idps(n)] for n in setH for nprime in setH] +
-                [2 * Hint[idm(n)][idms(nprime)] * rho[idm(nprime)][idms(n)] for n in setH for nprime in setH]
-                )
-    Et = sum([eigenvalue[i] for i in range(number_occupied_bands)]) + ehf
+    # ehf = - sum([Hint[idp(n)][idp(nprime)] * rho[idp(nprime)][idp(n)] for n in setH for nprime in setH] +
+    #             [Hint[idm(n)][idm(nprime)] * rho[idm(nprime)][idm(n)] for n in setH for nprime in setH] +
+    #             [Hint[idps(n)][idps(nprime)] * rho[idps(nprime)][idps(n)] for n in setH for nprime in setH] +
+    #             [Hint[idms(n)][idms(nprime)] * rho[idms(nprime)][idms(n)] for n in setH for nprime in setH] +
+    #             [2 * Hint[idp(n)][idps(nprime)] * rho[idp(nprime)][idps(n)] for n in setH for nprime in setH] +
+    #             [2 * Hint[idm(n)][idms(nprime)] * rho[idm(nprime)][idms(n)] for n in setH for nprime in setH]
+    #             )
+    Et = sum([eigenvalue[i] for i in range(number_occupied_bands)])  # - ehf
+
+    # # ehf = - sum([Hint[idp(n)][idp(nprime)] * rho[idp(nprime)][idp(n)] for n in setH for nprime in setH] +
+    # #             [Hint[idm(n)][idm(nprime)] * rho[idm(nprime)][idm(n)] for n in setH for nprime in setH] +
+    # #             [Hint[idps(n)][idps(nprime)] * rho[idps(nprime)][idps(n)] for n in setH for nprime in setH] +
+    # #             [Hint[idms(n)][idms(nprime)] * rho[idms(nprime)][idms(n)] for n in setH for nprime in setH] +
+    # #             [2 * Hint[idp(n)][idps(nprime)] * rho[idp(nprime)][idps(n)] for n in setH for nprime in setH] +
+    # #             [2 * Hint[idm(n)][idms(nprime)] * rho[idm(nprime)][idms(n)] for n in setH for nprime in setH]
+    # #             )
+    # ehf = - sum([Hint[idp(n)][idp(nprime)] * rho[idp(nprime)][idp(n)] for n in [0,1] for nprime in setH] +
+    #             [Hint[idp(n)][idp(nprime)] * rho[idp(nprime)][idp(n)] for n in [-2, 2] for nprime in setH] +
+    #             [Hint[idm(n)][idm(nprime)] * rho[idm(nprime)][idm(n)] for n in [0,1] for nprime in setH] +
+    #             [Hint[idm(n)][idm(nprime)] * rho[idm(nprime)][idm(n)] for n in [-2, 2] for nprime in setH] +
+    #             [Hint[idps(n)][idps(nprime)] * rho[idps(nprime)][idps(n)] for n in [0,1] for nprime in setH] +
+    #             [Hint[idps(n)][idps(nprime)] * rho[idps(nprime)][idps(n)] for n in [-2, 2] for nprime in setH] +
+    #             [Hint[idms(n)][idms(nprime)] * rho[idms(nprime)][idms(n)] for n in [0,1] for nprime in setH] +
+    #             [Hint[idms(n)][idms(nprime)] * rho[idms(nprime)][idms(n)] for n in [-2, 2] for nprime in setH] +
+    #             [2 * Hint[idp(n)][idps(nprime)] * rho[idp(nprime)][idps(n)] for n in [0,1] for nprime in setH] +
+    #             [2 * Hint[idp(n)][idps(nprime)] * rho[idp(nprime)][idps(n)] for n in [-2, 2] for nprime in setH] +
+    #             [2 * Hint[idm(n)][idms(nprime)] * rho[idm(nprime)][idms(n)] for n in [0,1] for nprime in setH] +
+    #             [2 * Hint[idm(n)][idms(nprime)] * rho[idm(nprime)][idms(n)] for n in [-2, 2] for nprime in setH]
+    #             )
+    # Et = sum(np.sort(np.diag(h0+mZm+regmatrix))[:number_occupied_bands]) - ehf
 
     dict_quantities_u = {'u': u * 1e3,
                          'eigenvalue': 1e3 * remove_small_imag(eigenvalue),  # np.real due to numerical fluctuations
