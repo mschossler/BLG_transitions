@@ -2,7 +2,7 @@ import sys
 
 import numpy as np
 
-nu_default = -6
+nu_default = 0
 
 if len(sys.argv) == 2:
     nu = int(sys.argv[1])
@@ -20,21 +20,21 @@ asym = 1
 alpha_Zm = 1  # 0.04227165829987071 # k / alpha_k
 alpha_H_oct_int = 1
 alpha_int_H = 1  # 0 for none int calculations on the full_range model
-apha_H_asym_small_u = 0
+apha_H_asym_small_u = 1
 
 alpha_reg = 1
-alpha_reg_asym_calcs = 1
+alpha_reg_asym_calcs = 0
 alpha_x = 1
-uz = 15e-3
-uperp = -4e-3
+uz = 2e-3
+uperp = 1e-3
 
 if not apha_H_asym_small_u:
     uz = 0
     uperp = 0
 
-U0minD = -7e-3
-U0maxD = 7e-3
-dU0D = 0.25e-3
+U0minD = 0e-3
+U0maxD = 6e-3
+dU0D = 0.5e-3
 
 u_zero = 1
 u_zero = round(u_zero, 4)
@@ -43,11 +43,12 @@ tests_mode = 'on'
 save_folder_name = 1  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(1e2)
+itmax_full_range = int(1e3)
 itmax_asymmetric_calcs = int(1e4)
-alpha_rand_full_range = 0.1
+alpha_rand_full_range = 0.01
+same_rhoRandom = 1
 alpha_rand_asymmetric_calcs = 0.1
-alpha_rho = 0.005  # controls numerical regularization for rho (memory of rho from previews loop)
+alpha_rho = 0.01  # controls numerical regularization for rho (memory of rho from previews loop)
 # variables_dict['asym']=asym
 # variables_dict['alpha_Zm']=alpha_Zm
 # variables_dict['alpha_H_oct_int']=alpha_H_oct_int
@@ -86,7 +87,6 @@ file_seed = 0
 if file_seed:
     alpha_rand_full_range = 0.6
     # alpha_rand_full_range = 0.83
-
 ### appoximation mode for LL2 and LLm2 ###
 mode = 'hartree_fock_and_regularization_calcs'
 add_int_to_bands_LLm2_LL2_low_u = 1  # if false this is effectivelly equivalent to fast_none_interact mode for low u regime
@@ -204,7 +204,7 @@ parameters_to_save = {'nu': nu,
                       'alpha_int_H': alpha_int_H,
                       'uz_meV': uz * 1e3,
                       'uperp_meV': uperp * 1e3,
-                      # 'u_zero_meV': u_zero,
+                      'u_zero_meV': u_zero,
                       'range_meV': (U0minD * 1e3, U0maxD * 1e3, dU0D * 1e3),
                       'tests_mode': tests_mode,
                       'save_folder_name': save_folder_name,

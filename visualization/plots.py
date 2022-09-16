@@ -11,7 +11,7 @@ if __name__ == "__main__":
     sys.path.append('../')
 
 from config import bands, input_dir_path, dir_path, current_date, tests_mode, results_dir_path_plot_vs_nu, current_time, results_dir_path
-from input.parameters import alpha_tilda, u_zero, parameters_to_plot_text
+from input.parameters import alpha_tilda, u_zero, parameters_to_plot_text, nu
 
 if __name__ == '__main__':
     import os
@@ -51,7 +51,7 @@ def plot_energies(energies, nu):
     fermi_energy_style = style_dict['fermi_energy']
     energies.plot(x='u', y='fermi_energy', color=fermi_energy_style['color'], style=fermi_energy_style['line_shape'], markersize=3, linewidth=1, label=fermi_energy_style['label'],
                   ax=ax)
-    plt.title('Energy bands  nu=' + str(nu) + ' as function of U with self-energy alpha 1')
+    plt.title('Energy bands  nu=' + str(nu) + ' as function of U')
     plt.xlabel('U(meV)')
     plt.ylabel('Energy bands(meV)')
 
@@ -137,18 +137,32 @@ def plot_transitions(transitions_df, nu):
 def plot_energies_vs_nu():
     # pass
     energies_df = pd.DataFrame([])
+    folder_names = []
     for nu in range(-6, 7):
         number_occupied_bands_local = nu + 8
-        results_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + '/'
-        tmp = pd.read_csv(results_dir_path_local + 'energies_' + 'nu_' + str(nu) + '.csv')  # ,header=None
+        results_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local)
+
+        try:
+            folder_names_file = open(results_dir_path_local + '/folder_list.txt', 'r').read()
+        except FileNotFoundError:
+            print('add file folders to folder_list')
+        else:
+            folder_name = folder_names_file.splitlines()[-1]
+            folder_names.append(folder_name)
+        tmp = pd.read_csv(results_dir_path_local + folder_name + 'energies_' + 'nu_' + str(nu) + '.csv')  # ,header=None
         tmp.insert(0, 'nu', nu)
         tmp = tmp[round(tmp['u'], 4) == u_zero]
         if tmp.empty:
             print('u_zero=' + str(u_zero) + 'meV not found for energies at nu=' + str(nu))
         # tmp.drop('u',axis=1,inplace=True)
         energies_df = pd.concat([energies_df, tmp], ignore_index=True)
+    if not os.path.isdir(results_dir_path_plot_vs_nu):
+        os.makedirs(results_dir_path_plot_vs_nu)
+    with open(results_dir_path_plot_vs_nu + 'folder_names.txt', 'w') as folder_names_file:
+        for folder in folder_names:
+            folder_names_file.write(folder + '\n')
     energies_df.to_csv(results_dir_path_plot_vs_nu + 'energies_vs_nu.csv', index=False)
-    print(energies_df.dtypes)
+    # print(energies_df.dtypes)
 
     f = plt.figure()
     font = {'size': 15}
@@ -174,7 +188,7 @@ def plot_energies_vs_nu():
     plt.xticks(range(-6, 5, 1))
     plt.legend(bbox_to_anchor=(0.8, 0.7))
     plt.rcParams["figure.figsize"] = (10, 5)
-    plt.title('Energies as function of filling factor for U ~ 0meV.', fontsize=19, y=-0.24, x=0.55)
+    plt.title('Energies as function of filling factor for U=' + str(u_zero) + 'meV.', fontsize=19, y=-0.24, x=0.55)
     plt.xlabel(r'$\nu$')
     plt.ylabel('Energies(meV)')
     f.savefig(results_dir_path_plot_vs_nu + 'energies_vs_nu.pdf', bbox_inches='tight')
@@ -186,8 +200,16 @@ def plot_transitions_vs_nu():
     transitions_df = pd.DataFrame([])
     for nu in range(-6, 7):
         number_occupied_bands_local = nu + 8
-        results_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + '/'
-        tmp = pd.read_csv(results_dir_path_local + 'transitions_' + 'nu_' + str(nu) + '.csv')  # ,header=None
+        results_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local)
+
+        try:
+            folder_names_file = open(results_dir_path_local + '/folder_list.txt', 'r').read()
+        except FileNotFoundError:
+            print('add file folders to folder_list')
+        else:
+            folder_name = folder_names_file.splitlines()[-1]
+        tmp = pd.read_csv(results_dir_path_local + folder_name + 'transitions_' + 'nu_' + str(nu) + '.csv')  # ,header=None
+
         tmp.insert(0, 'nu', nu)
         tmp = tmp[round(tmp['u'], 4) == u_zero]
         if tmp.empty:
@@ -220,7 +242,7 @@ def plot_transitions_vs_nu():
     plt.xticks(range(-6, 5, 1))
     plt.legend(bbox_to_anchor=(0.8, 0.7))
     plt.rcParams["figure.figsize"] = (10, 5)
-    plt.title('Transition energies as function of filling factor for U ~ 0meV.', fontsize=19, y=-0.24, x=0.55)
+    plt.title('Transition energies as function of filling factor for U=' + str(u_zero) + 'meV.', fontsize=19, y=-0.24, x=0.55)
     plt.xlabel(r'$\nu$')
     plt.ylabel('Transitions(meV)')
     f.savefig(results_dir_path_plot_vs_nu + 'transitions_vs_nu.pdf', bbox_inches='tight')
@@ -298,7 +320,7 @@ def plot_total_hf_energy(nu):
     try:
         folder_names_file = open(results_dir_path_local + '/folder_list.txt', 'r').read()
     except FileNotFoundError:
-        print('add file folders to plot total hartree_fock energy')
+        print('add file folders to folder_list')
     else:
         folder_names_list = folder_names_file.splitlines()
         # print(folder_names_list)
@@ -338,8 +360,9 @@ def plot_total_hf_energy(nu):
         #     line.set_label(label_list[i])
         #     line.set_color(color_list[i])
         for total_energy in total_energy_df.filter(like='real', axis=1).columns:
+            total_energy
             # style_transition = transitions_style_dic.get(transition)
-            total_energy_df.plot(x='u', y=total_energy, label=total_energy, ax=ax)  # , marker='o')
+            total_energy_df[total_energy_df[total_energy].notna()].plot(x='u', y=total_energy, label=total_energy, style='-', ax=ax)  # , marker='o')
 
         plt.legend(bbox_to_anchor=(0.62, 1))
         plt.rcParams["figure.figsize"] = (10, 5)
@@ -357,6 +380,6 @@ if __name__ == "__main__":
     # # # plot_transitions(transitions_df)
     #
     # # plot_energies_with_asymmetry(nu=0)
-    # plot_energies_vs_nu()
-    # plot_transitions_vs_nu()
-    plot_total_hf_energy(0)
+    plot_energies_vs_nu()
+    plot_transitions_vs_nu()
+    plot_total_hf_energy(nu)

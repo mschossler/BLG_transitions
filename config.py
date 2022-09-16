@@ -20,7 +20,7 @@ if model_regime == 'full_range':
 elif model_regime == 'near_zero_dielectric_field':
     print('model: %s' % model_regime)
 
-nprocesses = 10
+nprocesses = 12
 # print(np.finfo(float).eps)
 tol = 1e-12
 setH = [0, 1, -2, 2]
@@ -44,7 +44,7 @@ elif tests_mode == 'off':
     tests_mode = '/'
 
 results_dir_path = results_dir_path + tests_mode
-results_dir_path_plot_vs_nu = dir_path + '/results/results_' + current_date + '/vs_nu/'
+results_dir_path_plot_vs_nu = dir_path + '/results/results_' + current_date + '/vs_nu' + tests_mode
 # results_dir_path = dir_path + '/results_old/occupation_' + str(number_occupied_bands) + '/'
 # print(results_dir_path_plot_vs_nu)
 
@@ -77,9 +77,6 @@ folder_name = 'files_' + 'asym_' + str(round(asym, 2)) + '__Zm_' + str(round(Zm 
 
 if not os.path.isdir(results_dir_path):
     os.makedirs(results_dir_path)
-
-if not os.path.isdir(results_dir_path_plot_vs_nu):
-    os.makedirs(results_dir_path_plot_vs_nu)
 
 try:
     os.remove(results_dir_path + 'screenlog.0')

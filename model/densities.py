@@ -37,6 +37,20 @@ class Density_Seed:
     filling_order_Unegative = ['LLm2_Km_Sdown', 'LLm2_Km_Sup', 'LLm2_Kp_Sdown', 'LLm2_Kp_Sup', 'LL0_Kp_Sdown', 'LL0_Km_Sdown', 'LL0_Kp_Sup', 'LL0_Km_Sup', 'LL1_Kp_Sdown',
                                'LL1_Km_Sdown', 'LL1_Kp_Sup', 'LL1_Km_Sup', 'LL2_Km_Sdown', 'LL2_Km_Sup']
 
+    filling_order_Upositive_small_u = ['LLm2_Kp_Sdown',  # -7
+                                       'LLm2_Kp_Sup',  # -6
+                                       'LLm2_Km_Sdown',  # -5
+                                       'LLm2_Km_Sup',  # -4
+                                       'LL0_Km_Sdown',  # -3
+                                       'LL0_Kp_Sdown',  # -2
+                                       'LL1_Km_Sdown',  # -1
+                                       'LL1_Kp_Sdown',  # 0
+                                       'LL0_Kp_Sup',  # 1
+                                       'LL0_Km_Sup',  # 2
+                                       'LL1_Km_Sup',  # 3
+                                       'LL1_Kp_Sup',  # 4
+                                       'LL2_Kp_Sdown',  # 5
+                                       'LL2_Kp_Sup']  # 6
     # base_octet = ['LL0_Km_Sdown', 'LL0_Kp_Sdown', 'LL1_Km_Sdown', 'LL1_Kp_Sdown', 'LL0_Km_Sup', 'LL0_Kp_Sup', 'LL1_Km_Sup', 'LL1_Kp_Sup']
     seed_oct_dict = {-4: (0, 0, 0, 0, 0, 0, 0, 0),
                      -3: (1, 0, 0, 0, 0, 0, 0, 0),
@@ -66,12 +80,13 @@ class Density_Seed:
             rhorand8 = np.random.rand(8, 8)
             eigenvalue, eigenvector = eigen(rhorand8)
             # rhorand8 = sum(np.outer(eigenvector[i, :], eigenvector[i, :]) for i in range(int(number_occupied_bands / 2)))
-            rhorand8 = sum(np.outer(eigenvector[i, :], eigenvector[i, :]) for i in range(self.number_occupied_bands // 2))
+            rhorand8 = np.real(sum(np.outer(eigenvector[i, :], eigenvector[i, :]) for i in range(self.number_occupied_bands // 2)))
 
             rhorand8_zero = np.pad(rhorand8, ((0, 8), (0, 8)), mode='constant')
             zero_rhorand8 = np.pad(rhorand8, ((8, 0), (8, 0)), mode='constant')
 
             rhorand16 = rhorand8_zero + zero_rhorand8
+        # print('______________________________________________________________________________________________________')
 
         return rhorand16
 
@@ -114,6 +129,8 @@ class Density_Seed:
         filling_order = self.filling_order_Upositive[0:4] + occupied_octet_states + self.filling_order_Upositive[-2::1]
 
         diag = [(1 if band in filling_order[0:number_occupied_bands_local] else 0) for band in bands]
+
+        diag = [(1 if band in self.filling_order_Upositive_small_u[0:self.number_occupied_bands] else 0) for band in bands]
         if abs(sum(diag) - self.number_occupied_bands) > tol:
             print('Wrong filling factor for nu %i' % self.nu)
             exit()
@@ -180,6 +197,7 @@ class Density_Seed:
             self.rho0constUp = remove_small_imag(self.diag_full_regime_high_u(+1))
             self.rho0constUm = remove_small_imag(self.diag_full_regime_high_u(-1))
             self.rho0const_small_u = remove_small_imag(self.diag_full_regime_small_u())
+            self.rhoRandom = self.ramdom_16x16_density()
             # self.rho0constUp = remove_small_imag(self.diag_full_regime_v2())
             # self.rho0constUm = remove_small_imag(self.diag_full_regime_v2())
         # elif self.model_regime == 'full_range':
@@ -198,13 +216,15 @@ class Density_Seed:
 
 
 def density_by_model_regime(model_regime):
+    # print('here')
     densities = Density_Seed(model_regime, nu)
     # densities = Density_Seed('near_zero_dielectric_field', nu)
     densities.assign_densities()
     rho0constUp = densities.rho0constUp
     rho0constUm = densities.rho0constUm
+    rhoRandom = densities.rhoRandom
     rho0const_small_u = densities.rho0const_small_u
 
-    return {'rho0constUp': rho0constUp, 'rho0constUm': rho0constUm, 'rho0const_small_u': rho0const_small_u}
+    return {'rho0constUp': rho0constUp, 'rho0constUm': rho0constUm, 'rho0const_small_u': rho0const_small_u, 'rhoRandom':rhoRandom}
 
 # print(density_by_model_regime('near_zero_dielectric_field'))

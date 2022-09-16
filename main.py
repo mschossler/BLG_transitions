@@ -24,6 +24,7 @@ if model_regime == 'full_range':
     from model.hartree_fock_and_regularization import loopU
 
     quantities = a_pool.map(loopU, frange(U0minD, U0maxD, dU0D))
+    # quantities = a_pool.map(loopU, frange(U0minD, U0maxD, dU0D))
 elif model_regime == 'near_zero_dielectric_field':
     # print('here_condition_near_zero_calcs')
     # import time
