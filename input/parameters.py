@@ -25,7 +25,7 @@ apha_H_asym_small_u = 1
 alpha_reg = 1
 alpha_reg_asym_calcs = 0
 alpha_x = 1
-uz = 2e-3
+uz = 6e-3
 uperp = 1e-3
 
 if not apha_H_asym_small_u:
@@ -43,7 +43,7 @@ tests_mode = 'on'
 save_folder_name = 1  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(2e3)
+itmax_full_range = int(1e1)
 itmax_asymmetric_calcs = int(1e4)
 alpha_rand_full_range = 0.1
 same_rhoRandom = 1

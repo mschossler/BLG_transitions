@@ -17,5 +17,5 @@ pool.map(execute_nu, range(-6, 7))
 # #     # for nu in [0]:
 # #     subprocess.call(' python main.py ' + str(nu), shell=True)
 #     execute_nu(nu)
-
+subprocess.call(' cd visualization \n python plots.py ', shell=True)
 print('total working duration of execute_main: %.1fs' % (time.time() - t0_for_total))
