@@ -20,7 +20,7 @@ if model_regime == 'full_range':
 elif model_regime == 'near_zero_dielectric_field':
     print('model: %s' % model_regime)
 
-nprocesses = 12
+nprocesses = 11
 # print(np.finfo(float).eps)
 tol = 1e-12
 setH = [0, 1, -2, 2]
