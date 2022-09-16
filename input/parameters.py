@@ -43,12 +43,12 @@ tests_mode = 'on'
 save_folder_name = 1  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(1e3)
+itmax_full_range = int(2e3)
 itmax_asymmetric_calcs = int(1e4)
-alpha_rand_full_range = 0.01
+alpha_rand_full_range = 0.1
 same_rhoRandom = 1
 alpha_rand_asymmetric_calcs = 0.1
-alpha_rho = 0.01  # controls numerical regularization for rho (memory of rho from previews loop)
+alpha_rho = 0.05  # controls numerical regularization for rho (memory of rho from previews loop)
 # variables_dict['asym']=asym
 # variables_dict['alpha_Zm']=alpha_Zm
 # variables_dict['alpha_H_oct_int']=alpha_H_oct_int
