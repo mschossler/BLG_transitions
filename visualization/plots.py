@@ -186,7 +186,8 @@ def plot_energies_vs_nu():
     #                      label=['experiment', '_nolegend_', '_nolegend_', '_nolegend_'], color='tab:green', marker='o', fillstyle='none', ax=ax)
 
     plt.xticks(range(-6, 5, 1))
-    plt.legend(bbox_to_anchor=(0.8, 0.7))
+    plt.legend(loc='upper right', bbox_to_anchor=(1.45, 1.1))
+    # plt.legend(bbox_to_anchor=(0.8, 0.7))
     plt.rcParams["figure.figsize"] = (10, 5)
     plt.title('Energies as function of filling factor for U=' + str(u_zero) + 'meV.', fontsize=19, y=-0.24, x=0.55)
     plt.xlabel(r'$\nu$')
@@ -240,7 +241,8 @@ def plot_transitions_vs_nu():
                          label=['experiment', '_nolegend_', '_nolegend_', '_nolegend_'], color='tab:green', marker='o', fillstyle='none', ax=ax)
 
     plt.xticks(range(-6, 5, 1))
-    plt.legend(bbox_to_anchor=(0.8, 0.7))
+    plt.legend(loc='upper right', bbox_to_anchor=(1.22, 0.6))
+    # plt.legend(bbox_to_anchor=(0.7, 0.75))
     plt.rcParams["figure.figsize"] = (10, 5)
     plt.title('Transition energies as function of filling factor for U=' + str(u_zero) + 'meV.', fontsize=19, y=-0.24, x=0.55)
     plt.xlabel(r'$\nu$')
