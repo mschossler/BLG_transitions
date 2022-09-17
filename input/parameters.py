@@ -17,13 +17,13 @@ else:
 number_occupied_bands = nu + 8  # number_occupied_bands = 8 is the charge neutrality point
 
 u_critical = 12e-3  # value of u in eV for phase transition based on experiment data with screening factor of 0.26 for nu=0
-asym = 0
+asym = 1
 alpha_Zm = 1  # 0.04227165829987071 # k / alpha_k
 alpha_int_H = 1  # 0 for none int calculations on the full_range model
 apha_H_asym_small_u = 0
 valley_mixing = 0
 
-alpha_reg = 1
+alpha_reg = alpha_int_H
 alpha_x = 1
 uz = 20e-3
 uperp = -4e-3
@@ -54,8 +54,8 @@ alpha_k_dic = {i: alpha_k_nu4 for i in range(-6, 7)}
 alpha_k_dic[0] = alpha_k_nu0
 alpha_k = alpha_k_dic[nu]
 
-# model_regime = 'no_LL2_mixing_and_asym'
-model_regime = 'full_range'
+model_regime = 'no_LL2_mixing_and_asym'
+# model_regime = 'full_range'
 
 file_seed = 0
 if file_seed:
@@ -63,7 +63,6 @@ if file_seed:
     # alpha_rand_full_range = 0.83
 
 print('uz=%(uz).1fmeV, uperp=%(uperp).1fmeV' % {'uz': uz * 1e3, 'uperp': uperp * 1e3})
-
 
 B = 13
 omega = 35 * np.sqrt(B) / 1e3
