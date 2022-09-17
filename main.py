@@ -3,29 +3,22 @@ import time
 from datetime import datetime
 
 import numpy as np
-
-t0 = time.time()
 import pandas as pd
 
-from config import model_regime, results_dir_path, file_name_csv, nprocesses, bands, bands_LLm2_LL2, bands_LL2, bands_LLm2, tests_mode
+t0 = time.time()
+
+from config import model_regime, results_dir_path, file_name_csv, nprocesses, bands, bands_LLm2_LL2, tests_mode
 from input.parameters import U0minD, U0maxD, dU0D, nu, u_critical, parameters_to_save, mode, add_int_to_bands_LLm2_LL2_low_u, save_folder_name
 from utils import frange, sort_dict, observable_to_csv, idxcalc, transitions_energy_fermi_energy
 
 a_pool = multiprocessing.Pool(processes=nprocesses)
-
-# def by_range_calcs(range_u, seed_large_u):
-#     from model.hartree_fock_and_regularization import loopU
-#     a_pool = multiprocessing.Pool(processes=nprocesses)
-#     quantities = a_pool.map(loopU, range_u)
-#     return quantities
-
 
 if model_regime == 'full_range':
     from model.hartree_fock_and_regularization import loopU
 
     quantities = a_pool.map(loopU, frange(U0minD, U0maxD, dU0D))
     # quantities = a_pool.map(loopU, frange(U0minD, U0maxD, dU0D))
-elif model_regime == 'near_zero_dielectric_field':
+elif model_regime == 'no_LL2_mixing_and_asym':
     # print('here_condition_near_zero_calcs')
     # import time
     # time.sleep(.1)
@@ -41,29 +34,6 @@ elif model_regime == 'near_zero_dielectric_field':
     # quantities = a_pool.map(loopU0, [1e-3,2e-3])
 
 
-# elif model_regime == 'full_range_multiple_seeds':
-#     # print('here_condition_near_zero_calcs')
-#     # import time
-#     # time.sleep(.1)
-#     # from model.hartree_fock_and_regularization import loopU
-#     # if U0maxD_tmp > U0minD_tmp:
-#     #     quantities = a_pool.map(loopU, frange(U0minD_tmp, U0maxD_tmp, dU0D))
-#     # else:
-#     #     print('range of u not compatible with ' + model_regime + '. Change it for a valid range (check u_critical)')
-#     #     exit()
-#     U0minD_tmp = max(U0minD, -u_critical)
-#     U0maxD_tmp = min(U0maxD, u_critical)
-#     hig_u_positive = frange(U0maxD_tmp, U0maxD, dU0D)
-#     hig_u_negative = frange(U0minD, U0minD_tmp, dU0D)
-#     small_u = frange(U0minD_tmp, U0maxD_tmp, dU0D)
-#     seed_large_u = 1
-#     quantities = by_range_calcs(hig_u_negative, seed_large_u)
-#
-#     seed_large_u = 0
-#     quantities = quantities + by_range_calcs(small_u, seed_large_u)
-#
-#     seed_large_u = 1
-#     quantities = quantities + by_range_calcs(hig_u_positive, seed_large_u)
 
 def select_quantities_and_save_to_file(quantities_dict, model_regime_local):
     list_of_us = list(quantities_dict.keys())
@@ -105,11 +75,7 @@ def energies_and_observable_to_csv(quantities, model_regime_local=''):
         idx = idxcalc(eigenvector_temp)
         v['eigenvalue'] = eigenvalue_temp[idx]
         v['eigenvector'] = eigenvector_temp[:, idx]
-        # allowed_transitions_nu[v['u']] = allowed_transitions(v['u'],v['eigenvalue'])
         energies.append([u_temp] + v['eigenvalue'].tolist())
-    #
-    # for quantity in ['h0', 'rhoU', 'Eh_deltaU', 'Hint', 'Et', 'eigenvector', 'exciton_energy', 'regmatrix']:
-    #     observable_to_csv(quantities_dict, quantity)
 
     select_quantities_and_save_to_file(quantities_dict, model_regime_local)
 
@@ -119,20 +85,7 @@ def energies_and_observable_to_csv(quantities, model_regime_local=''):
 
 energies_df = energies_and_observable_to_csv(quantities)
 
-# print('before \n', energies_df)
-# energies_df_from_file = pd.read_csv('input/' + 'energies_nu_0_for_LLm2_LL2_HighFieldRange.csv')
-# energies_df_from_file = energies_df_from_file[(energies_df_from_file['u'] >= U0minD * 1e3) & (energies_df_from_file['u'] < U0maxD * 1e3)].reset_index()
-# print('file \n', energies_df_from_file[(energies_df_from_file['u'] >= U0minD * 1e3) & (energies_df_from_file['u'] < U0maxD * 1e3)])
-# print('file_full \n', energies_df_from_file)
-#
-# print(type(energies_df), type(energies_df_from_file), bands_LLm2_LL2)
-# energies_df[bands_LLm2_LL2] = energies_df_from_file[bands_LLm2_LL2]
-# # test = energies_df[bands_LLm2_LL2]
-# print('after \n', energies_df)
-# exit()
-
-
-if model_regime == 'near_zero_dielectric_field':
+if model_regime == 'no_LL2_mixing_and_asym':
 
     print('approximation mode for LL2 and LLm2: %s' % mode)
 
@@ -178,44 +131,22 @@ if model_regime == 'near_zero_dielectric_field':
         energies_df = assign_HighFieldRange(energies_df, energies_df_from_file)
 
 
-    elif mode == 'fast_from_file':
-        # energies_df[energies_df['u'] > u_critical] = energies_df_from_file[energies_df_from_file['u'] > u_critical]
-        # energies_df[energies_df['u'] < -u_critical] = energies_df_from_file[energies_df_from_file['u'] < -u_critical]
-        # print('before \n',energies_df)
-        # print(type(energies_df),type(energies_df_from_file),bands_LLm2_LL2)
-        energies_df[bands_LLm2_LL2] = energies_df_from_file[bands_LLm2_LL2]
-        energies_df = assign_HighFieldRange(energies_df, energies_df_from_file)
-        # test = energies_df[bands_LLm2_LL2]
-        # print('after \n',test)
-        # energies_df = assign_HighFieldRange(energies_df, energies_df_from_file)
-
-    elif mode == 'fast_from_constant':
-        constant_LLm2 = -14.14  # -(-56.701644+42.5611020) ##-56.701644 is average of LL-2 with full interactions
-        constant_LL2 = -5.84  # 49.672084-55.512116000000006 ##49.672084 is average of LL2 with full interactions
-        # energies_df_LLm2_LL2 = pd.DataFrame([])
-        # energies_df_cosntant = energies_df
-        energies_df[bands_LLm2] = energies_df[bands_LLm2] + constant_LLm2
-        energies_df[bands_LL2] = energies_df[bands_LL2] + constant_LL2
-        # print('before_assign\n', energies_df)
-        energies_df = assign_HighFieldRange(energies_df, energies_df_from_file)
-        # energies_df[energies_df['u'] > u_critical] = energies_df_from_file[energies_df_from_file['u'] > u_critical].values
-        # energies_df[energies_df['u'] < -u_critical] = energies_df_from_file[energies_df_from_file['u'] < -u_critical].values
-
     # energies_df = assign_HighFieldRange(energies_df, energies_df_cosntant)
     # energies_df[bands_LLm2_LL2] = energies_df_cosntant[bands_LLm2_LL2]
-# print('after')
-energies_df, transition_energy_df = transitions_energy_fermi_energy(energies_df, nu)  # add fermi_energy to energies_df
 
+energies_df, transition_energy_df = transitions_energy_fermi_energy(energies_df, nu)  # add fermi_energy to energies_df
 energies_df.round(8).to_csv(results_dir_path + 'energies_' + file_name_csv, index=False)
 transition_energy_df.round(8).to_csv(results_dir_path + 'transitions_' + file_name_csv, index=False)
 
 from visualization.plots import plot_energies, plot_transitions
 
+# print and plot energies and transition energies
 print(energies_df)
 print(transition_energy_df)
 plot_energies(energies_df, nu)
 plot_transitions(transition_energy_df, nu)
 
+# save parameters used in this simulation
 parameters_to_save['script working duration'] = time.time() - t0
 with open(results_dir_path + 'parameters.txt', 'w') as parameters_file:
     # with open('parameters.txt', 'w') as parameters_file:
@@ -226,10 +157,12 @@ with open(results_dir_path + 'parameters.txt', 'w') as parameters_file:
 
 print('files for nu=' + str(nu) + ' saved')
 
+# save folder name for later ref in total energy comparations
 if save_folder_name:
     with open(results_dir_path + '/../folder_list.txt', 'a') as f:
         print(tests_mode, file=f)
 
+# #compare with previews results
 # file1 = 'results/results_11092022/occupation_' + str(nu + 8) + '/energies_nu_' + str(nu) + '_to_compare.csv'
 # file2 = 'results/results_' + current_date + '/occupation_' + str(nu + 8) + tests_mode + 'energies_' + file_name_csv
 # print('same as previews results : %s' % filecmp.cmp(file1, file2))
