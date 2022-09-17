@@ -87,17 +87,6 @@ energies_df = energies_and_observable_to_csv(quantities)
 
 if model_regime == 'no_LL2_mixing_and_asym':
 
-    # print('approximation mode for LL2 and LLm2: %s' % mode)
-
-    # energies_df_from_file = pd.read_csv('input/' + 'energies_nu_' + str(nu) + '_for_LLm2_LL2_HighFieldRange.csv')
-    # energies_df_from_file = energies_df_from_file[np.isin(energies_df_from_file['u'], frange(U0minD, U0maxD, dU0D) * 1e3)].reset_index(drop=True)
-
-    # print('file', energies_df_from_file)
-
-    # energies_df_from_file = energies_df_from_file[(energies_df_from_file['u'] >= U0minD * 1e3) & (energies_df_from_file['u'] < U0maxD * 1e3)].reset_index(drop=True)
-
-    # print('file \n', energies_df_from_file)
-
     def assign_HighFieldRange(energies, energies_high_u):
         # print(frange(U0minD, U0minD_tmp, dU0D) * 1e3)
         # energies.loc[energies['u'] > u_critical*1e3] = energies_high_u[np.isin(energies_high_u['u'],frange(U0maxD_tmp,U0maxD,dU0D)*1e3)].values

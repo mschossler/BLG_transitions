@@ -2,7 +2,7 @@ import sys
 
 import numpy as np
 
-nu_default = 4
+nu_default = 0
 
 if len(sys.argv) == 2:
     nu = int(sys.argv[1])
@@ -17,7 +17,7 @@ else:
 number_occupied_bands = nu + 8  # number_occupied_bands = 8 is the charge neutrality point
 
 u_critical = 12e-3  # value of u in eV for phase transition based on experiment data with screening factor of 0.26 for nu=0
-asym = 1
+asym = 0
 alpha_Zm = 1  # 0.04227165829987071 # k / alpha_k
 alpha_int_H = 1  # 0 for none int calculations on the full_range model
 apha_H_asym_small_u = 0
@@ -53,26 +53,9 @@ alpha_k_nu0 = 0.26
 alpha_k_dic = {i: alpha_k_nu4 for i in range(-6, 7)}
 alpha_k_dic[0] = alpha_k_nu0
 alpha_k = alpha_k_dic[nu]
-# variables_dict['alpha_k_dic']=alpha_k_dic
-# print(alpha_k_dic)
-# alpha_k_dic = {-6: alpha_k_nu4,
-#                -4: alpha_k_nu4,
-#                -3: alpha_k_nu4,
-#                -2: alpha_k_nu4,
-#                -1: alpha_k_nu4,
-#                0: alpha_k_nu0,
-#                1: alpha_k_nu4,
-#                2: alpha_k_nu4,
-#                3: alpha_k_nu4,
-#                4: alpha_k_nu4,
-#                5: alpha_k_nu4,
-#                6: alpha_k_nu4
-#                }
 
-
-model_regime = 'no_LL2_mixing_and_asym'
-# model_regime = 'full_range'
-
+# model_regime = 'no_LL2_mixing_and_asym'
+model_regime = 'full_range'
 
 file_seed = 0
 if file_seed:
@@ -111,7 +94,7 @@ k = (np.sqrt(np.pi / 2) * el) / (4 * np.pi * ep0 * epr * Lb) * alpha_k
 ######################################### hartree_fock_with_asymmetric_interactions.py #############################
 alpha_H_oct_int = 1
 itmax_asymmetric_calcs = int(1e4)
-alpha_reg_asym_calcs = 1
+alpha_reg_asym_calcs = 0
 alpha_rand_asymmetric_calcs = 0
 ### appoximation mode for LL2 and LLm2 ###
 add_int_to_bands_LLm2_LL2_low_u = 1  # if false this is effectivelly equivalent to fast_none_interact mode for low u regime

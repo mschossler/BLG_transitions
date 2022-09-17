@@ -15,7 +15,7 @@ if __name__ == "__main__":
     input_dir = '../input/'
 
 from input.parameters import nu, number_occupied_bands, alpha_rand_full_range, alpha_rand_asymmetric_calcs, file_seed  # , seed_large_u  # , model_regime
-from config import bands, base_octet, tol
+from config import bands, tol
 from utils import eigen, remove_small_imag
 
 
@@ -51,17 +51,18 @@ class Density_Seed:
                                        'LL1_Kp_Sup',  # 4
                                        'LL2_Kp_Sdown',  # 5
                                        'LL2_Kp_Sup']  # 6
+
     # base_octet = ['LL0_Km_Sdown', 'LL0_Kp_Sdown', 'LL1_Km_Sdown', 'LL1_Kp_Sdown', 'LL0_Km_Sup', 'LL0_Kp_Sup', 'LL1_Km_Sup', 'LL1_Kp_Sup']
-    seed_oct_dict = {-4: (0, 0, 0, 0, 0, 0, 0, 0),
-                     -3: (1, 0, 0, 0, 0, 0, 0, 0),
-                     -2: (1, 1, 0, 0, 0, 0, 0, 0),
-                     -1: (1, 1, 1, 0, 0, 0, 0, 0),
-                     0: (1, 1, 1, 1, 0, 0, 0, 0),
-                     1: (1, 1, 1, 1, 1, 0, 0, 0),
-                     2: (1, 1, 1, 1, 1, 1, 0, 0),
-                     3: (1, 1, 1, 1, 1, 1, 1, 0),
-                     4: (1, 1, 1, 1, 1, 1, 1, 1)
-                     }
+    # seed_oct_dict = {-4: (0, 0, 0, 0, 0, 0, 0, 0),
+    #                  -3: (1, 0, 0, 0, 0, 0, 0, 0),
+    #                  -2: (1, 1, 0, 0, 0, 0, 0, 0),
+    #                  -1: (1, 1, 1, 0, 0, 0, 0, 0),
+    #                  0: (1, 1, 1, 1, 0, 0, 0, 0),
+    #                  1: (1, 1, 1, 1, 1, 0, 0, 0),
+    #                  2: (1, 1, 1, 1, 1, 1, 0, 0),
+    #                  3: (1, 1, 1, 1, 1, 1, 1, 0),
+    #                  4: (1, 1, 1, 1, 1, 1, 1, 1)
+    #                  }
 
     def ramdom_16x16_density(self):
         # if (self.model_regime == 'full_range_error') and (self.nu == 0):
@@ -113,22 +114,22 @@ class Density_Seed:
         return (1 - alpha_rand_full_range) * np.diag(diag) + alpha_rand_full_range * rhorand16
 
     def diag_full_regime_small_u(self):
-        if self.nu <= -4:
-            seed_oct = self.seed_oct_dict[-4]
-            number_occupied_bands_local = self.nu + 8
-        elif abs(self.nu) < 4:
-            seed_oct = self.seed_oct_dict[nu]
-            number_occupied_bands_local = sum(seed_oct) + 4
-        elif self.nu >= 4:
-            seed_oct = self.seed_oct_dict[4]
-            number_occupied_bands_local = self.nu + 8
-        # number_occupied_bands_local = sum(seed_oct) + 4
-        # number_occupied_bands = nu + 8
-        occupied_octet_states = [base_octet[i] for i in range(8) if seed_oct[i]]
+        # if self.nu <= -4:
+        #     seed_oct = self.seed_oct_dict[-4]
+        #     number_occupied_bands_local = self.nu + 8
+        # elif abs(self.nu) < 4:
+        #     seed_oct = self.seed_oct_dict[nu]
+        #     number_occupied_bands_local = sum(seed_oct) + 4
+        # elif self.nu >= 4:
+        #     seed_oct = self.seed_oct_dict[4]
+        #     number_occupied_bands_local = self.nu + 8
+        # # number_occupied_bands_local = sum(seed_oct) + 4
+        # # number_occupied_bands = nu + 8
+        # # occupied_octet_states = [base_octet[i] for i in range(8) if seed_oct[i]]
 
-        filling_order = self.filling_order_Upositive[0:4] + occupied_octet_states + self.filling_order_Upositive[-2::1]
+        # filling_order = self.filling_order_Upositive[0:4] + occupied_octet_states + self.filling_order_Upositive[-2::1]
 
-        diag = [(1 if band in filling_order[0:number_occupied_bands_local] else 0) for band in bands]
+        # diag = [(1 if band in filling_order[0:number_occupied_bands_local] else 0) for band in bands]
 
         diag = [(1 if band in self.filling_order_Upositive_small_u[0:self.number_occupied_bands] else 0) for band in bands]
         if abs(sum(diag) - self.number_occupied_bands) > tol:
@@ -171,14 +172,16 @@ class Density_Seed:
     #     return rho0const
 
     def seed_asymmetric_calcs(self):
-        seed_oct = self.seed_oct_dict[self.nu]
-        number_occupied_bands_local = sum(seed_oct) + 4
+        # seed_oct = self.seed_oct_dict[self.nu]
+        # number_occupied_bands_local = sum(seed_oct) + 4
         # number_occupied_bands = nu + 8
-        occupied_octet_states = [base_octet[i] for i in range(8) if seed_oct[i]]
+        # occupied_octet_states = [base_octet[i] for i in range(8) if seed_oct[i]]
 
-        filling_order = self.filling_order_Upositive[0:4] + occupied_octet_states + self.filling_order_Upositive[-2::1]
+        # filling_order = self.filling_order_Upositive[0:4] + occupied_octet_states + self.filling_order_Upositive[-2::1]
 
-        diag = [(1 if band in filling_order[0:number_occupied_bands_local] else 0) for band in bands]
+        # diag = [(1 if band in filling_order[0:number_occupied_bands_local] else 0) for band in bands]
+
+        diag = [(1 if band in self.filling_order_Upositive_small_u[0:self.number_occupied_bands] else 0) for band in bands]
         # diag= [0.618, 0.618, 1, 0, 0.618, 0.618, 1, 0, 0.382, 0.382, 1, 0, 0.382, 0.382, 1, 0]
         if abs(sum(diag) - number_occupied_bands) > tol:
             print('Wrong filling factor for nu %i' % self.nu)
