@@ -52,17 +52,23 @@ def plot_energies(energies, nu):
     energies.plot(x='u', y='fermi_energy', color=fermi_energy_style['color'], style=fermi_energy_style['line_shape'], markersize=3, linewidth=1, label=fermi_energy_style['label'],
                   ax=ax)
     plt.title('Energy bands  nu=' + str(nu) + ' as function of U')
+    textstr = '\n'.join(parameters_to_plot_text)
+    # print(textstr)
+    plt.text(-10, -40, textstr, fontsize=4, verticalalignment='top')
+
     plt.xlabel('U(meV)')
     plt.ylabel('Energy bands(meV)')
 
     # plt.legend(bbox_to_anchor=(1, 0.55))
-    plt.legend(loc='upper right', bbox_to_anchor=(1, 1))
+    # anchored_text=AnchoredText(textstr, loc='best')
+    # ax.add_artist(anchored_text)
+    plt.legend(loc='upper right', bbox_to_anchor=(1.3, 1))
     plt.rcParams["figure.figsize"] = (10, 5)
     # plt.show()
     number_occupied_bands_local = nu + 8
     results_dir_path_local = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands_local) + tests_mode
 
-    f.savefig(results_dir_path_local + "LL(U)_HF_interactions_w_SE_warping_alpha1_nu_" + str(nu) + '_' + current_time + ".pdf", bbox_inches='tight')
+    f.savefig(results_dir_path_local + "LL(U)_nu_" + str(nu) + '_' + current_time + ".pdf", bbox_inches='tight')
 
 
 transitions_style_dic = {'LL1_Kp_Sdown_to_LL2_Kp_Sdown': {'color': 'tab:blue', 'marker_shape': '2', 'line_shape': '-',
@@ -94,7 +100,7 @@ def plot_transitions(transitions_df, nu):
         transitions_df.plot(x='u', y=transition, color=style_transition['color'], style=style_transition['line_shape'], markersize=3, linewidth=0.7,
                             label=style_transition['label'], ax=ax)  # , marker='o')
     # print(transitions_df)
-    plt.title('Transition nu=' + str(nu) + ' as function of U with self-energy')
+    plt.title('Transition nu=' + str(nu) + ' as function of U')
 
     textstr = '\n'.join(parameters_to_plot_text)
     # print(textstr)

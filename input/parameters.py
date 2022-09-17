@@ -46,7 +46,6 @@ save_folder_name = 1  # change this to off when done with tests
 itmax_full_range = int(25e0)
 alpha_rand_full_range = 0.0001
 same_rhoRandom = 1
-alpha_rand_asymmetric_calcs = 0.2
 alpha_rho = 0  # controls numerical regularization for rho (small memory of rho from previews loop)
 
 alpha_k_nu4 = 0.244
@@ -71,9 +70,8 @@ alpha_k = alpha_k_dic[nu]
 #                }
 
 
-# model_regime = 'no_LL2_mixing_and_asym'
-model_regime = 'full_range'
-# model_regime = 'full_range_multiple_seeds'
+model_regime = 'no_LL2_mixing_and_asym'
+# model_regime = 'full_range'
 
 
 file_seed = 0
@@ -113,13 +111,10 @@ k = (np.sqrt(np.pi / 2) * el) / (4 * np.pi * ep0 * epr * Lb) * alpha_k
 ######################################### hartree_fock_with_asymmetric_interactions.py #############################
 alpha_H_oct_int = 1
 itmax_asymmetric_calcs = int(1e4)
-alpha_reg_asym_calcs = 0
+alpha_reg_asym_calcs = 1
+alpha_rand_asymmetric_calcs = 0
 ### appoximation mode for LL2 and LLm2 ###
-mode = 'hartree_fock_and_regularization_calcs'
 add_int_to_bands_LLm2_LL2_low_u = 1  # if false this is effectivelly equivalent to fast_none_interact mode for low u regime
-# mode = 'fast_none_interact'
-# mode = 'fast_from_file' # L2 and LLm2 are set by fully interacting hamiltonian (no asymmetric int)
-# mode = 'fast_from_constant' # LL2 and LLm2 are set by none-interacting hamiltonian + constant (from avereage LL2 and LLm2 set by interacting hamiltonian)
 ##########################################
 ######################################################################################################################
 ######################################################################################################################
@@ -185,7 +180,6 @@ parameters_to_save = {'nu': nu,
                       'alpha_rho': alpha_rho,
                       'alpha_k': alpha_k_dic[nu],
                       'model_regime': model_regime,
-                      'mode': mode,
                       'alpha_reg': alpha_reg,
                       'replace_LLm2_LL2_low_u': add_int_to_bands_LLm2_LL2_low_u,
                       'alpha_int_H': alpha_int_H,

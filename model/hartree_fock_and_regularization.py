@@ -6,8 +6,8 @@ from model.exchange_integrals import Xskm, Xskp
 from model.hamiltonians import full_hp, full_hm, full_hpm, full_hmp, idp, idps, idm, idms, mZm, hAp, hBp, hCp, tau_func
 from utils import eigen, df_round, nonedimmerp, nonedimmerm, remove_small_imag, check_if_complex
 
-# if model_regime == 'near_zero_dielectric_field':
-#     print('executing hartree_fock_and_regularization to return LL2 and LLm2 for near_zero_dielectric_field regime')
+# if model_regime == 'no_LL2_mixing_and_asym':
+#     print('executing hartree_fock_and_regularization to return LL2 and LLm2 for no_LL2_mixing_and_asym regime')
 # elif model_regime == 'full_range':
 #     print('executing hartree_fock_and_regularization in full_range regime')
 

@@ -17,7 +17,7 @@ if abs(nu) > 4:
 
 if model_regime == 'full_range':
     print('model: %s' % model_regime)
-elif model_regime == 'near_zero_dielectric_field':
+elif model_regime == 'no_LL2_mixing_and_asym':
     print('model: %s' % model_regime)
 
 nprocesses = 11
@@ -39,7 +39,7 @@ dir_path = os.path.dirname(path)
 results_dir_path = dir_path + '/results/results_' + current_date + '/occupation_' + str(number_occupied_bands)
 if tests_mode == 'on':
     # tests_mode = '/' + current_time + '__uz_' + str(round(uz * 1e3, 3)) + '__uperp_' + str(round(uperp * 1e3, 3)) + '/'
-    tests_mode = '/' + current_time + '__'.join(parameters_to_folder_text) + '/'
+    tests_mode = '/' + current_time + '_' + '__'.join(parameters_to_folder_text) + '/'
 elif tests_mode == 'off':
     tests_mode = '/'
 
