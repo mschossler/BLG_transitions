@@ -6,9 +6,9 @@ from model.exchange_integrals import Xzs, Xzd, Xos, Xod, Xfs, Xfd, Xsts, Xstd, X
 from model.hamiltonians import mZm, hAp, hBp, hCp, tau_func  # , asymmetric_h, taux, tauy, tauz
 from utils import eigen, nonedimmerp, nonedimmerm, df_round, remove_small_imag, check_if_complex
 
-model_regime = 'near_zero_dielectric_field'
+model_regime = 'no_LL2_mixing_and_asym'
 
-# print('executing hartree_fock_with_asymmetric_interactions for near_zero_dielectric_field regime')
+# print('executing hartree_fock_with_asymmetric_interactions for no_LL2_mixing_and_asym regime')
 
 # print('here_asymmetric_calcs')
 # import time
@@ -157,14 +157,15 @@ def asymmetric_h(tau, rho, u):
 
 ##########################################################################################################
 
-
+rho0const_small_u = np.array(density_by_model_regime(model_regime)['rho0const_small_u'])
 def loopU0(u):
     # global rhotemp
-    if u >= 0:
-        rho0 = density_by_model_regime(model_regime)['rho0constUp']  # rhodiagUp
-    else:
-        rho0 = density_by_model_regime(model_regime)['rho0constUm']  # rhodiagUm
-    print('running hartree_fock_with_asymmetric_interactions for  nu=%(nu)i u=%(u).2fmeV ' % {'u': (u * 1e3), 'nu': nu})
+    # if u >= 0:
+    #     rho0 = density_by_model_regime(model_regime)['rho0constUp']  # rhodiagUp
+    # else:
+    #     rho0 = density_by_model_regime(model_regime)['rho0constUm']  # rhodiagUm
+    # print('running hartree_fock_with_asymmetric_interactions for  nu=%(nu)i u=%(u).2fmeV ' % {'u': (u * 1e3), 'nu': nu})
+    rho0 = rho0const_small_u
     rho = rho0
 
     eigenvaluep2, eigenvectorp2 = eigen(hAp(u))[0][1:3], eigen(hAp(u))[1][1:3]

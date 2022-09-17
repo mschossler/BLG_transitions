@@ -8,7 +8,7 @@ import pandas as pd
 t0 = time.time()
 
 from config import model_regime, results_dir_path, file_name_csv, nprocesses, bands, bands_LLm2_LL2, tests_mode
-from input.parameters import U0minD, U0maxD, dU0D, nu, u_critical, parameters_to_save, mode, add_int_to_bands_LLm2_LL2_low_u, save_folder_name
+from input.parameters import U0minD, U0maxD, dU0D, nu, u_critical, parameters_to_save, add_int_to_bands_LLm2_LL2_low_u, save_folder_name
 from utils import frange, sort_dict, observable_to_csv, idxcalc, transitions_energy_fermi_energy
 
 a_pool = multiprocessing.Pool(processes=nprocesses)
@@ -87,11 +87,10 @@ energies_df = energies_and_observable_to_csv(quantities)
 
 if model_regime == 'no_LL2_mixing_and_asym':
 
-    print('approximation mode for LL2 and LLm2: %s' % mode)
+    # print('approximation mode for LL2 and LLm2: %s' % mode)
 
-    energies_df_from_file = pd.read_csv('input/' + 'energies_nu_' + str(nu) + '_for_LLm2_LL2_HighFieldRange.csv')
-    energies_df_from_file = energies_df_from_file[np.isin(energies_df_from_file['u'], frange(U0minD, U0maxD, dU0D) * 1e3)].reset_index(drop=True)
-
+    # energies_df_from_file = pd.read_csv('input/' + 'energies_nu_' + str(nu) + '_for_LLm2_LL2_HighFieldRange.csv')
+    # energies_df_from_file = energies_df_from_file[np.isin(energies_df_from_file['u'], frange(U0minD, U0maxD, dU0D) * 1e3)].reset_index(drop=True)
 
     # print('file', energies_df_from_file)
 
@@ -113,26 +112,19 @@ if model_regime == 'no_LL2_mixing_and_asym':
         return energies
 
 
-    if mode == 'hartree_fock_and_regularization_calcs':
-        from model.hartree_fock_and_regularization import loopU
+    from model.hartree_fock_and_regularization import loopU
 
-        a_pool = multiprocessing.Pool(processes=nprocesses)
-        quantities_full_range = a_pool.map(loopU, frange(U0minD, U0maxD, dU0D))
-        model_regime_local = 'full_regime'
-        seed_large_u = 1
-        energies_df_full_range = energies_and_observable_to_csv(quantities_full_range, model_regime_local)
+    a_pool = multiprocessing.Pool(processes=nprocesses)
+    quantities_full_range = a_pool.map(loopU, frange(U0minD, U0maxD, dU0D))
+    model_regime_local = 'full_regime'
+    energies_df_full_range = energies_and_observable_to_csv(quantities_full_range, model_regime_local)
+    energies_df_full_range_small_u = energies_df_full_range[np.isin(energies_df_full_range['u'], frange(U0minD_tmp, U0maxD_tmp, dU0D) * 1e3)].reset_index(drop=True)
 
-        if add_int_to_bands_LLm2_LL2_low_u:
-            energies_df[bands_LLm2_LL2] = energies_df_full_range[bands_LLm2_LL2]
-        energies_df = assign_HighFieldRange(energies_df, energies_df_full_range)
+    if add_int_to_bands_LLm2_LL2_low_u:
+        # energies_df_full_range = energies_df_full_range[np.isin(energies_df_full_range['u'], frange(U0minD_tmp, U0maxD_tmp, dU0D) * 1e3)]
+        energies_df[bands_LLm2_LL2] = energies_df_full_range_small_u[bands_LLm2_LL2]
+    energies_df = assign_HighFieldRange(energies_df, energies_df_full_range)
 
-    elif mode == 'fast_none_interact':
-        # energies_df_source_LLm2_LL2 = energies_df
-        energies_df = assign_HighFieldRange(energies_df, energies_df_from_file)
-
-
-    # energies_df = assign_HighFieldRange(energies_df, energies_df_cosntant)
-    # energies_df[bands_LLm2_LL2] = energies_df_cosntant[bands_LLm2_LL2]
 
 energies_df, transition_energy_df = transitions_energy_fermi_energy(energies_df, nu)  # add fermi_energy to energies_df
 energies_df.round(8).to_csv(results_dir_path + 'energies_' + file_name_csv, index=False)

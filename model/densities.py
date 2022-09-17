@@ -204,13 +204,15 @@ class Density_Seed:
         #     self.rho0constUp = remove_small_imag(self.diag_full_regime_high_u(+1))
         #     self.rho0constUm = remove_small_imag(self.diag_full_regime_high_u(-1))
         #     self.rho0const_small_u = remove_small_imag(self.diag_full_regime_small_u(-1))
-        elif self.model_regime == 'near_zero_dielectric_field':
+        elif self.model_regime == 'no_LL2_mixing_and_asym':
             self.rho0constUp = remove_small_imag(self.seed_asymmetric_calcs())
             self.rho0constUm = remove_small_imag(self.seed_asymmetric_calcs())
+            self.rho0const_small_u = remove_small_imag(self.diag_full_regime_small_u())
+            self.rhoRandom = self.ramdom_16x16_density()
         # if self.model_regime == 'full_range':
         #     self.rho0constUp = np.real(self.diag_full_regime(+1))
         #     self.rho0constUm = np.real(self.diag_full_regime(-1))
-        # elif self.model_regime == 'near_zero_dielectric_field':
+        # elif self.model_regime == 'no_LL2_mixing_and_asym':
         #     self.rho0constUp = np.real(self.seed_asymmetric_calcs())
         #     self.rho0constUm = np.real(self.seed_asymmetric_calcs())
 
@@ -218,7 +220,7 @@ class Density_Seed:
 def density_by_model_regime(model_regime):
     # print('here')
     densities = Density_Seed(model_regime, nu)
-    # densities = Density_Seed('near_zero_dielectric_field', nu)
+    # densities = Density_Seed('no_LL2_mixing_and_asym', nu)
     densities.assign_densities()
     rho0constUp = densities.rho0constUp
     rho0constUm = densities.rho0constUm
@@ -227,4 +229,4 @@ def density_by_model_regime(model_regime):
 
     return {'rho0constUp': rho0constUp, 'rho0constUm': rho0constUm, 'rho0const_small_u': rho0const_small_u, 'rhoRandom':rhoRandom}
 
-# print(density_by_model_regime('near_zero_dielectric_field'))
+# print(density_by_model_regime('no_LL2_mixing_and_asym'))
