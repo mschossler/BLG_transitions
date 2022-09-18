@@ -32,8 +32,8 @@ if not apha_H_asym_small_u:
     uz = 0
     uperp = 0
 
-U0minD = -10e-3
-U0maxD = 10e-3
+U0minD = 0e-3
+U0maxD = 5e-3
 dU0D = 1e-3
 
 u_zero = 1
@@ -96,53 +96,9 @@ itmax_asymmetric_calcs = int(1e5)
 alpha_reg_asym_calcs = 1
 alpha_rand_asymmetric_calcs = 0.2  # 0 for Ferro, 0.1 for CAF phase and uperp_meV: -3.2 uz_meV: 14.0
 alpha_rho_asymmetric_calcs = 0.0
-### appoximation mode for LL2 and LLm2 ###
-add_int_to_bands_LLm2_LL2_low_u = 1  # if false this is effectivelly equivalent to fast_none_interact mode for low u regime
-##########################################
+replace_LLm2_LL2_low_u = 1  # if false this is effectivelly equivalent to fast_none_interact mode for low u regime
 ######################################################################################################################
 ######################################################################################################################
-
-# Zm = k * 0.0178 #use def above, this is slightly off due to alpha_k
-parameters_to_plot = {'nu': nu,
-                      # 'number_occupied_bands': number_occupied_bands,
-                      # 'u_critical_meV': u_critical * 1e3,
-                      'asym': asym,
-                      'screening': alpha_k,
-                      # 'alpha_H_oct_int': alpha_H_oct_int,
-                      'alpha_int_H': alpha_int_H,
-                      'apha_H_asym_small_u': apha_H_asym_small_u,
-                      # 'alpha_reg_asym_calcs': alpha_reg_asym_calcs,
-                      # 'file_seed': file_seed,
-                      # 'seed_large_u': seed_large_u,
-                      # 'Zm_meV': Zm * 1e3,
-                      # 'x': x,
-                      'itmax_full_range': itmax_full_range,
-                      # 'itmax_asymmetric_calcs': itmax_asymmetric_calcs,
-                      'alpha_rand_full_range': alpha_rand_full_range,
-                      # 'alpha_rand_asymmetric_calcs': alpha_rand_asymmetric_calcs,
-                      'alpha_rho': alpha_rho,
-                      # 'alpha_k': alpha_k_dic[nu],
-                      # 'model_regime': model_regime,
-                      # 'mode': mode,
-                      'alpha_reg': alpha_reg,
-                      # 'replace_LLm2_LL2_low_u': add_int_to_bands_LLm2_LL2_low_u,
-                      # 'alpha_int_H': alpha_int_H,
-                      'uz_meV': uz * 1e3,
-                      'uperp_meV': uperp * 1e3,
-                      # 'u_zero_meV': u_zero,
-                      # 'range_meV': (U0minD * 1e3, U0maxD * 1e3, dU0D * 1e3),
-                      # 'tests_mode': tests_mode,
-                      # 'add_int_to_bands_LLm2_LL2_low_u':add_int_to_bands_LLm2_LL2_low_u
-                      }
-
-parameters_to_plot_text = []
-for key in sorted(list(parameters_to_plot.keys()), key=str.lower):
-    parameters_to_plot_text.append(str('%s: %s' % (key, parameters_to_plot[key])))
-
-parameters_to_folder_text = []
-for key in sorted(list(parameters_to_plot.keys()), key=str.lower):
-    parameters_to_folder_text.append(str('%s' % (parameters_to_plot[key])))
-
 parameters_to_save = {'nu': nu,
                       'number_occupied_bands': number_occupied_bands,
                       'u_critical_meV': u_critical * 1e3,
@@ -165,7 +121,7 @@ parameters_to_save = {'nu': nu,
                       'alpha_k': alpha_k_dic[nu],
                       'model_regime': model_regime,
                       'alpha_reg': alpha_reg,
-                      'replace_LLm2_LL2_low_u': add_int_to_bands_LLm2_LL2_low_u,
+                      'replace_LLm2_LL2_low_u': replace_LLm2_LL2_low_u,
                       'alpha_int_H': alpha_int_H,
                       'uz_meV': uz * 1e3,
                       'uperp_meV': uperp * 1e3,
@@ -176,6 +132,55 @@ parameters_to_save = {'nu': nu,
                       'valley_mixing': valley_mixing
                       # 'add_int_to_bands_LLm2_LL2_low_u':add_int_to_bands_LLm2_LL2_low_u
                       }
+# Zm = k * 0.0178 #use def above, this is slightly off due to alpha_k
+if model_regime == 'full_range':
+    parameters_in_plot_list = ['nu', 'asym', 'screening', 'alpha_int_H', 'apha_H_asym_small_u',
+                               'itmax_full_range', 'alpha_rand_full_range', 'alpha_rho', 'alpha_reg', 'uz_meV', 'uperp_meV']
+elif model_regime == 'no_LL2_mixing_and_asym':
+    parameters_in_plot_list = ['nu', 'asym', 'screening', 'alpha_int_H', 'apha_H_asym_small_u', 'alpha_H_oct_int', 'replace_LLm2_LL2_low_u',
+                               'itmax_asymmetric_calcs', 'alpha_rand_asymmetric_calcs', 'alpha_rho_asymmetric_calcs', 'alpha_reg_asym_calcs', 'uz_meV', 'uperp_meV']
+parameters_to_plot = {key: parameters_to_save[key] for key in parameters_in_plot_list}
+# parameters_to_plot = {'nu': nu,
+#                       # 'number_occupied_bands': number_occupied_bands,
+#                       # 'u_critical_meV': u_critical * 1e3,
+#                       'asym': asym,
+#                       'screening': alpha_k,
+#                       # 'alpha_H_oct_int': alpha_H_oct_int,
+#                       'alpha_int_H': alpha_int_H,
+#                       'apha_H_asym_small_u': apha_H_asym_small_u,
+#                       # 'alpha_reg_asym_calcs': alpha_reg_asym_calcs,
+#                       # 'file_seed': file_seed,
+#                       # 'seed_large_u': seed_large_u,
+#                       # 'Zm_meV': Zm * 1e3,
+#                       # 'x': x,
+#                       'itmax_full_range': itmax_full_range,
+#                       # 'itmax_asymmetric_calcs': itmax_asymmetric_calcs,
+#                       'alpha_rand_full_range': alpha_rand_full_range,
+#                       # 'alpha_rand_asymmetric_calcs': alpha_rand_asymmetric_calcs,
+#                       'alpha_rho': alpha_rho,
+#                       # 'alpha_k': alpha_k_dic[nu],
+#                       # 'model_regime': model_regime,
+#                       # 'mode': mode,
+#                       'alpha_reg': alpha_reg,
+#                       # 'replace_LLm2_LL2_low_u': add_int_to_bands_LLm2_LL2_low_u,
+#                       # 'alpha_int_H': alpha_int_H,
+#                       'uz_meV': uz * 1e3,
+#                       'uperp_meV': uperp * 1e3,
+#                       # 'u_zero_meV': u_zero,
+#                       # 'range_meV': (U0minD * 1e3, U0maxD * 1e3, dU0D * 1e3),
+#                       # 'tests_mode': tests_mode,
+#                       # 'add_int_to_bands_LLm2_LL2_low_u':add_int_to_bands_LLm2_LL2_low_u
+#                       }
+
+parameters_to_plot_text = []
+for key in sorted(list(parameters_to_plot.keys()), key=str.lower):
+    parameters_to_plot_text.append(str('%s: %s' % (key, parameters_to_plot[key])))
+
+parameters_to_folder_text = []
+for key in sorted(list(parameters_to_plot.keys()), key=str.lower):
+    parameters_to_folder_text.append(str('%s' % (parameters_to_plot[key])))
+
+
 
 # if __name__ == "__main__":
 #     # setting path

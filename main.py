@@ -8,7 +8,7 @@ import pandas as pd
 t0 = time.time()
 
 from config import model_regime, results_dir_path, file_name_csv, nprocesses, bands, bands_LLm2_LL2, tests_mode
-from input.parameters import U0minD, U0maxD, dU0D, nu, u_critical, parameters_to_save, add_int_to_bands_LLm2_LL2_low_u, save_folder_name
+from input.parameters import U0minD, U0maxD, dU0D, nu, u_critical, parameters_to_save, replace_LLm2_LL2_low_u, save_folder_name
 from utils import frange, sort_dict, observable_to_csv, idxcalc, transitions_energy_fermi_energy
 
 a_pool = multiprocessing.Pool(processes=nprocesses)
@@ -109,7 +109,7 @@ if model_regime == 'no_LL2_mixing_and_asym':
     energies_df_full_range = energies_and_observable_to_csv(quantities_full_range, model_regime_local)
     energies_df_full_range_small_u = energies_df_full_range[np.isin(energies_df_full_range['u'], frange(U0minD_tmp, U0maxD_tmp, dU0D) * 1e3)].reset_index(drop=True)
 
-    if add_int_to_bands_LLm2_LL2_low_u:
+    if replace_LLm2_LL2_low_u:
         # energies_df_full_range = energies_df_full_range[np.isin(energies_df_full_range['u'], frange(U0minD_tmp, U0maxD_tmp, dU0D) * 1e3)]
         energies_df[bands_LLm2_LL2] = energies_df_full_range_small_u[bands_LLm2_LL2]
     energies_df = assign_HighFieldRange(energies_df, energies_df_full_range)

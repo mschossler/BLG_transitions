@@ -215,7 +215,7 @@ def loopU0(u):
     while it < itmax_asymmetric_calcs:
         Hint_longrange = k * alpha_H_oct_int * Hint_oct(rho)
         H_asym = asymmetric_h(taux, rho, uperp) + asymmetric_h(tauy, rho, uperp) + asymmetric_h(tauz, rho, uz)
-        H = h0 + Hint_longrange + H_asym + mZm  # + regmatrix
+        H = h0 + Hint_longrange + H_asym * apha_H_asym_small_u + mZm  # + regmatrix
         eigenvalue_loop, eigenvector_loop = eigen(H)
         rhotemp = rho
         rho = sum(np.outer(eigenvector_loop[i, :], eigenvector_loop[i, :]) for i in range(number_occupied_bands))

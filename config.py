@@ -20,7 +20,7 @@ if model_regime == 'full_range':
 elif model_regime == 'no_LL2_mixing_and_asym':
     print('model: %s' % model_regime)
 
-nprocesses = 45
+nprocesses = 10
 # print(np.finfo(float).eps)
 tol = 1e-12
 setH = [0, 1, -2, 2]
