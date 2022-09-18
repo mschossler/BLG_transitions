@@ -1,4 +1,0 @@
-
- Starting this script at date/time: 2022-09-11 19:19:48. 
- This script is running at: tiberius.physics.wustl.edu, directory: /nfshome/mschossler/BLG_transitions
-
