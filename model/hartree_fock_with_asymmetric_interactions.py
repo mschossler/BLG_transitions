@@ -228,6 +228,7 @@ def loopU0(u):
     regmatrix = delta_e_regmatrix(rho0, eigenvectorp, eigenvectorm) * alpha_reg_asym_calcs
     H = H + regmatrix
     eigenvalue, eigenvector = eigen(H)
+    Et = sum([eigenvalue[i] for i in range(number_occupied_bands)])  # - ehf
     eigenvector_octet = eigenvector[4:12, index_octet_on_bands_oct]
     # print(eigenvector_octet.shape)
     if check_if_complex(eigenvalue, u, nu):
@@ -263,7 +264,7 @@ def loopU0(u):
                          'eigenvector_octet': eigenvector_octet,
                          'eigenvector_octet_norms': eigenvector_octet_norms,
                          'regmatrix': 1e3 * np.diag(regmatrix),
-                         # 'Et': 1e3 * Et,
+                         'Et': 1e3 * Et,
                          # 'h0': df_round(1e3 * h0),
                          'rho(density)': df_round(rho),
                          'rho_diag': rho_diag,
