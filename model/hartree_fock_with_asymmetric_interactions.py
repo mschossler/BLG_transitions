@@ -158,22 +158,21 @@ def asymmetric_h(tau, rho, u):
 ##########################################################################################################
 
 if same_rhoRandom:
-    # print('here2')
-    # rhoRandom = density_by_model_regime(model_regime)['rhoRandom']
-    rho0constUm = np.array(density_by_model_regime(model_regime)['rho0constUm'])
-    rho0constUp = np.array(density_by_model_regime(model_regime)['rho0constUp'])
     rho0const_small_u = np.array(density_by_model_regime(model_regime)['rho0const_small_u'])
 
 
 def loopU0(u):
     global rhotemp
-    if u >= 0:
-        rho0 = density_by_model_regime(model_regime)['rho0constUp']  # rhodiagUp
-    else:
-        rho0 = density_by_model_regime(model_regime)['rho0constUm']  # rhodiagUm
+    # if u >= 0:
+    #     rho0 = density_by_model_regime(model_regime)['rho0constUp']  # rhodiagUp
+    # else:
+    #     rho0 = density_by_model_regime(model_regime)['rho0constUm']  # rhodiagUm
+    rho0 = np.array(density_by_model_regime(model_regime)['rho0const_small_u'])
     print('running hartree_fock_with_asymmetric_interactions for  nu=%(nu)i u=%(u).2fmeV ' % {'u': (u * 1e3), 'nu': nu})
+
     if same_rhoRandom:
         rho0 = rho0const_small_u
+
     rho = rho0
 
     eigenvaluep2, eigenvectorp2 = eigen(hAp(u))[0][1:3], eigen(hAp(u))[1][1:3]

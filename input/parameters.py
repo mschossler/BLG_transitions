@@ -20,21 +20,21 @@ u_critical = 12e-3  # value of u in eV for phase transition based on experiment 
 asym = 1
 alpha_Zm = 1  # 0.04227165829987071 # k / alpha_k
 alpha_int_H = 1  # 0 for none int calculations on the full_range model
-apha_H_asym_small_u = 0
+apha_H_asym_small_u = 1
 valley_mixing = 0
 
 alpha_reg = alpha_int_H
 alpha_x = 1
-uz = 20e-3
-uperp = -4e-3
+uz = 14e-3
+uperp = -3.2e-3
 
 if not apha_H_asym_small_u:
     uz = 0
     uperp = 0
 
-U0minD = -40e-3
-U0maxD = 60e-3
-dU0D = 2e-3
+U0minD = -10e-3
+U0maxD = 30e-3
+dU0D = 1e-3
 
 u_zero = 1
 u_zero = round(u_zero, 4)
@@ -43,9 +43,9 @@ tests_mode = 'on'
 save_folder_name = 1  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(25e0)
-alpha_rand_full_range = 0.0001
-same_rhoRandom = 1
+itmax_full_range = int(2e2)
+alpha_rand_full_range = 0
+same_rhoRandom = 0
 alpha_rho = 0  # controls numerical regularization for rho (small memory of rho from previews loop)
 
 alpha_k_nu4 = 0.244
@@ -92,9 +92,9 @@ k = (np.sqrt(np.pi / 2) * el) / (4 * np.pi * ep0 * epr * Lb) * alpha_k
 ######################################################################################################################
 ######################################### hartree_fock_with_asymmetric_interactions.py #############################
 alpha_H_oct_int = 1
-itmax_asymmetric_calcs = int(1e4)
+itmax_asymmetric_calcs = int(3e4)
 alpha_reg_asym_calcs = 0
-alpha_rand_asymmetric_calcs = 0
+alpha_rand_asymmetric_calcs = 0.1  # 0 for Ferro, 0.1 for CAF phase and uperp_meV: -3.2 uz_meV: 14.0
 ### appoximation mode for LL2 and LLm2 ###
 add_int_to_bands_LLm2_LL2_low_u = 1  # if false this is effectivelly equivalent to fast_none_interact mode for low u regime
 ##########################################

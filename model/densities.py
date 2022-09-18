@@ -14,7 +14,7 @@ if __name__ == "__main__":
     sys.path.append('../')
     input_dir = '../input/'
 
-from input.parameters import nu, number_occupied_bands, alpha_rand_full_range, alpha_rand_asymmetric_calcs, file_seed  # , seed_large_u  # , model_regime
+from input.parameters import nu, alpha_rand_full_range, alpha_rand_asymmetric_calcs, file_seed  # , seed_large_u  # , model_regime
 from config import bands, tol
 from utils import eigen, remove_small_imag
 
@@ -101,20 +101,23 @@ class Density_Seed:
             exit()
 
         rhorand16 = self.ramdom_16x16_density()
-        return (1 - alpha_rand_full_range) * np.diag(diag) + alpha_rand_full_range * rhorand16
+        if self.model_regime == 'full_range':
+            alpha_rand = alpha_rand_full_range
+        elif self.model_regime == 'no_LL2_mixing_and_asym':
+            alpha_rand = alpha_rand_asymmetric_calcs
+        return (1 - alpha_rand) * np.diag(diag) + alpha_rand * rhorand16
 
-
-    def seed_asymmetric_calcs(self):
-
-        diag = [(1 if band in self.filling_order_Upositive_small_u[0:self.number_occupied_bands] else 0) for band in bands]
-        if abs(sum(diag) - number_occupied_bands) > tol:
-            print('Wrong filling factor for nu %i' % self.nu)
-            exit()
-        rhorand16 = self.ramdom_16x16_density()
-
-        rho0const = (1 - alpha_rand_asymmetric_calcs) * np.diag(diag) + alpha_rand_asymmetric_calcs * rhorand16
-
-        return rho0const
+    # def seed_asymmetric_calcs(self):
+    #
+    #     diag = [(1 if band in self.filling_order_Upositive_small_u[0:self.number_occupied_bands] else 0) for band in bands]
+    #     if abs(sum(diag) - number_occupied_bands) > tol:
+    #         print('Wrong filling factor for nu %i' % self.nu)
+    #         exit()
+    #     rhorand16 = self.ramdom_16x16_density()
+    #
+    #     rho0const = (1 - alpha_rand_asymmetric_calcs) * np.diag(diag) + alpha_rand_asymmetric_calcs * rhorand16
+    #
+    #     return rho0const
 
     def assign_densities(self):
         self.rho0const_small_u = remove_small_imag(self.diag_full_regime_small_u())
@@ -122,9 +125,9 @@ class Density_Seed:
         if self.model_regime == 'full_range':
             self.rho0constUp = remove_small_imag(self.diag_full_regime_high_u(+1))
             self.rho0constUm = remove_small_imag(self.diag_full_regime_high_u(-1))
-        elif self.model_regime == 'no_LL2_mixing_and_asym':
-            self.rho0constUp = remove_small_imag(self.seed_asymmetric_calcs())
-            self.rho0constUm = remove_small_imag(self.seed_asymmetric_calcs())
+        # elif self.model_regime == 'no_LL2_mixing_and_asym':
+        #     self.rho0constUp = remove_small_imag(self.seed_asymmetric_calcs())
+        #     self.rho0constUm = remove_small_imag(self.seed_asymmetric_calcs())
 
 
 def density_by_model_regime(model_regime):
