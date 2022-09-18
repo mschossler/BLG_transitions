@@ -92,9 +92,10 @@ k = (np.sqrt(np.pi / 2) * el) / (4 * np.pi * ep0 * epr * Lb) * alpha_k
 ######################################################################################################################
 ######################################### hartree_fock_with_asymmetric_interactions.py #############################
 alpha_H_oct_int = 1
-itmax_asymmetric_calcs = int(3e4)
-alpha_reg_asym_calcs = 0
-alpha_rand_asymmetric_calcs = 0.1  # 0 for Ferro, 0.1 for CAF phase and uperp_meV: -3.2 uz_meV: 14.0
+itmax_asymmetric_calcs = int(2e4)
+alpha_reg_asym_calcs = 1
+alpha_rand_asymmetric_calcs = 0.05  # 0 for Ferro, 0.1 for CAF phase and uperp_meV: -3.2 uz_meV: 14.0
+alpha_rho_asymmetric_calcs = 0
 ### appoximation mode for LL2 and LLm2 ###
 add_int_to_bands_LLm2_LL2_low_u = 1  # if false this is effectivelly equivalent to fast_none_interact mode for low u regime
 ##########################################
@@ -160,6 +161,7 @@ parameters_to_save = {'nu': nu,
                       'alpha_rand_full_range': alpha_rand_full_range,
                       'alpha_rand_asymmetric_calcs': alpha_rand_asymmetric_calcs,
                       'alpha_rho': alpha_rho,
+                      'alpha_rho_asymmetric_calcs': alpha_rho_asymmetric_calcs,
                       'alpha_k': alpha_k_dic[nu],
                       'model_regime': model_regime,
                       'alpha_reg': alpha_reg,

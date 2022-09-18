@@ -388,6 +388,6 @@ if __name__ == "__main__":
     # # # plot_transitions(transitions_df)
     #
     # # plot_energies_with_asymmetry(nu=0)
-    plot_energies_vs_nu()
-    plot_transitions_vs_nu()
+    # plot_energies_vs_nu()
+    # plot_transitions_vs_nu()
     plot_total_hf_energy(nu)
