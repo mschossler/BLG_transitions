@@ -43,7 +43,7 @@ tests_mode = 'on'
 save_folder_name = 1  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(2e2)
+itmax_full_range = int(5e2)
 alpha_rand_full_range = 0
 same_rhoRandom = 1
 alpha_rho = 0  # controls numerical regularization for rho (small memory of rho from previews loop)
@@ -82,7 +82,7 @@ hbar = 6.62607e-34 / (2 * np.pi)
 el = 1.602176634e-19
 dlayer = 3.35e-10
 ep0 = 8.8541878128e-12
-alpha_tilda = alpha_k * (dlayer * 10 ** 9)
+alpha_tilda = alpha_k * (dlayer * 1e9)
 Lb = np.sqrt(hbar / (el * B))
 x = dlayer / Lb * alpha_x
 epr = 6
@@ -92,9 +92,9 @@ k = (np.sqrt(np.pi / 2) * el) / (4 * np.pi * ep0 * epr * Lb) * alpha_k
 ######################################################################################################################
 ######################################### hartree_fock_with_asymmetric_interactions.py #############################
 alpha_H_oct_int = 1
-itmax_asymmetric_calcs = int(1e5)
+itmax_asymmetric_calcs = int(5e5)
 alpha_reg_asym_calcs = 1
-alpha_rand_asymmetric_calcs = 0.2  # 0 for Ferro, 0.1 for CAF phase and uperp_meV: -3.2 uz_meV: 14.0
+alpha_rand_asymmetric_calcs = 0.4  # 0 for Ferro, 0.1 for CAF phase and uperp_meV: -3.2 uz_meV: 14.0
 alpha_rho_asymmetric_calcs = 0.0
 replace_LLm2_LL2_low_u = 1  # if false this is effectivelly equivalent to fast_none_interact mode for low u regime
 ######################################################################################################################
