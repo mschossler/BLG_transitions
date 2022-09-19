@@ -33,7 +33,7 @@ if not apha_H_asym_small_u:
     uperp = 0
 
 U0minD = 0e-3
-U0maxD = 5e-3
+U0maxD = 4.5e-3
 dU0D = 1e-3
 
 u_zero = 1
