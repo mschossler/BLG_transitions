@@ -1,0 +1,4 @@
+
+ Starting this script at date/time: 2022-09-19 23:18:06. 
+ This script is running at: compute1-exec-120.ris.wustl.edu, directory: /home/mdeoliveiraschossler/BLG_transitions
+
