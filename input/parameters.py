@@ -33,7 +33,7 @@ if not apha_H_asym_small_u:
     uperp = 0
 
 U0minD = 0e-3
-U0maxD = 4.5e-3
+U0maxD = 4e-3
 dU0D = 1e-3
 
 u_zero = 1
@@ -43,8 +43,8 @@ tests_mode = 'on'
 save_folder_name = 1  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(5e2)
-alpha_rand_full_range = 0
+itmax_full_range = int(1e4)
+alpha_rand_full_range = 0.1
 same_rhoRandom = 1
 alpha_rho = 0  # controls numerical regularization for rho (small memory of rho from previews loop)
 
@@ -54,8 +54,8 @@ alpha_k_dic = {i: alpha_k_nu4 for i in range(-6, 7)}
 alpha_k_dic[0] = alpha_k_nu0
 alpha_k = alpha_k_dic[nu]
 
-model_regime = 'no_LL2_mixing_and_asym'
-# model_regime = 'full_range'
+# model_regime = 'no_LL2_mixing_and_asym'
+model_regime = 'full_range'
 
 file_seed = 0
 if file_seed:
