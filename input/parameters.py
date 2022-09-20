@@ -43,7 +43,7 @@ tests_mode = 'on'
 save_folder_name = 1  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(2e3)
+itmax_full_range = int(3e3)
 alpha_rand_full_range = 0.6
 same_rhoRandom = 1
 alpha_rho = 0  # controls numerical regularization for rho (small memory of rho from previews loop)
@@ -54,8 +54,8 @@ alpha_k_dic = {i: alpha_k_nu4 for i in range(-6, 7)}
 alpha_k_dic[0] = alpha_k_nu0
 alpha_k = alpha_k_dic[nu]
 
-model_regime = 'no_LL2_mixing_and_asym'
-# model_regime = 'full_range'
+# model_regime = 'no_LL2_mixing_and_asym'
+model_regime = 'full_range'
 
 file_seed = 0
 if file_seed:
