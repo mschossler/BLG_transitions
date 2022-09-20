@@ -54,7 +54,7 @@ def plot_energies(energies, nu):
     plt.title('Energy bands  nu=' + str(nu) + ' as function of U')
     textstr = '\n'.join(parameters_to_plot_text)
     # print(textstr)
-    plt.text(-10, -40, textstr, fontsize=4, verticalalignment='top')
+    plt.text(0, -40, textstr, fontsize=4, verticalalignment='top')
 
     plt.xlabel('U(meV)')
     plt.ylabel('Energy bands(meV)')
