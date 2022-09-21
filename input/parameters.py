@@ -43,10 +43,10 @@ tests_mode = 'on'
 save_folder_name = 1  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(3e3)
-alpha_rand_full_range = 0.6
-same_rhoRandom = 1
-alpha_rho = 0  # controls numerical regularization for rho (small memory of rho from previews loop)
+itmax_full_range = int(3e5)
+alpha_rand_full_range = 1
+same_rhoRandom = 0
+alpha_rho = 0.05  # controls numerical regularization for rho (small memory of rho from previews loop)
 
 alpha_k_nu4 = 0.244
 alpha_k_nu0 = 0.26
