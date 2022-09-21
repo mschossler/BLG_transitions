@@ -1,0 +1,16 @@
+-> warning: none-zero imaginary part energy 0.1564meV for nu=2, u=0.00meV. max abs imaginary part: 0.1564meV
+-> warning: none-zero imaginary part energy 0.1564meV for nu=2, u=0.00meV. max abs imaginary part: 0.1564meV
+-> warning: none-zero imaginary part energy 0.0958meV for nu=2, u=0.00meV. max abs imaginary part: 0.1564meV
+-> warning: none-zero imaginary part energy 0.0958meV for nu=2, u=0.00meV. max abs imaginary part: 0.1564meV
+-> warning: none-zero imaginary part energy 1.5254meV for nu=2, u=0.00meV. max abs imaginary part: 1.5254meV
+-> warning: none-zero imaginary part energy 1.5254meV for nu=2, u=0.00meV. max abs imaginary part: 1.5254meV
+-> warning: none-zero imaginary part energy 0.4342meV for nu=2, u=0.00meV. max abs imaginary part: 1.5254meV
+-> warning: none-zero imaginary part energy 1.1760meV for nu=2, u=0.00meV. max abs imaginary part: 1.5254meV
+-> warning: none-zero imaginary part energy 0.4342meV for nu=2, u=0.00meV. max abs imaginary part: 1.5254meV
+-> warning: none-zero imaginary part energy 1.1124meV for nu=2, u=0.00meV. max abs imaginary part: 1.5254meV
+-> warning: none-zero imaginary part energy 0.3662meV for nu=2, u=0.00meV. max abs imaginary part: 1.5254meV
+-> warning: none-zero imaginary part energy 0.4298meV for nu=2, u=0.00meV. max abs imaginary part: 1.5254meV
+-> warning: none-zero imaginary part energy 0.1535meV for nu=2, u=0.00meV. max abs imaginary part: 1.5254meV
+-> warning: none-zero imaginary part energy 0.1535meV for nu=2, u=0.00meV. max abs imaginary part: 1.5254meV
+-> warning: none-zero imaginary part energy 0.1009meV for nu=2, u=0.00meV. max abs imaginary part: 1.5254meV
+-> warning: none-zero imaginary part energy 0.1009meV for nu=2, u=0.00meV. max abs imaginary part: 1.5254meV
