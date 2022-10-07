@@ -3,7 +3,7 @@ from input.parameters import *
 from model.densities import density_by_model_regime
 from model.exchange_integrals import Xzs, Xzd, Xos, Xod, Xfs, Xfd, Xsts, Xstd, Xskm, Xskp
 # from model.exchange_integrals import Xskm, Xskp
-from model.hamiltonians import mZm, hAp, hBp, hCp, tau_func  # , asymmetric_h, taux, tauy, tauz
+from model.hamiltonians import mZm, hAp, hBp, hCp, tau_func, idp, idps, idm, idms  # , asymmetric_h, taux, tauy, tauz
 from utils import eigen, nonedimmerp, nonedimmerm, df_round, remove_small_imag, check_if_complex
 
 model_regime = 'no_LL2_mixing_and_asym'
@@ -215,7 +215,8 @@ def loopU0(u):
     while it < itmax_asymmetric_calcs:
         Hint_longrange = k * alpha_H_oct_int * Hint_oct(rho)
         H_asym = asymmetric_h(taux, rho, uperp) + asymmetric_h(tauy, rho, uperp) + asymmetric_h(tauz, rho, uz)
-        H = h0 + Hint_longrange + H_asym * apha_H_asym_small_u + mZm  # + regmatrix
+        Hint = Hint_longrange + H_asym * apha_H_asym_small_u
+        H = h0 + Hint + mZm  # + regmatrix
         eigenvalue_loop, eigenvector_loop = eigen(H)
         rhotemp = rho
         rho = sum(np.outer(eigenvector_loop[i, :], eigenvector_loop[i, :]) for i in range(number_occupied_bands))
@@ -228,7 +229,15 @@ def loopU0(u):
     regmatrix = delta_e_regmatrix(rho0, eigenvectorp, eigenvectorm) * alpha_reg_asym_calcs
     H = H + regmatrix
     eigenvalue, eigenvector = eigen(H)
-    Et = sum([eigenvalue[i] for i in range(number_occupied_bands)])  # - ehf
+
+    ehf = - sum([Hint[idp(n)][idp(nprime)] * rho[idp(nprime)][idp(n)] for n in setH for nprime in setH] +
+                [Hint[idm(n)][idm(nprime)] * rho[idm(nprime)][idm(n)] for n in setH for nprime in setH] +
+                [Hint[idps(n)][idps(nprime)] * rho[idps(nprime)][idps(n)] for n in setH for nprime in setH] +
+                [Hint[idms(n)][idms(nprime)] * rho[idms(nprime)][idms(n)] for n in setH for nprime in setH]
+                # [2 * Hint[idp(n)][idps(nprime)] * rho[idp(nprime)][idps(n)] for n in setH for nprime in setH] +
+                # [2 * Hint[idm(n)][idms(nprime)] * rho[idm(nprime)][idms(n)] for n in setH for nprime in setH]
+                )
+    Et = sum([eigenvalue[i] for i in range(number_occupied_bands)]) + ehf
     eigenvector_octet = eigenvector[4:12, index_octet_on_bands_oct]
     # print(eigenvector_octet.shape)
     if check_if_complex(eigenvalue, u, nu):

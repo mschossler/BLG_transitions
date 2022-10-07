@@ -283,7 +283,8 @@ def loopU(u):
                 # [2 * Hint[idp(n)][idps(nprime)] * rho[idp(nprime)][idps(n)] for n in setH for nprime in setH] +
                 # [2 * Hint[idm(n)][idms(nprime)] * rho[idm(nprime)][idms(n)] for n in setH for nprime in setH]
                 )
-    Et = sum([eigenvalue[i] for i in range(number_occupied_bands)]) - ehf
+
+    Et = sum([eigenvalue[i] for i in range(number_occupied_bands)]) + ehf
 
     # ehf = - sum([Hint[idp(n)][idp(nprime)] * rho[idp(nprime)][idp(n)] for n in setH for nprime in setH] +
     #             [Hint[idm(n)][idm(nprime)] * rho[idm(nprime)][idm(n)] for n in setH for nprime in setH] +

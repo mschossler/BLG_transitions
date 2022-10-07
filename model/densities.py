@@ -46,20 +46,21 @@ class Density_Seed:
                                        'LL1_Kp_Sup',  # 4
                                        'LL2_Kp_Sdown',  # 5
                                        'LL2_Kp_Sup']  # 6
-    filling_order_Upositive_small_u = ['LLm2_Kp_Sdown',  # -7
-                                       'LLm2_Kp_Sup',  # -6
-                                       'LLm2_Km_Sdown',  # -5
-                                       'LLm2_Km_Sup',  # -4
-                                       'LL0_Km_Sdown',  # -3
-                                       'LL0_Kp_Sdown',  # -2
-                                       'LL0_Kp_Sup',  # -1
-                                       'LL0_Km_Sup',  # 0
-                                       'LL1_Km_Sdown',  # 1
-                                       'LL1_Kp_Sdown',  # 2
-                                       'LL1_Km_Sup',  # 3
-                                       'LL1_Kp_Sup',  # 4
-                                       'LL2_Kp_Sdown',  # 5
-                                       'LL2_Kp_Sup']  # 6
+
+    # filling_order_Upositive_small_u = ['LLm2_Kp_Sdown',  # -7
+    #                                    'LLm2_Kp_Sup',  # -6
+    #                                    'LLm2_Km_Sdown',  # -5
+    #                                    'LLm2_Km_Sup',  # -4
+    #                                    'LL0_Km_Sdown',  # -3
+    #                                    'LL0_Kp_Sdown',  # -2
+    #                                    'LL0_Kp_Sup',  # -1
+    #                                    'LL0_Km_Sup',  # 0
+    #                                    'LL1_Km_Sdown',  # 1
+    #                                    'LL1_Kp_Sdown',  # 2
+    #                                    'LL1_Km_Sup',  # 3
+    #                                    'LL1_Kp_Sup',  # 4
+    #                                    'LL2_Kp_Sdown',  # 5
+    #                                    'LL2_Kp_Sup']  # 6
 
     # base_octet = ['LL0_Km_Sdown', 'LL0_Kp_Sdown', 'LL1_Km_Sdown', 'LL1_Kp_Sdown', 'LL0_Km_Sup', 'LL0_Kp_Sup', 'LL1_Km_Sup', 'LL1_Kp_Sup']
     # seed_oct_dict = {-4: (0, 0, 0, 0, 0, 0, 0, 0),

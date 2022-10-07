@@ -25,8 +25,8 @@ valley_mixing = 0
 
 alpha_reg = alpha_int_H
 alpha_x = 1
-uz = 6e-3
-uperp = -6e-3
+uz = 14e-3
+uperp = -3.2e-3
 
 if not apha_H_asym_small_u:
     uz = 0
@@ -44,7 +44,7 @@ save_folder_name = 1  # change this to off when done with tests
 # tests_mode = 'off'
 
 itmax_full_range = int(5e2)
-alpha_rand_full_range = 0
+alpha_rand_full_range = 0.0001 * 0
 same_rhoRandom = 1
 alpha_rho = 0.05 * 0  # controls numerical regularization for rho (small memory of rho from previews loop)
 
@@ -92,10 +92,10 @@ k = (np.sqrt(np.pi / 2) * el) / (4 * np.pi * ep0 * epr * Lb) * alpha_k
 ######################################################################################################################
 ######################################### hartree_fock_with_asymmetric_interactions.py #############################
 alpha_H_oct_int = 1
-itmax_asymmetric_calcs = int(1e6)
-alpha_reg_asym_calcs = 1
-alpha_rand_asymmetric_calcs = 1  # 0 for Ferro, 0.1 for CAF phase and uperp_meV: -3.2 uz_meV: 14.0
-alpha_rho_asymmetric_calcs = 0.05
+itmax_asymmetric_calcs = int(1e4)
+alpha_reg_asym_calcs = alpha_H_oct_int
+alpha_rand_asymmetric_calcs = 0.01  # 0 for Ferro, 0.1 for CAF phase and uperp_meV: -3.2 uz_meV: 14.0
+alpha_rho_asymmetric_calcs = 0.0001
 replace_LLm2_LL2_low_u = 1  # if false this is effectivelly equivalent to fast_none_interact mode for low u regime
 ######################################################################################################################
 ######################################################################################################################
