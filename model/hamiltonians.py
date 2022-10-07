@@ -42,8 +42,10 @@ def hAp(u):
     else:
         Delta_ab_local = Delta_ab
 
-    hamtx = [[-u / 2 + Delta_ab_local, -omega, eta4 * omega, 0], [-omega, - u / 2 + Delta - Delta_ab_local, gamma1, np.sqrt(2) * eta4 * omega],
-             [eta4 * omega, gamma1, u / 2 + Delta + Delta_ab_local, -np.sqrt(2) * omega], [0, np.sqrt(2) * eta4 * omega, -np.sqrt(2) * omega, u / 2 - Delta_ab_local]]
+    hamtx = [[-u / 2 + Delta_ab_local, -omega, eta4 * omega, 0],
+             [-omega, - u / 2 + Delta - Delta_ab_local, gamma1, np.sqrt(2) * eta4 * omega],
+             [eta4 * omega, gamma1, u / 2 + Delta + Delta_ab_local, -np.sqrt(2) * omega],
+             [0, np.sqrt(2) * eta4 * omega, -np.sqrt(2) * omega, u / 2 - Delta_ab_local]]
     return hamtx
 
 
