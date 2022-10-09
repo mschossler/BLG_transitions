@@ -13,11 +13,13 @@ if __name__ == "__main__":
 from config import bands, input_dir_path, dir_path, current_date, tests_mode, results_dir_path_plot_vs_nu, current_time, results_dir_path
 from input.parameters import alpha_tilda, u_zero, parameters_to_plot_text
 
+
 if __name__ == '__main__':
     import os
 
     os.remove(results_dir_path + '/progress.txt')
     os.rmdir(results_dir_path)
+    # current_date = '07102022'
 
 style_dict = {'LL0_Kp_Sdown': {'color': 'lightblue', 'line_shape': '-', 'marker_shape': 'v', 'label': '$\\ \\ \\,0\\mathrm{K}^{+}\\downarrow$'},
               'LL1_Kp_Sdown': {'color': 'salmon', 'line_shape': '-', 'marker_shape': 'v', 'label': '$\\ \\ \\,1\\mathrm{K}^{+}\\downarrow$'},

@@ -16,7 +16,7 @@ else:
     print('executing script with nu = %i' % nu)
 number_occupied_bands = nu + 8  # number_occupied_bands = 8 is the charge neutrality point
 
-u_critical = 12e-3  # value of u in eV for phase transition based on experiment data with screening factor of 0.26 for nu=0
+u_critical = 10e-3  # value of u in eV for phase transition based on experiment data with screening factor of 0.26 for nu=0
 asym = 1
 alpha_Zm = 1  # 0.04227165829987071 # k / alpha_k
 alpha_int_H = 1  # 0 for none int calculations on the full_range model
@@ -26,15 +26,15 @@ valley_mixing = 0
 alpha_reg = alpha_int_H
 alpha_x = 1
 uz = 14e-3
-uperp = -3.2e-3
+uperp = -1.8e-3
 
 if not apha_H_asym_small_u:
     uz = 0
     uperp = 0
 
-U0minD = -10e-3
-U0maxD = 50e-3
-dU0D = 1e-3
+U0minD = 8e-3
+U0maxD = 13e-3
+dU0D = 0.25e-3
 
 u_zero = 1.1
 u_zero = round(u_zero, 4)
@@ -43,7 +43,7 @@ tests_mode = 'on'
 save_folder_name = 1  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(5e2)
+itmax_full_range = int(3e3)
 alpha_rand_full_range = 0.0001 * 0
 same_rhoRandom = 1
 alpha_rho = 0.05 * 0  # controls numerical regularization for rho (small memory of rho from previews loop)
