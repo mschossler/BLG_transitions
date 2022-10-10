@@ -18,6 +18,7 @@ from input.parameters import nu, alpha_rand_full_range, alpha_rand_asymmetric_ca
 from config import bands, tol
 from utils import eigen, remove_small_imag
 
+
 class Density_Seed:
     def __init__(self, model_regime, nu):
         self.rho0constUp = None
@@ -26,52 +27,52 @@ class Density_Seed:
         self.nu = nu
         self.number_occupied_bands = nu + 8
 
-    filling_order_Upositive = ['LLm2_Kp_Sdown',  # -7
-                               'LLm2_Kp_Sup',  # -6
-                               'LLm2_Km_Sdown',  # -5
-                               'LLm2_Km_Sup',  # -4
-                               'LL0_Km_Sdown',  # -3
-                               'LL0_Kp_Sdown',  # -2
-                               'LL0_Km_Sup',  # -1
-                               'LL0_Kp_Sup',  # 0
-                               'LL1_Km_Sdown',  # 1
-                               'LL1_Kp_Sdown',  # 2
-                               'LL1_Km_Sup',  # 3
-                               'LL1_Kp_Sup',  # 4
-                               'LL2_Kp_Sdown',  # 5
-                               'LL2_Kp_Sup']  # 6
-
-    filling_order_Unegative = ['LLm2_Km_Sdown',  # -7
+    filling_order_Upositive = ['LLm2_Km_Sdown',  # -7
                                'LLm2_Km_Sup',  # -6
                                'LLm2_Kp_Sdown',  # -5
                                'LLm2_Kp_Sup',  # -4
-                               'LL0_Kp_Sdown',  # -3
-                               'LL0_Km_Sdown',  # -2
-                               'LL0_Kp_Sup',  # -1
-                               'LL0_Km_Sup',  # 0
-                               'LL1_Kp_Sdown',  # 1
-                               'LL1_Km_Sdown',  # 2
-                               'LL1_Kp_Sup',  # 3
-                               'LL1_Km_Sup',  # 4
+                               'LL0_Km_Sdown',  # -3
+                               'LL0_Km_Sup',  # -2
+                               'LL1_Km_Sdown',  # -1
+                               'LL1_Km_Sup',  # 0
+                               'LL0_Kp_Sdown',  # 1
+                               'LL0_Kp_Sup',  # 2
+                               'LL1_Kp_Sdown',  # 3
+                               'LL1_Kp_Sup',  # 4
                                'LL2_Km_Sdown',  # 5
                                'LL2_Km_Sup']  # 6
 
-    filling_order_Upositive_small_u = ['LLm2_Kp_Sdown',  # -7
-                                       'LLm2_Kp_Sup',  # -6
-                                       'LLm2_Km_Sdown',  # -5
-                                       'LLm2_Km_Sup',  # -4
-                                       'LL0_Km_Sdown',  # -3
-                                       'LL0_Kp_Sdown',  # -2
-                                       'LL1_Km_Sdown',  # -1
-                                       'LL1_Kp_Sdown',  # 0
-                                       'LL0_Kp_Sup',  # 1
-                                       'LL0_Km_Sup',  # 2
-                                       'LL1_Km_Sup',  # 3
-                                       'LL1_Kp_Sup',  # 4
-                                       'LL2_Kp_Sdown',  # 5
-                                       'LL2_Kp_Sup']  # 6
+    filling_order_Unegative = ['LLm2_Kp_Sdown',  # -7
+                               'LLm2_Kp_Sup',  # -6
+                               'LLm2_Km_Sdown',  # -5
+                               'LLm2_Km_Sup',  # -4
+                               'LL0_Kp_Sdown',  # -3
+                               'LL0_Kp_Sup',  # -2
+                               'LL1_Kp_Sdown',  # -1
+                               'LL1_Kp_Sup',  # 0
+                               'LL0_Km_Sdown',  # 1
+                               'LL0_Km_Sup',  # 2
+                               'LL1_Km_Sdown',  # 3
+                               'LL1_Km_Sup',  # 4
+                               'LL2_Kp_Sdown',  # 5
+                               'LL2_Kp_Sup']  # 6
 
-    # filling_order_Upositive_small_u = ['LLm2_Kp_Sdown',  # -7
+    filling_order_small_abs_u = ['LLm2_Kp_Sdown',  # -7
+                                 'LLm2_Km_Sdown',  # -6
+                                 'LLm2_Kp_Sup',  # -5
+                                 'LLm2_Km_Sup',  # -4
+                                 'LL0_Km_Sdown',  # -3
+                                 'LL0_Kp_Sdown',  # -2
+                                 'LL1_Km_Sdown',  # -1
+                                 'LL1_Kp_Sdown',  # 0
+                                 'LL0_Km_Sup',  # 1
+                                 'LL0_Kp_Sup',  # 2
+                                 'LL1_Km_Sup',  # 3
+                                 'LL1_Kp_Sup',  # 4
+                                 'LL2_Km_Sdown',  # 5
+                                 'LL2_Kp_Sdown']  # 6
+
+    # filling_order_small_abs_u = ['LLm2_Kp_Sdown',  # -7
     #                                    'LLm2_Kp_Sup',  # -6
     #                                    'LLm2_Km_Sdown',  # -5
     #                                    'LLm2_Km_Sup',  # -4
@@ -134,7 +135,7 @@ class Density_Seed:
 
     def diag_full_regime_small_u(self):
 
-        diag = [(1 if band in self.filling_order_Upositive_small_u[0:self.number_occupied_bands] else 0) for band in bands]
+        diag = [(1 if band in self.filling_order_small_abs_u[0:self.number_occupied_bands] else 0) for band in bands]
         if abs(sum(diag) - self.number_occupied_bands) > tol:
             print('Wrong filling factor for nu %i' % self.nu)
             exit()
@@ -148,7 +149,7 @@ class Density_Seed:
 
     # def seed_asymmetric_calcs(self):
     #
-    #     diag = [(1 if band in self.filling_order_Upositive_small_u[0:self.number_occupied_bands] else 0) for band in bands]
+    #     diag = [(1 if band in self.filling_order_small_abs_u[0:self.number_occupied_bands] else 0) for band in bands]
     #     if abs(sum(diag) - number_occupied_bands) > tol:
     #         print('Wrong filling factor for nu %i' % self.nu)
     #         exit()
@@ -163,10 +164,8 @@ class Density_Seed:
         self.rhoRandom = self.ramdom_16x16_density()
         if self.model_regime == 'full_range':
             self.rho0constUp = remove_small_imag(self.diag_full_regime_high_u(+1))
-            self.rho0constUm = remove_small_imag(self.diag_full_regime_high_u(-1))
-        # elif self.model_regime == 'no_LL2_mixing_and_asym':
-        #     self.rho0constUp = remove_small_imag(self.seed_asymmetric_calcs())
-        #     self.rho0constUm = remove_small_imag(self.seed_asymmetric_calcs())
+            self.rho0constUm = remove_small_imag(self.diag_full_regime_high_u(
+                -1))  # elif self.model_regime == 'no_LL2_mixing_and_asym':  #     self.rho0constUp = remove_small_imag(self.seed_asymmetric_calcs())  #     self.rho0constUm = remove_small_imag(self.seed_asymmetric_calcs())
 
 
 def density_by_model_regime(model_regime):
@@ -177,4 +176,4 @@ def density_by_model_regime(model_regime):
     rhoRandom = densities.rhoRandom
     rho0const_small_u = densities.rho0const_small_u
 
-    return {'rho0constUp': rho0constUp, 'rho0constUm': rho0constUm, 'rho0const_small_u': rho0const_small_u, 'rhoRandom':rhoRandom}
+    return {'rho0constUp': rho0constUp, 'rho0constUm': rho0constUm, 'rho0const_small_u': rho0const_small_u, 'rhoRandom': rhoRandom}
