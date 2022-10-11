@@ -2,7 +2,7 @@ import sys
 
 import numpy as np
 
-nu_default = 0
+nu_default = 4
 
 if len(sys.argv) == 2:
     nu = int(sys.argv[1])
@@ -20,7 +20,7 @@ u_critical = 10e-3  # value of u in eV for phase transition based on experiment 
 asym = 1
 alpha_Zm = 1  # 0.04227165829987071 # k / alpha_k
 alpha_int_H = 1  # 0 for none int calculations on the full_range model
-apha_H_asym_small_u = 1
+apha_H_asym_small_u = 0
 valley_mixing = 0
 
 alpha_reg = alpha_int_H
@@ -32,9 +32,9 @@ if not apha_H_asym_small_u:
     uz = 0
     uperp = 0
 
-U0minD = 8e-3
-U0maxD = 13e-3
-dU0D = 0.25e-3
+U0minD = -30e-3
+U0maxD = 60e-3
+dU0D = 1e-3
 
 u_zero = 1.1
 u_zero = round(u_zero, 4)
@@ -43,7 +43,7 @@ tests_mode = 'on'
 save_folder_name = 1  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(5e3)
+itmax_full_range = int(5e2)
 alpha_rand_full_range = 0.0001 * 0
 same_rhoRandom = 1
 alpha_rho = 0.05 * 0  # controls numerical regularization for rho (small memory of rho from previews loop)
@@ -54,8 +54,8 @@ alpha_k_dic = {i: alpha_k_nu4 for i in range(-6, 7)}
 alpha_k_dic[0] = alpha_k_nu0
 alpha_k = alpha_k_dic[nu]
 
-model_regime = 'no_LL2_mixing_and_asym'
-# model_regime = 'full_range'
+# model_regime = 'no_LL2_mixing_and_asym'
+model_regime = 'full_range'
 
 file_seed = 0
 if file_seed:
