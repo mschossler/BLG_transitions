@@ -75,14 +75,14 @@ def delta_e_regmatrix(rho0const, eigenvectorp, eigenvectorm):
 ##########################################################################################################
 
 def exciton_j_to_n_km(n, j, eigenvectorm):
-    A_nj = Xskm(n, n, j, j, eigenvectorm) * k * alpha_k
+    A_nj = Xskm(n, n, j, j, eigenvectorm) * k
     nu_j = 1
     nu_n = 0
     return -(nu_j - nu_n) * A_nj
 
 
 def exciton_j_to_n_kp(n, j, eigenvectorp):
-    A_nj = Xskp(n, n, j, j, eigenvectorp) * k * alpha_k
+    A_nj = Xskp(n, n, j, j, eigenvectorp) * k
     nu_j = 1
     nu_n = 0
     return -(nu_j - nu_n) * A_nj
@@ -183,15 +183,13 @@ def loopU(u):
     eigenvectorp = np.array([[1, 0, 0, 0], [0, 1, 0, 0]] + [[0, 0] + x for x in eigenvectorp2.tolist()])
     eigenvectorm = np.array([[1, 0, 0, 0], [0, 1, 0, 0]] + [[0, 0] + x for x in eigenvectorm2.tolist()])
 
-    eigenvectorp_none_interact = eigenvectorp
-    eigenvectorm_none_interact = eigenvectorm
+    # eigenvectorp_none_interact = eigenvectorp
+    # eigenvectorm_none_interact = eigenvectorm
     ###### regularization (self energy) U dependent
     # print('here1')
 
     # print('here2')
     ######
-
-
 
     it = 1
     while it < itmax_full_range:
@@ -231,8 +229,9 @@ def loopU(u):
         it += 1
     ###### regularization (self energy) U dependent
     regmatrix = delta_e_regmatrix(rho, eigenvectorp, eigenvectorm) * alpha_reg
+    # constant_matrix = np.diag([])
     ######
-    H = H + regmatrix
+    H = H + regmatrix  # + constant_matrix
     eigenvalue, eigenvector = eigen(H)
     eigenvector_octet = eigenvector[4:12, index_octet_on_bands_oct]
     # print(eigenvector_octet.shape)
@@ -321,8 +320,10 @@ def loopU(u):
     # eigenvectorp = np.array([[1, 0, 0, 0], [0, 1, 0, 0]] + [[0, 0] + x for x in eigenvectorp2.tolist()])
     # eigenvectorm = np.array([[1, 0, 0, 0], [0, 1, 0, 0]] + [[0, 0] + x for x in eigenvectorm2.tolist()])
 
-    exciton = np.array([exciton_j_to_n_km(-2, 1, eigenvectorm_none_interact), exciton_j_to_n_kp(-2, 1, eigenvectorp_none_interact),
-                        exciton_j_to_n_km(1, 2, eigenvectorm_none_interact), exciton_j_to_n_kp(1, 2, eigenvectorp_none_interact)])
+    exciton = np.array([exciton_j_to_n_km(-2, 1, eigenvectorm), exciton_j_to_n_kp(-2, 1, eigenvectorp),
+                        exciton_j_to_n_km(1, 2, eigenvectorm), exciton_j_to_n_kp(1, 2, eigenvectorp),
+                        exciton_j_to_n_km(2, 1, eigenvectorm), exciton_j_to_n_kp(2, 1, eigenvectorp),
+                        exciton_j_to_n_km(1, -2, eigenvectorm), exciton_j_to_n_kp(1, -2, eigenvectorp)])
 
     dict_quantities_u['exciton_energy'] = 1e3 * exciton
     # dict_quantities_u['exciton'] = exciton
