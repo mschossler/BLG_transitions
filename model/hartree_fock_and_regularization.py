@@ -218,7 +218,8 @@ def loopU(u):
 
         H_asym = asymmetric_h(taux, rho, uperp) + asymmetric_h(tauy, rho, uperp) + asymmetric_h(tauz, rho, uz)
         Hint = k * alpha_int_H * np.vstack((np.hstack((Hintup, Hintupdown)), np.hstack((Hintdownup, Hintdown)))) + H_asym * apha_H_asym
-        H = Hint + h0 + mZm  # np.add(Hint, h0)
+        # regmatrix = delta_e_regmatrix(rho, eigenvectorp, eigenvectorm) * alpha_reg
+        H = Hint + h0 + mZm  # +regmatrix # np.add(Hint, h0)
         eigenvalue_loop, eigenvector_loop = eigen(H)
         # rhotemp = rho
         rho = sum(np.outer(eigenvector_loop[i, :], eigenvector_loop[i, :]) for i in range(number_occupied_bands))

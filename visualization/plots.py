@@ -11,7 +11,7 @@ if __name__ == "__main__":
     sys.path.append('../')
 
 from config import bands, input_dir_path, dir_path, current_date, tests_mode, results_dir_path_plot_vs_nu, current_time, results_dir_path
-from input.parameters import alpha_tilda, u_zero, parameters_to_plot_text
+from input.parameters import alpha_tilda, u_zero, parameters_to_plot_text, nu
 
 
 if __name__ == '__main__':
@@ -19,7 +19,7 @@ if __name__ == '__main__':
 
     os.remove(results_dir_path + '/progress.txt')
     os.rmdir(results_dir_path)
-    # current_date = '07102022'
+    current_date = '10102022'
 
 style_dict = {'LL0_Kp_Sdown': {'color': 'lightblue', 'line_shape': '-', 'marker_shape': 'v', 'label': '$\\ \\ \\,0\\mathrm{K}^{+}\\downarrow$'},
               'LL1_Kp_Sdown': {'color': 'salmon', 'line_shape': '-', 'marker_shape': 'v', 'label': '$\\ \\ \\,1\\mathrm{K}^{+}\\downarrow$'},
@@ -338,8 +338,8 @@ def plot_total_hf_energy(nu):
         for index, folder, in enumerate(folder_names_list):
             total_energy_file = results_dir_path_local + folder + 'Et_' + 'nu_' + str(nu) + '.csv'
             tmp = pd.read_csv(total_energy_file, names=['u', 'Et_' + str(index)])  # ,header=None
-            tmp['Et_' + str(index) + '_real'] = tmp['Et_' + str(index)].apply(lambda x: complex(x).real)
-            tmp['Et_' + str(index) + '_imag'] = tmp['Et_' + str(index)].apply(lambda x: complex(x).imag)
+            tmp['Et_' + folder[1:15] + '_real'] = tmp['Et_' + str(index)].apply(lambda x: complex(x).real)
+            tmp['Et_' + folder[1:15] + '_imag'] = tmp['Et_' + str(index)].apply(lambda x: complex(x).imag)
             # tmp.index=tmp['u']
             tmp.drop(columns=['Et_' + str(index)], inplace=True)
             # tmp.drop(columns=['Et_'+str(index),'u'],inplace=True)
@@ -392,4 +392,4 @@ if __name__ == "__main__":
     # # plot_energies_with_asymmetry(nu=0)
     # plot_energies_vs_nu()
     # plot_transitions_vs_nu()
-    plot_total_hf_energy(0)
+    plot_total_hf_energy(nu)
