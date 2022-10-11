@@ -32,8 +32,8 @@ if not apha_H_asym_small_u:
     uz = 0
     uperp = 0
 
-U0minD = -8e-3
-U0maxD = 50e-3
+U0minD = 1e-3
+U0maxD = 25e-3
 dU0D = 1e-3
 
 u_zero = 1.1
@@ -43,8 +43,8 @@ tests_mode = 'on'
 save_folder_name = 1  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(5e1)
-alpha_rand_full_range = 0.0001 * 0
+itmax_full_range = int(1e2)
+alpha_rand_full_range = 0.0001
 same_rhoRandom = 1
 alpha_rho = 0.05 * 0  # controls numerical regularization for rho (small memory of rho from previews loop)
 

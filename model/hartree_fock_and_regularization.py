@@ -50,7 +50,7 @@ def occupation_band(x):
         # if round(x)==0:
         #     return 0
         # if x == 0:
-        return 0
+        return abs(x)
     else:
         return 1
 
@@ -61,6 +61,7 @@ def delta_e_kp(n, ll0, ll1, llm2, ll2, eigenvectorp):
                        1: occupation_band(ll1),
                        -2: occupation_band(llm2),
                        2: occupation_band(ll2)}
+    # if nu==0: state_occupancy = {0: 1, 1: 0, -2: 1, 2: 0} #occupancy as of the LL porlarized state
     res = sum([(1 / 2 - state_occupancy[m]) * Xskp(n, m, m, n, eigenvectorp) for m in setH]) * k  # boxed equation on regularization.pdf
 
     return res
@@ -72,6 +73,7 @@ def delta_e_km(n, ll0, ll1, llm2, ll2, eigenvectorm):
                        1: occupation_band(ll1),
                        -2: occupation_band(llm2),
                        2: occupation_band(ll2)}
+    # if nu==0: state_occupancy = {0: 1, 1: 0, -2: 1, 2: 0} #occupancy as of the LL porlarized state
     res = sum([(1 / 2 - state_occupancy[m]) * Xskm(n, m, m, n, eigenvectorm) for m in setH]) * k  # boxed equation on regularization.pdf
 
     return res
