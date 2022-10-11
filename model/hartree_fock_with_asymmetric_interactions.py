@@ -67,34 +67,16 @@ def Hint_oct(rhotmp):
 # regularization (self energy) U dependent
 
 def delta_e_kp(n, nu0, nu1, num2, nu2, eigenvectorp):
-    # Shizuya, PRB 2020, eq. 32 /  Shizuya, PRB 2012 eq. 27
-    pzm = (nu1 - 1 / 2) * Xskp(n, 1, 1, n, eigenvectorp) + (nu0 - 1 / 2) * Xskp(n, 0, 0, n, eigenvectorp)
+    # Shizuya, PRB 2012 eq. 24 / Shizuya, PRB 2020 eq. 32  / and my notes
+    res = sum([(1 / 2 - round(m)) * Xskp(n, round(m), round(m), n, eigenvectorp) for m in [nu0, nu1, num2, nu2]]) * k  # boxed equation on regularization.pdf
 
-    m2and2 = nu2 * Xskp(n, 2, 2, n, eigenvectorp) - (1 - num2) * Xskp(n, -2, -2, n, eigenvectorp)
-
-    F = (Xskp(n, 2, 2, n, eigenvectorp) - Xskp(n, -2, -2, n, eigenvectorp))
-
-    #     F0=Xskp(0, 2, 2, 0, eigenvectorp) - Xskp(0, -2, -2, 0, eigenvectorp)
-
-    #     F=F-F0
-
-    res = (F / 2 - pzm - m2and2) * k
     return res
 
 
 def delta_e_km(n, nu0, nu1, num2, nu2, eigenvectorm):
-    # Shizuya, PRB 2020, eq. 32 /  Shizuya, PRB 2012 eq. 27
-    pzm = (nu1 - 1 / 2) * Xskm(n, 1, 1, n, eigenvectorm) + (nu0 - 1 / 2) * Xskm(n, 0, 0, n, eigenvectorm)
+    # Shizuya, PRB 2012 eq. 24 / Shizuya, PRB 2020 eq. 32 / and my regularization notes
+    res = sum([(1 / 2 - round(m)) * Xskm(n, round(m), round(m), n, eigenvectorm) for m in [nu0, nu1, num2, nu2]]) * k  # boxed equation on regularization.pdf
 
-    m2and2 = nu2 * Xskm(n, 2, 2, n, eigenvectorm) - (1 - num2) * Xskm(n, -2, -2, n, eigenvectorm)
-
-    F = (Xskm(n, 2, 2, n, eigenvectorm) - Xskm(n, -2, -2, n, eigenvectorm))
-
-    #     F0=Xskm(0, 2, 2, 0, eigenvectorm) - Xskm(0, -2, -2, 0, eigenvectorm)
-
-    #     F=F-F0
-
-    res = (F / 2 - pzm - m2and2) * k
     return res
 
 
@@ -226,7 +208,7 @@ def loopU0(u):
 
     # print(Hint_longrange)
     # eigenvalue, eigenvector = npla.eig(H) # follows notation (bands list) order
-    regmatrix = delta_e_regmatrix(rho0, eigenvectorp, eigenvectorm) * alpha_reg_asym_calcs
+    regmatrix = delta_e_regmatrix(rho, eigenvectorp, eigenvectorm) * alpha_reg_asym_calcs
     H = H + regmatrix
     eigenvalue, eigenvector = eigen(H)
 
