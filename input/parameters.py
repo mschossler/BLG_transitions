@@ -2,7 +2,7 @@ import sys
 
 import numpy as np
 
-nu_default = 0
+nu_default = 4
 
 if len(sys.argv) == 2:
     nu = int(sys.argv[1])
@@ -43,7 +43,7 @@ tests_mode = 'on'
 save_folder_name = 1  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(5e2)
+itmax_full_range = int(5e1)
 alpha_rand_full_range = 0.0001 * 0
 same_rhoRandom = 1
 alpha_rho = 0.05 * 0  # controls numerical regularization for rho (small memory of rho from previews loop)
@@ -54,8 +54,7 @@ alpha_k_dic = {i: alpha_k_nu4 for i in range(-6, 7)}
 alpha_k_dic[0] = alpha_k_nu0
 alpha_k = alpha_k_dic[nu]
 
-# model_regime = 'no_LL2_mixing_and_asym'
-model_regime = 'full_range'
+
 
 file_seed = 0
 if file_seed:
@@ -89,14 +88,16 @@ epr = 6
 Eh = x / np.sqrt(2 * np.pi)
 k = (np.sqrt(np.pi / 2) * el) / (4 * np.pi * ep0 * epr * Lb) * alpha_k
 
+model_regime = 'full_range'
 ######################################################################################################################
 ######################################### hartree_fock_with_asymmetric_interactions.py #############################
+# model_regime = 'no_LL2_mixing_and_asym'
 alpha_H_oct_int = 1
-itmax_asymmetric_calcs = int(1e4)
+itmax_asymmetric_calcs = int(2e4)
 alpha_reg_asym_calcs = alpha_H_oct_int
-alpha_rand_asymmetric_calcs = 0.01  # 0 for Ferro, 0.1 for CAF phase and uperp_meV: -3.2 uz_meV: 14.0
-alpha_rho_asymmetric_calcs = 0.0001
-replace_LLm2_LL2_low_u = 1  # if false this is effectivelly equivalent to fast_none_interact mode for low u regime
+alpha_rand_asymmetric_calcs = 0.6  # 0 for Ferro, 0.1 for CAF phase and uperp_meV: -3.2 uz_meV: 14.0
+alpha_rho_asymmetric_calcs = 0.001
+replace_LLm2_LL2_low_u = 0  # if false this is effectivelly equivalent to fast_none_interact mode for low u regime
 ######################################################################################################################
 ######################################################################################################################
 parameters_to_save = {'nu': nu,
