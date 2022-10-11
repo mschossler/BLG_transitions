@@ -55,7 +55,7 @@ def delta_e_kp(n, nu0, nu1, num2, nu2, eigenvectorp):
 
 def delta_e_km(n, nu0, nu1, num2, nu2, eigenvectorm):
     # Shizuya, PRB 2012 eq. 24 / Shizuya, PRB 2020 eq. 32 / and my regularization notes
-    res = sum([(1 / 2 - round(m)) * Xskm(n, round(m), round(m), n, eigenvectorp) for m in [nu0, nu1, num2, nu2]]) * k  # boxed equation on regularization.pdf
+    res = sum([(1 / 2 - round(m)) * Xskm(n, round(m), round(m), n, eigenvectorm) for m in [nu0, nu1, num2, nu2]]) * k  # boxed equation on regularization.pdf
 
     return res
 
