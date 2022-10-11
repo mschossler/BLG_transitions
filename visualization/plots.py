@@ -19,7 +19,7 @@ if __name__ == '__main__':
 
     os.remove(results_dir_path + '/progress.txt')
     os.rmdir(results_dir_path)
-    current_date = '10102022'
+    # current_date = '10102022'
 
 style_dict = {'LL0_Kp_Sdown': {'color': 'lightblue', 'line_shape': '-', 'marker_shape': 'v', 'label': '$\\ \\ \\,0\\mathrm{K}^{+}\\downarrow$'},
               'LL1_Kp_Sdown': {'color': 'salmon', 'line_shape': '-', 'marker_shape': 'v', 'label': '$\\ \\ \\,1\\mathrm{K}^{+}\\downarrow$'},
