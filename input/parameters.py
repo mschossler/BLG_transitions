@@ -2,7 +2,7 @@ import sys
 
 import numpy as np
 
-nu_default = 4
+nu_default = 0
 
 if len(sys.argv) == 2:
     nu = int(sys.argv[1])
@@ -32,8 +32,8 @@ if not apha_H_asym_small_u:
     uz = 0
     uperp = 0
 
-U0minD = 1e-3
-U0maxD = 25e-3
+U0minD = -35e-3
+U0maxD = 60e-3
 dU0D = 1e-3
 
 u_zero = 1.1
@@ -43,7 +43,7 @@ tests_mode = 'on'
 save_folder_name = 1  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(1e2)
+itmax_full_range = int(1e1)
 alpha_rand_full_range = 0.0001
 same_rhoRandom = 1
 alpha_rho = 0.05 * 0  # controls numerical regularization for rho (small memory of rho from previews loop)
@@ -54,8 +54,7 @@ alpha_k_dic = {i: alpha_k_nu4 for i in range(-6, 7)}
 alpha_k_dic[0] = alpha_k_nu0
 alpha_k = alpha_k_dic[nu]
 
-
-
+add_legend_curve = 1
 file_seed = 0
 if file_seed:
     alpha_rand_full_range = 0.6

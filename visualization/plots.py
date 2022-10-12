@@ -51,17 +51,15 @@ def plot_energies(energies, nu):
         styleX = style_dict.get(band)
         energies.plot(x='u', y=band, color=styleX['color'], style=styleX['line_shape'], markersize=3, linewidth=0.7, label=styleX['label'], ax=ax)  # , marker='o')
         if add_legend_curve:
-            if '1_Kp' in band: k = 15
-            if '1_Km' in band: k = 40
-            if '0_Km' in band: k = 22
-            if '0_Kp' in band: k = -5
-            if 'Sdown' in band:
-                xytext = (energies[energies['u'] == k]['u'], energies[energies['u'] == k][band] - 10)
-            else:
-                xytext = (energies[energies['u'] == k]['u'] + 1, energies[energies['u'] == k][band] + 6)
-            ax.annotate(styleX['label'], color=styleX['color'], xy=(energies[energies['u'] == k]['u'], energies[energies['u'] == k][band]), xytext=xytext,
-                        arrowprops=dict(arrowstyle="->"))
-            # ax.annotate(band, xy)
+            if '1_Kp' in band: k, rotation = 20, 15
+            if '1_Km' in band: k, rotation = 50, -15
+            if '0_Km' in band: k, rotation = 30, -15
+            if '0_Kp' in band: k, rotation = 30, 15
+            if 'Sdown' in band: xytext, ha, va = (energies[energies['u'] == k]['u'], energies[energies['u'] == k][band] + 1), 'center', 'top'
+            if 'Sup' in band: xytext, ha, va = (energies[energies['u'] == k]['u'], energies[energies['u'] == k][band] - 2), 'center', 'bottom'
+            # ax.annotate(styleX['label'], color=styleX['color'], xy=(energies[energies['u'] == k]['u'], energies[energies['u'] == k][band]), xytext=xytext, arrowprops=dict(
+            #     arrowstyle="->"))
+            plt.annotate(styleX['label'], color=styleX['color'], xy=xytext, fontsize=7, ha=ha, va=va, rotation=rotation)
             i += 1
 
     for band in [band for band in bands if '2' in band]:
