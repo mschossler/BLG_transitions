@@ -10,9 +10,8 @@ if __name__ == "__main__":
 
     sys.path.append('../')
 
-from config import bands, input_dir_path, dir_path, current_date, tests_mode, results_dir_path_plot_vs_nu, current_time, results_dir_path
-from input.parameters import alpha_tilda, u_zero, parameters_to_plot_text, nu
-
+from config import bands, base_octet, input_dir_path, dir_path, current_date, tests_mode, results_dir_path_plot_vs_nu, current_time, results_dir_path, file_name_csv
+from input.parameters import alpha_tilda, u_zero, parameters_to_plot_text, add_legend_curve
 
 if __name__ == '__main__':
     import os
@@ -47,16 +46,36 @@ def plot_energies(energies, nu):
     f = plt.figure()
     ax = plt.gca()
 
-    for band in bands:
+    i = 0
+    for band in base_octet:
         styleX = style_dict.get(band)
         energies.plot(x='u', y=band, color=styleX['color'], style=styleX['line_shape'], markersize=3, linewidth=0.7, label=styleX['label'], ax=ax)  # , marker='o')
+        if add_legend_curve:
+            if '1_Kp' in band: k = 15
+            if '1_Km' in band: k = 40
+            if '0_Km' in band: k = 22
+            if '0_Kp' in band: k = -5
+            if 'Sdown' in band:
+                xytext = (energies[energies['u'] == k]['u'], energies[energies['u'] == k][band] - 10)
+            else:
+                xytext = (energies[energies['u'] == k]['u'] + 1, energies[energies['u'] == k][band] + 6)
+            ax.annotate(styleX['label'], color=styleX['color'], xy=(energies[energies['u'] == k]['u'], energies[energies['u'] == k][band]), xytext=xytext,
+                        arrowprops=dict(arrowstyle="->"))
+            # ax.annotate(band, xy)
+            i += 1
+
+    for band in [band for band in bands if '2' in band]:
+        styleX = style_dict.get(band)
+        energies.plot(x='u', y=band, color=styleX['color'], style=styleX['line_shape'], markersize=3, linewidth=0.7, label=styleX['label'], ax=ax)  # , marker='o')
+        # xy = (energies[energies['u']==15]['u'], energies[energies['u']==15][band])
+        # ax.annotate("test", xy=xy, xytext=(15, 0), arrowprops=dict(arrowstyle="->"))
     fermi_energy_style = style_dict['fermi_energy']
     energies.plot(x='u', y='fermi_energy', color=fermi_energy_style['color'], style=fermi_energy_style['line_shape'], markersize=3, linewidth=1, label=fermi_energy_style['label'],
                   ax=ax)
     plt.title('Energy bands  nu=' + str(nu) + ' as function of U')
     textstr = '\n'.join(parameters_to_plot_text)
     # print(textstr)
-    plt.text(0, -40, textstr, fontsize=4, verticalalignment='top')
+    plt.text(4, -40, textstr, fontsize=4, verticalalignment='top')
 
     plt.xlabel('U(meV)')
     plt.ylabel('Energy bands(meV)')
@@ -383,13 +402,13 @@ def plot_total_hf_energy(nu):
 
 
 if __name__ == "__main__":
-    # # energies_df = pd.read_csv(results_dir_path + 'energies_' + file_name_csv)
+    energies_df = pd.read_csv(results_dir_path + 'energies_' + file_name_csv)
     # # transitions_df = pd.read_csv(results_dir_path + 'transitions_' + file_name_csv)
     # # print(energies_df)
-    # # plot_energies(energies_df)
+    plot_energies(energies_df)
     # # # plot_transitions(transitions_df)
     #
     # # plot_energies_with_asymmetry(nu=0)
     # plot_energies_vs_nu()
     # plot_transitions_vs_nu()
-    plot_total_hf_energy(nu)
+    # plot_total_hf_energy(nu)
