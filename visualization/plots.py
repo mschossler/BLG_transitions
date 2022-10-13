@@ -10,8 +10,8 @@ if __name__ == "__main__":
 
     sys.path.append('../')
 
-from config import bands, base_octet, input_dir_path, dir_path, current_date, tests_mode, results_dir_path_plot_vs_nu, current_time, results_dir_path, file_name_csv
-from input.parameters import alpha_tilda, u_zero, parameters_to_plot_text, add_legend_curve
+from config import bands, base_octet, input_dir_path, dir_path, current_date, tests_mode, results_dir_path_plot_vs_nu, current_time, results_dir_path
+from input.parameters import alpha_tilda, u_zero, parameters_to_plot_text, add_legend_curve, nu
 
 if __name__ == '__main__':
     import os
@@ -355,8 +355,8 @@ def plot_total_hf_energy(nu):
         for index, folder, in enumerate(folder_names_list):
             total_energy_file = results_dir_path_local + folder + 'Et_' + 'nu_' + str(nu) + '.csv'
             tmp = pd.read_csv(total_energy_file, names=['u', 'Et_' + str(index)])  # ,header=None
-            tmp['Et_' + folder[1:15] + '_real'] = tmp['Et_' + str(index)].apply(lambda x: complex(x).real)
-            tmp['Et_' + folder[1:15] + '_imag'] = tmp['Et_' + str(index)].apply(lambda x: complex(x).imag)
+            tmp['Et_' + folder[1:20] + '_real'] = tmp['Et_' + str(index)].apply(lambda x: complex(x).real)
+            tmp['Et_' + folder[1:20] + '_imag'] = tmp['Et_' + str(index)].apply(lambda x: complex(x).imag)
             # tmp.index=tmp['u']
             tmp.drop(columns=['Et_' + str(index)], inplace=True)
             # tmp.drop(columns=['Et_'+str(index),'u'],inplace=True)
@@ -400,13 +400,13 @@ def plot_total_hf_energy(nu):
 
 
 if __name__ == "__main__":
-    energies_df = pd.read_csv(results_dir_path + 'energies_' + file_name_csv)
+    # energies_df = pd.read_csv(results_dir_path + 'energies_' + file_name_csv)
     # # transitions_df = pd.read_csv(results_dir_path + 'transitions_' + file_name_csv)
     # # print(energies_df)
-    plot_energies(energies_df)
+    # plot_energies(energies_df)
     # # # plot_transitions(transitions_df)
     #
     # # plot_energies_with_asymmetry(nu=0)
     # plot_energies_vs_nu()
     # plot_transitions_vs_nu()
-    # plot_total_hf_energy(nu)
+    plot_total_hf_energy(nu)
