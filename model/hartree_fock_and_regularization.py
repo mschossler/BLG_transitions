@@ -119,51 +119,34 @@ def asymmetric_h(tau, rho, u):
     return first + second
 
 if same_rhoRandom:
-    # print('here2')
-    # rhoRandom = density_by_model_regime(model_regime)['rhoRandom']
     rho0constUm = np.array(density_by_model_regime(model_regime)['rho0constUm'])
     rho0constUp = np.array(density_by_model_regime(model_regime)['rho0constUp'])
     rho0const_small_u = np.array(density_by_model_regime(model_regime)['rho0const_small_u'])
-    # n = 10
-    # from random import  randint
-    # rand_name = ''.join(["{}".format(randint(0, 9)) for num in range(0, n)])
-    # with open(results_dir_path + 'rho0constUm_'+ rand_name + '.csv', 'w') as f:
-    #     print(rho0constUm, file=f)
+
 
 def loopU(u):
     global eigenvectorp, eigenvectorm, deltatb, rho
     if same_rhoRandom:
-        if (u <= -u_critical) or ((abs(nu) > 4) and u < 0):
+        if u <= -u_critical:
             # print('negative u')
             rho0 = rho0constUm
-            apha_H_asym = apha_H_asym_small_u
-        elif (u > -u_critical) and (u < u_critical) and (abs(nu) < 3):
+        elif (u > -u_critical) and (u < u_critical):
             # print('small u')
             rho0 = rho0const_small_u
-            apha_H_asym = apha_H_asym_small_u
-        elif u >= -u_critical or ((abs(nu) > 4) and u >= 0):
+
+        elif u >= u_critical:
             # print('positive u')
             rho0 = rho0constUp
-            apha_H_asym = apha_H_asym_small_u
     else:
-        if (u <= -u_critical) or ((abs(nu) > 4) and u < 0):
+        if u <= -u_critical:
             # print('negative u')
             rho0 = density_by_model_regime(model_regime)['rho0constUm']
-            apha_H_asym = apha_H_asym_small_u
-            # n = 10
-            # from random import randint
-            # rand_name = ''.join(["{}".format(randint(0, 9)) for num in range(0, n)])
-            # with open(results_dir_path + 'rho0constUm_' + rand_name + '.csv', 'w') as f:
-            #     print(rho0, file=f)
-            # print('rho0constUm_')
-        elif (u > -u_critical) and (u < u_critical) and (abs(nu) < 3):
+        elif (u > -u_critical) and (u < u_critical):
             # print('small u')
             rho0 = density_by_model_regime(model_regime)['rho0const_small_u']
-            apha_H_asym = apha_H_asym_small_u
-        elif u >= -u_critical or ((abs(nu) > 4) and u >= 0):
+        elif u >= u_critical:
             # print('positive u')
             rho0 = density_by_model_regime(model_regime)['rho0constUp']
-            apha_H_asym = apha_H_asym_small_u
 
     print('running hartree_fock_and_regularization with nu=%(nu)i u=%(u).2fmeV ' % {'u': (u * 1e3), 'nu': nu})
     rho = rho0

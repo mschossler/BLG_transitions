@@ -65,29 +65,49 @@ def Hint_oct(rhotmp):
 ########################################################################
 ##########################################################################################################
 # regularization (self energy) U dependent
+def occupation_band(x):
+    if abs(x) < 0.1:
+        # if round(x)==0:
+        #     return 0
+        # if x == 0:
+        return abs(x)
+    else:
+        return 1
 
-def delta_e_kp(n, nu0, nu1, num2, nu2, eigenvectorp):
+
+def delta_e_kp(n, ll0, ll1, llm2, ll2, eigenvectorp):
     # Shizuya, PRB 2012 eq. 24 / Shizuya, PRB 2020 eq. 32  / and my notes
-    res = sum([(1 / 2 - round(m)) * Xskp(n, round(m), round(m), n, eigenvectorp) for m in [nu0, nu1, num2, nu2]]) * k  # boxed equation on regularization.pdf
+    state_occupancy = {0: occupation_band(ll0),
+                       1: occupation_band(ll1),
+                       -2: occupation_band(llm2),
+                       2: occupation_band(ll2)}
+    # if nu==0: state_occupancy = {0: 1, 1: 0, -2: 1, 2: 0} #occupancy as of the LL porlarized state
+    res = sum([(1 / 2 - state_occupancy[m]) * Xskp(n, m, m, n, eigenvectorp) for m in setH]) * k  # boxed equation on regularization.pdf
 
     return res
 
 
-def delta_e_km(n, nu0, nu1, num2, nu2, eigenvectorm):
+def delta_e_km(n, ll0, ll1, llm2, ll2, eigenvectorm):
     # Shizuya, PRB 2012 eq. 24 / Shizuya, PRB 2020 eq. 32 / and my regularization notes
-    res = sum([(1 / 2 - round(m)) * Xskm(n, round(m), round(m), n, eigenvectorm) for m in [nu0, nu1, num2, nu2]]) * k  # boxed equation on regularization.pdf
+    state_occupancy = {0: occupation_band(ll0),
+                       1: occupation_band(ll1),
+                       -2: occupation_band(llm2),
+                       2: occupation_band(ll2)}
+    # if nu==0: state_occupancy = {0: 1, 1: 0, -2: 1, 2: 0} #occupancy as of the LL porlarized state
+    res = sum([(1 / 2 - state_occupancy[m]) * Xskm(n, m, m, n, eigenvectorm) for m in setH]) * k  # boxed equation on regularization.pdf
 
     return res
 
 
 def delta_e_regmatrix(rho0const, eigenvectorp, eigenvectorm):
+    # Shizuya, PRB 2012 eq. 24 / Shizuya, PRB 2020 eq. 32  / and my notes
     # print('here3 ', np.diag(rho0const))
-    nu0kp, nu1kp, num2kp, nu2kp, nu0km, nu1km, num2km, nu2km = tuple(np.diag(rho0const)[:8])
+    ll0kp, ll1kp, llm2kp, ll2kp, ll0km, ll1km, llm2km, ll2km = tuple(np.diag(rho0const)[:8])
     # print('here4')
-    regmatrixUmspindown = [delta_e_kp(n, nu0kp, nu1kp, num2kp, nu2kp, eigenvectorp) for n in setH] + [delta_e_km(n, nu0km, nu1km, num2km, nu2km, eigenvectorm) for n in setH]
+    regmatrixUmspindown = [delta_e_kp(n, ll0kp, ll1kp, llm2kp, ll2kp, eigenvectorp) for n in setH] + [delta_e_km(n, ll0km, ll1km, llm2km, ll2km, eigenvectorm) for n in setH]
 
-    nu0kp, nu1kp, num2kp, nu2kp, nu0km, nu1km, num2km, nu2km = tuple(np.diag(rho0const)[8:16])
-    regmatrixUmspinup = [delta_e_kp(n, nu0kp, nu1kp, num2kp, nu2kp, eigenvectorp) for n in setH] + [delta_e_km(n, nu0km, nu1km, num2km, nu2km, eigenvectorm) for n in setH]
+    ll0kp, ll1kp, llm2kp, ll2kp, ll0km, ll1km, llm2km, ll2km = tuple(np.diag(rho0const)[8:16])
+    regmatrixUmspinup = [delta_e_kp(n, ll0kp, ll1kp, llm2kp, ll2kp, eigenvectorp) for n in setH] + [delta_e_km(n, ll0km, ll1km, llm2km, ll2km, eigenvectorm) for n in setH]
     return np.diag(np.array(regmatrixUmspindown + regmatrixUmspinup))
 
 
@@ -197,7 +217,7 @@ def loopU0(u):
     while it < itmax_asymmetric_calcs:
         Hint_longrange = k * alpha_H_oct_int * Hint_oct(rho)
         H_asym = asymmetric_h(taux, rho, uperp) + asymmetric_h(tauy, rho, uperp) + asymmetric_h(tauz, rho, uz)
-        Hint = Hint_longrange + H_asym * apha_H_asym_small_u
+        Hint = Hint_longrange + H_asym * apha_H_asym
         H = h0 + Hint + mZm  # + regmatrix
         eigenvalue_loop, eigenvector_loop = eigen(H)
         rhotemp = rho

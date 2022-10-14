@@ -14,7 +14,7 @@ if __name__ == "__main__":
     sys.path.append('../')
     input_dir = '../input/'
 
-from input.parameters import nu, alpha_rand_full_range, alpha_rand_asymmetric_calcs, file_seed  # , seed_large_u  # , model_regime
+from input.parameters import nu, alpha_rand_full_range_small_u, alpha_rand_full_range_high_u, alpha_rand_asymmetric_calcs, file_seed  # , seed_large_u  # , model_regime
 from config import bands, tol
 from utils import eigen, remove_small_imag
 
@@ -131,7 +131,7 @@ class Density_Seed:
             exit()
 
         rhorand16 = self.ramdom_16x16_density()
-        return (1 - alpha_rand_full_range) * np.diag(diag) + alpha_rand_full_range * rhorand16
+        return (1 - alpha_rand_full_range_high_u) * np.diag(diag) + alpha_rand_full_range_high_u * rhorand16
 
     def diag_full_regime_small_u(self):
 
@@ -142,7 +142,7 @@ class Density_Seed:
 
         rhorand16 = self.ramdom_16x16_density()
         if self.model_regime == 'full_range':
-            alpha_rand = alpha_rand_full_range
+            alpha_rand = alpha_rand_full_range_small_u
         elif self.model_regime == 'no_LL2_mixing_and_asym':
             alpha_rand = alpha_rand_asymmetric_calcs
         return (1 - alpha_rand) * np.diag(diag) + alpha_rand * rhorand16

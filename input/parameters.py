@@ -16,11 +16,11 @@ else:
     print('executing script with nu = %i' % nu)
 number_occupied_bands = nu + 8  # number_occupied_bands = 8 is the charge neutrality point
 
-u_critical = 20e-3  # value of u in eV for phase transition based on experiment data with screening factor of 0.26 for nu=0
+u_critical = 9e-3  # value of u in eV for phase transition based on experiment data with screening factor of 0.26 for nu=0
 asym = 1
 alpha_Zm = 1  # 0.04227165829987071 # k / alpha_k
 alpha_int_H = 1  # 0 for none int calculations on the full_range model
-apha_H_asym_small_u = 1
+apha_H_asym = 1
 valley_mixing = 0
 
 alpha_reg = alpha_int_H
@@ -28,7 +28,7 @@ alpha_x = 1
 uz = 7e-3
 uperp = -2e-3
 
-if not apha_H_asym_small_u:
+if (not apha_H_asym) or (abs(nu) > 3):
     uz = 0
     uperp = 0
 
@@ -45,8 +45,9 @@ tests_mode = 'on'
 save_folder_name = 1  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(5e2)
-alpha_rand_full_range = 0.0001 * 0
+itmax_full_range = int(5e1)
+alpha_rand_full_range_small_u = 0
+alpha_rand_full_range_high_u = 0.1
 same_rhoRandom = 1
 alpha_rho = 0.05 * 0  # controls numerical regularization for rho (small memory of rho from previews loop)
 
@@ -59,8 +60,8 @@ alpha_k = alpha_k_dic[nu]
 
 file_seed = 0
 if file_seed:
-    alpha_rand_full_range = 0.6
-    # alpha_rand_full_range = 0.83
+    alpha_rand_full_range_small_u = 0.6
+    # alpha_rand_full_range_small_u = 0.83
 
 print('uz=%(uz).1fmeV, uperp=%(uperp).1fmeV' % {'uz': uz * 1e3, 'uperp': uperp * 1e3})
 
@@ -92,12 +93,12 @@ k = (np.sqrt(np.pi / 2) * el) / (4 * np.pi * ep0 * epr * Lb) * alpha_k
 model_regime = 'full_range'
 ######################################################################################################################
 ######################################### hartree_fock_with_asymmetric_interactions.py #############################
-# model_regime = 'no_LL2_mixing_and_asym'
+model_regime = 'no_LL2_mixing_and_asym'
 alpha_H_oct_int = 1
-itmax_asymmetric_calcs = int(2e4)
+itmax_asymmetric_calcs = int(3e4)
 alpha_reg_asym_calcs = alpha_H_oct_int
-alpha_rand_asymmetric_calcs = 0.6  # 0 for Ferro, 0.1 for CAF phase and uperp_meV: -3.2 uz_meV: 14.0
-alpha_rho_asymmetric_calcs = 0.001
+alpha_rand_asymmetric_calcs = 0.01  # 0 for Ferro, 0.1 for CAF phase and uperp_meV: -3.2 uz_meV: 14.0
+alpha_rho_asymmetric_calcs = 0.0001
 replace_LLm2_LL2_low_u = 0  # if false this is effectivelly equivalent to fast_none_interact mode for low u regime
 ######################################################################################################################
 ######################################################################################################################
@@ -107,7 +108,7 @@ parameters_to_save = {'nu': nu,
                       'asym': asym,
                       'alpha_H_oct_int': alpha_H_oct_int,
                       'alpha_int_H': alpha_int_H,
-                      'apha_H_asym_small_u': apha_H_asym_small_u,
+                      'apha_H_asym': apha_H_asym,
                       'alpha_reg_asym_calcs': alpha_reg_asym_calcs,
                       'file_seed': file_seed,
                       'screening': alpha_k,
@@ -116,7 +117,7 @@ parameters_to_save = {'nu': nu,
                       'x': x,
                       'itmax_full_range': itmax_full_range,
                       'itmax_asymmetric_calcs': itmax_asymmetric_calcs,
-                      'alpha_rand_full_range': alpha_rand_full_range,
+                      'alpha_rand_full_range_small_u': alpha_rand_full_range_small_u,
                       'alpha_rand_asymmetric_calcs': alpha_rand_asymmetric_calcs,
                       'alpha_rho': alpha_rho,
                       'alpha_rho_asymmetric_calcs': alpha_rho_asymmetric_calcs,
@@ -136,10 +137,10 @@ parameters_to_save = {'nu': nu,
                       }
 # Zm = k * 0.0178 #use def above, this is slightly off due to alpha_k
 if model_regime == 'full_range':
-    parameters_in_plot_list = ['nu', 'asym', 'screening', 'alpha_int_H', 'apha_H_asym_small_u',
-                               'itmax_full_range', 'alpha_rand_full_range', 'alpha_rho', 'alpha_reg', 'uz_meV', 'uperp_meV']
+    parameters_in_plot_list = ['nu', 'asym', 'screening', 'alpha_int_H', 'apha_H_asym',
+                               'itmax_full_range', 'alpha_rand_full_range_small_u', 'alpha_rho', 'alpha_reg', 'uz_meV', 'uperp_meV']
 elif model_regime == 'no_LL2_mixing_and_asym':
-    parameters_in_plot_list = ['nu', 'asym', 'screening', 'alpha_int_H', 'apha_H_asym_small_u', 'alpha_H_oct_int', 'replace_LLm2_LL2_low_u',
+    parameters_in_plot_list = ['nu', 'asym', 'screening', 'alpha_int_H', 'apha_H_asym', 'alpha_H_oct_int', 'replace_LLm2_LL2_low_u',
                                'itmax_asymmetric_calcs', 'alpha_rand_asymmetric_calcs', 'alpha_rho_asymmetric_calcs', 'alpha_reg_asym_calcs', 'uz_meV', 'uperp_meV']
 parameters_to_plot = {key: parameters_to_save[key] for key in parameters_in_plot_list}
 
