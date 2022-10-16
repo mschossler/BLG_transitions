@@ -66,13 +66,13 @@ def Hint_oct(rhotmp):
 ##########################################################################################################
 # regularization (self energy) U dependent
 def occupation_band(x):
-    if abs(x) < 0.1:
-        # if round(x)==0:
-        #     return 0
-        # if x == 0:
-        return abs(x)
-    else:
-        return 1
+    # if abs(x) < 0.4:
+    # if round(x)==0:
+    #     return 0
+    # if x == 0:
+    # return abs(x)
+    # else:
+    return abs(x)
 
 
 def delta_e_kp(n, ll0, ll1, llm2, ll2, eigenvectorp):

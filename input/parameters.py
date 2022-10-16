@@ -32,11 +32,11 @@ if (not apha_H_asym) or (abs(nu) > 3):
     uz = 0
     uperp = 0
 
-U0minD = -8e-3
-U0maxD = 60e-3
+U0minD = -2e-3
+U0maxD = 30e-3
 dU0D = 1e-3
 
-add_legend_curve = 1
+add_legend_curve = 0
 
 u_zero = 1
 u_zero = round(u_zero, 4)
@@ -45,7 +45,7 @@ tests_mode = 'on'
 save_folder_name = 1  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(5e1)
+itmax_full_range = int(5e2)
 alpha_rand_full_range_small_u = 0
 alpha_rand_full_range_high_u = 0.1
 same_rhoRandom = 1
@@ -93,7 +93,7 @@ k = (np.sqrt(np.pi / 2) * el) / (4 * np.pi * ep0 * epr * Lb) * alpha_k
 model_regime = 'full_range'
 ######################################################################################################################
 ######################################### hartree_fock_with_asymmetric_interactions.py #############################
-model_regime = 'no_LL2_mixing_and_asym'
+# model_regime = 'no_LL2_mixing_and_asym'
 alpha_H_oct_int = 1
 itmax_asymmetric_calcs = int(3e4)
 alpha_reg_asym_calcs = alpha_H_oct_int
