@@ -4,7 +4,7 @@ from model.densities import density_by_model_regime
 from model.exchange_integrals import Xzs, Xzd, Xos, Xod, Xfs, Xfd, Xsts, Xstd, Xskm, Xskp
 # from model.exchange_integrals import Xskm, Xskp
 from model.hamiltonians import mZm, hAp, hBp, hCp, tau_func, idp, idps, idm, idms  # , asymmetric_h, taux, tauy, tauz
-from utils import eigen, nonedimmerp, nonedimmerm, df_round, remove_small_imag, check_if_complex
+from utils import eigen, nonedimmerp, nonedimmerm, df_round, remove_small_imag, check_if_complex, occupation_band
 
 model_regime = 'no_LL2_mixing_and_asym'
 
@@ -65,14 +65,14 @@ def Hint_oct(rhotmp):
 ########################################################################
 ##########################################################################################################
 # regularization (self energy) U dependent
-def occupation_band(x):
-    # if abs(x) < 0.4:
-    # if round(x)==0:
-    #     return 0
-    # if x == 0:
-    # return abs(x)
-    # else:
-    return abs(x)
+# def occupation_band(x):
+#     if abs(x) < 0.4:
+#     # if round(x)==0:
+#         return abs(x)
+#     # if x == 0:
+#     # return abs(x)
+#     else:
+#         return 1
 
 
 def delta_e_kp(n, ll0, ll1, llm2, ll2, eigenvectorp):

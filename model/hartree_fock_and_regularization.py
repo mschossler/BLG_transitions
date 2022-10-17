@@ -4,7 +4,7 @@ from model.densities import density_by_model_regime
 # from model.density_test import rho0constUp, rho0constUm
 from model.exchange_integrals import Xskm, Xskp
 from model.hamiltonians import full_hp, full_hm, full_hpm, full_hmp, idp, idps, idm, idms, mZm, hAp, hBp, hCp, tau_func
-from utils import eigen, df_round, nonedimmerp, nonedimmerm, remove_small_imag, check_if_complex
+from utils import eigen, df_round, nonedimmerp, nonedimmerm, remove_small_imag, check_if_complex, occupation_band
 
 # if model_regime == 'no_LL2_mixing_and_asym':
 #     print('executing hartree_fock_and_regularization to return LL2 and LLm2 for no_LL2_mixing_and_asym regime')
@@ -43,16 +43,17 @@ def hmp(n, nprime, s1, s2):
     else:
         return 0
 
+
 ##########################################################################################################
 # regularization (self energy) U dependent
-def occupation_band(x):
-    # if abs(x) < 0.4:
-    # if round(x)==0:
-    #     return 0
-    # if x == 0:
-    # return abs(x)
-    # else:
-    return abs(x)
+# def occupation_band(x):
+#     if abs(x) < 0.4:
+#     # if round(x)==0:
+#         return abs(x)
+#     # if x == 0:
+#     # return abs(x)
+#     else:
+#         return 1
 
 
 def delta_e_kp(n, ll0, ll1, llm2, ll2, eigenvectorp):

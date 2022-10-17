@@ -6,7 +6,14 @@ from config import results_dir_path, file_name_csv, bands, tol
 
 
 # import globals
-
+def occupation_band(x):
+    # if abs(x) < 0.4:
+    # # if round(x)==0:
+    #     return abs(x)
+    # # if x == 0:
+    return abs(x)
+    # else:
+    #     return 1
 
 def frange(start, end, inc):
     return np.round(np.arange(start, end, inc).tolist(), 6)

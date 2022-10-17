@@ -11,7 +11,7 @@ if __name__ == "__main__":
     sys.path.append('../')
 
 from config import bands, base_octet, input_dir_path, dir_path, current_date, tests_mode, results_dir_path_plot_vs_nu, current_time, results_dir_path
-from input.parameters import alpha_tilda, u_zero, parameters_to_plot_text, add_legend_curve, nu
+from input.parameters import alpha_tilda, u_zero, parameters_to_plot_text, add_legend_curve
 
 if __name__ == '__main__':
     import os
@@ -407,6 +407,6 @@ if __name__ == "__main__":
     # # # plot_transitions(transitions_df)
     #
     # # plot_energies_with_asymmetry(nu=0)
-    # plot_energies_vs_nu()
-    # plot_transitions_vs_nu()
-    plot_total_hf_energy(nu)
+    plot_energies_vs_nu()
+    plot_transitions_vs_nu()
+    # plot_total_hf_energy(nu)
