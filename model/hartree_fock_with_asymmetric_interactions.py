@@ -218,8 +218,8 @@ def loopU0(u):
         Hint_longrange = k * alpha_H_oct_int * Hint_oct(rho)
         H_asym = asymmetric_h(taux, rho, uperp) + asymmetric_h(tauy, rho, uperp) + asymmetric_h(tauz, rho, uz)
         Hint = Hint_longrange + H_asym * apha_H_asym
-        regmatrix = delta_e_regmatrix(rho, eigenvectorp, eigenvectorm) * alpha_reg
-        H = h0 + Hint + mZm + regmatrix
+        # regmatrix = delta_e_regmatrix(rho, eigenvectorp, eigenvectorm) * alpha_reg
+        H = h0 + Hint + mZm  # + regmatrix
         eigenvalue_loop, eigenvector_loop = eigen(H)
         rhotemp = rho
         rho = sum(np.outer(eigenvector_loop[i, :], eigenvector_loop[i, :]) for i in range(number_occupied_bands))
@@ -229,8 +229,8 @@ def loopU0(u):
 
     # print(Hint_longrange)
     # eigenvalue, eigenvector = npla.eig(H) # follows notation (bands list) order
-    # regmatrix = delta_e_regmatrix(rho, eigenvectorp, eigenvectorm) * alpha_reg_asym_calcs
-    # H = H + regmatrix
+    regmatrix = delta_e_regmatrix(rho, eigenvectorp, eigenvectorm) * alpha_reg_asym_calcs
+    H = H + regmatrix
     eigenvalue, eigenvector = eigen(H)
 
     ehf = - sum([Hint[idp(n)][idp(nprime)] * rho[idp(nprime)][idp(n)] for n in setH for nprime in setH] +
