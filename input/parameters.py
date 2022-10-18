@@ -103,7 +103,7 @@ x = dlayer / Lb * alpha_x
 epr = 6
 Eh = x / np.sqrt(2 * np.pi)
 k = (np.sqrt(np.pi / 2) * el) / (4 * np.pi * ep0 * epr * Lb) * alpha_k
-
+couplings_dict = {'gamma0': gamma0, 'gamma1': gamma1, 'gamma4': gamma4, 'gamma3': gamma3, 'Delta': Delta, 'Delta_td': Delta_td, 'k': k}
 model_regime = 'full_range'
 ######################################################################################################################
 ######################################### hartree_fock_with_asymmetric_interactions.py #############################
@@ -146,7 +146,8 @@ parameters_to_save = {'nu': nu,
                       'range_meV': (U0minD * 1e3, U0maxD * 1e3, dU0D * 1e3),
                       'tests_mode': tests_mode,
                       'save_folder_name': save_folder_name,
-                      'valley_mixing': valley_mixing
+                      'valley_mixing': valley_mixing,
+                      'couplings_dict': couplings_dict
                       # 'add_int_to_bands_LLm2_LL2_low_u':add_int_to_bands_LLm2_LL2_low_u
                       }
 # Zm = k * 0.0178 #use def above, this is slightly off due to alpha_k
