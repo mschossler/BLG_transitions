@@ -58,9 +58,16 @@ alpha_k_nu0 = 0.26
 # alpha_k_dic = {i: alpha_k_nu4 for i in range(-6, 7)}
 # alpha_k_dic[0] = alpha_k_nu0
 # alpha_k = alpha_k_dic[nu]
+# def alpha_k_linear(nu):
+#     y = (alpha_k_nu4 - alpha_k_nu0) * nu / 4 + alpha_k_nu0
+#     return round(y, 4)
 def alpha_k_linear(nu):
-    y = (alpha_k_nu4 - alpha_k_nu0) * nu / 4 + alpha_k_nu0
-    return round(y, 4)
+    if nu == 0:
+        return alpha_k_nu0
+    elif nu < 0:
+        return 0.285
+    elif nu > 0:
+        return alpha_k_nu4
 
 
 alpha_k = alpha_k_linear(nu)

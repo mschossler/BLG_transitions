@@ -39,76 +39,24 @@ def vplf(n, eigenvectorp):
     return vplf_dict[n]
 
 
-# def vplf(n, eigenvectorp):
-#     if n == 0:
-#         return 0
-#     elif n == 1:
-#         return 0
-#     elif n == -2:
-#         return eigenvectorp[2][2]
-#     elif n == 2:
-#         return eigenvectorp[3][2]
-
 def uplf(n, eigenvectorp):
     uplf_dict = {0: 1, 1: 1, -2: eigenvectorp[2][3], 2: eigenvectorp[3][3]}
     return uplf_dict[n]
 
-
-# def uplf(n, eigenvectorp):
-#     if n == 0:
-#         return 1
-#     elif n == 1:
-#         return 1
-#     elif n == -2:
-#         return eigenvectorp[2][3]
-#     elif n == 2:
-#         return eigenvectorp[3][3]
 
 def vmnf(n, eigenvectorm):
     vmnf_dict = {0: 0, 1: 0, -2: eigenvectorm[2][3], 2: eigenvectorm[3][3]}
     return vmnf_dict[n]
 
 
-# def vmnf(n, eigenvectorm):
-#     if n == 0:
-#         return 0
-#     elif n == 1:
-#         return 0
-#     elif n == -2:
-#         return eigenvectorm[2][3]
-#     elif n == 2:
-#         return eigenvectorm[3][3]
-
 def umnf(n, eigenvectorm):
     umnf_dict = {0: 1, 1: 1, -2: eigenvectorm[2][2], 2: eigenvectorm[3][2]}
     return umnf_dict[n]
 
 
-# def umnf(n, eigenvectorm):
-#     if n == 0:
-#         return 1
-#     elif n == 1:
-#         return 1
-#     elif n == -2:
-#         return eigenvectorm[2][2]
-#     elif n == 2:
-#         return eigenvectorm[3][2]
 def xsFFfunc(n2, nprime, n, n1):
     restmp = xsFF_dict.get((n2, nprime, n, n1), 0)
     return restmp
-
-
-# def xsFFfunc(n2, nprime, n, n1):
-#     restmp = xsFF.loc[
-#         (xsFF['n2'] == n2) & (xsFF['np'] == nprime) & (xsFF['n'] == n) & (xsFF['n1'] == n1)].values.tolist()
-#     if len(restmp) == 0:
-#         restmp = 0
-#     elif len(restmp) > 1:
-#         print('error with', n2, nprime, n, n1)
-#         exit()
-#     else:
-#         restmp = restmp[0][1]
-#     return restmp
 
 
 def Xskp(n2, nprime, n, n1, eigenvectorp):
