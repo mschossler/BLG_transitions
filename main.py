@@ -85,7 +85,7 @@ def energies_and_observable_to_csv(quantities, model_regime_local=''):
 
 energies_df = energies_and_observable_to_csv(quantities)
 
-if model_regime == 'no_LL2_mixing_and_asym':
+if model_regime == 'no_LL2_mixing_and_asym' and ((U0minD < -u_critical) or (U0maxD > u_critical) or replace_LLm2_LL2_low_u):
 
     def assign_HighFieldRange(energies, energies_high_u):
         # print(frange(U0minD, U0minD_tmp, dU0D) * 1e3)

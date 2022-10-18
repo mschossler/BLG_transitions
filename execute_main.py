@@ -10,7 +10,7 @@ def execute_nu(nu):
 
 
 pool = multiprocessing.Pool(processes=13)
-pool.map(execute_nu, range(-6, 7))
+pool.map(execute_nu, range(-4, 4))
 # for nu in range(-6, 7):
 # #     # for nu in (-6, -5, 5, 6):
 # #     # for nu in range(-4, 4 + 1):
