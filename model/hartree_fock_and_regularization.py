@@ -221,8 +221,8 @@ def loopU(u):
 
         H_asym = asymmetric_h(taux, rho, uperp) + asymmetric_h(tauy, rho, uperp) + asymmetric_h(tauz, rho, uz)
         Hint = k * alpha_int_H * np.vstack((np.hstack((Hintup, Hintupdown)), np.hstack((Hintdownup, Hintdown)))) + H_asym * apha_H_asym
-        # regmatrix = delta_e_regmatrix(rho, eigenvectorp, eigenvectorm) * alpha_reg
-        H = Hint + h0 + mZm  # +regmatrix # np.add(Hint, h0)
+        regmatrix = delta_e_regmatrix(rho, eigenvectorp, eigenvectorm) * alpha_reg
+        H = Hint + h0 + mZm + regmatrix  # np.add(Hint, h0)
         eigenvalue_loop, eigenvector_loop = eigen(H)
         # rhotemp = rho
         rho = sum(np.outer(eigenvector_loop[i, :], eigenvector_loop[i, :]) for i in range(number_occupied_bands))
@@ -232,10 +232,10 @@ def loopU(u):
 
         it += 1
     ###### regularization (self energy) U dependent
-    regmatrix = delta_e_regmatrix(rho, eigenvectorp, eigenvectorm) * alpha_reg
+    # regmatrix = delta_e_regmatrix(rho, eigenvectorp, eigenvectorm) * alpha_reg
     # constant_matrix = np.diag([])
     ######
-    H = H + regmatrix  # + constant_matrix
+    # H = H + regmatrix  # + constant_matrix
     eigenvalue, eigenvector = eigen(H)
     eigenvector_octet = eigenvector[4:12, index_octet_on_bands_oct]
     # print(eigenvector_octet.shape)
