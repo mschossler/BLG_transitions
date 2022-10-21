@@ -2,7 +2,7 @@ import sys
 
 import numpy as np
 
-nu_default = 0
+nu_default = 4
 
 if len(sys.argv) == 2:
     nu = int(sys.argv[1])
@@ -19,11 +19,11 @@ number_occupied_bands = nu + 8  # number_occupied_bands = 8 is the charge neutra
 u_critical = 9e-3  # value of u in eV for phase transition based on experiment data with screening factor of 0.26 for nu=0
 asym = 1
 alpha_Zm = 1  # 0.04227165829987071 # k / alpha_k
-alpha_int_H = 1  # 0 for none int calculations on the full_range model
-apha_H_asym = 1
+alpha_int_H = 0  # 0 for none int calculations on the full_range model
+apha_H_asym = 0
 valley_mixing = 0
 
-alpha_reg = alpha_int_H
+alpha_reg = 2.4
 alpha_x = 1
 uz = 7e-3
 uperp = -2e-3
@@ -33,7 +33,7 @@ if (not apha_H_asym) or (abs(nu) > 3):
     uperp = 0
 
 U0minD = -10e-3
-U0maxD = 50e-3
+U0maxD = 60e-3
 dU0D = 1e-3
 
 add_legend_curve = 1
@@ -47,7 +47,7 @@ save_folder_name = 1  # change this to off when done with tests
 
 itmax_full_range = int(1e1)
 alpha_rand_full_range_small_u = 0
-alpha_rand_full_range_high_u = 0.01
+alpha_rand_full_range_high_u = 0
 same_rhoRandom = 1
 alpha_rho = 0.05 * 0  # controls numerical regularization for rho (small memory of rho from previews loop)
 
@@ -105,12 +105,14 @@ Eh = x / np.sqrt(2 * np.pi)
 k = (np.sqrt(np.pi / 2) * el) / (4 * np.pi * ep0 * epr * Lb) * alpha_k
 couplings_dict = {'gamma0': gamma0, 'gamma1': gamma1, 'gamma4': gamma4, 'gamma3': gamma3, 'Delta': Delta, 'Delta_td': Delta_td, 'k': k}
 model_regime = 'full_range'
+effective_H0 = True
+projected_four_band_H0 = not effective_H0
 ######################################################################################################################
 ######################################### hartree_fock_with_asymmetric_interactions.py #############################
-# model_regime = 'no_LL2_mixing_and_asym'
-alpha_H_oct_int = 1
-itmax_asymmetric_calcs = int(1e3)
-alpha_reg_asym_calcs = alpha_H_oct_int
+model_regime = 'no_LL2_mixing_and_asym'
+alpha_H_oct_int = 0
+itmax_asymmetric_calcs = int(1e1)
+alpha_reg_asym_calcs = 2.4
 alpha_rand_asymmetric_calcs = 0  # 0 for Ferro, 0.1 for CAF phase and uperp_meV: -3.2 uz_meV: 14.0
 alpha_rho_asymmetric_calcs = 0.0001
 replace_LLm2_LL2_low_u = 0  # if false this is effectivelly equivalent to fast_none_interact mode for low u regime
@@ -147,7 +149,8 @@ parameters_to_save = {'nu': nu,
                       'tests_mode': tests_mode,
                       'save_folder_name': save_folder_name,
                       'valley_mixing': valley_mixing,
-                      'couplings_dict': couplings_dict
+                      'couplings_dict': couplings_dict,
+                      'effective_H0': effective_H0
                       # 'add_int_to_bands_LLm2_LL2_low_u':add_int_to_bands_LLm2_LL2_low_u
                       }
 # Zm = k * 0.0178 #use def above, this is slightly off due to alpha_k

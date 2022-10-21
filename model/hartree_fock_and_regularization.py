@@ -3,7 +3,7 @@ from input.parameters import *
 from model.densities import density_by_model_regime
 # from model.density_test import rho0constUp, rho0constUm
 from model.exchange_integrals import Xskm, Xskp
-from model.hamiltonians import full_hp, full_hm, full_hpm, full_hmp, idp, idps, idm, idms, mZm, hAp, hBp, hCp, tau_func
+from model.hamiltonians import h0p, h0p2, h0m, h0m2, full_hp, full_hm, full_hpm, full_hmp, idp, idps, idm, idms, mZm, hAp, hBp, hCp, tau_func
 from utils import eigen, df_round, nonedimmerp, nonedimmerm, remove_small_imag, check_if_complex, occupation_band
 
 # if model_regime == 'no_LL2_mixing_and_asym':
@@ -153,30 +153,33 @@ def loopU(u):
     rho = rho0
 
     ################### warping #############################################################
-    eigenvaluep2, eigenvectorp2 = eigen(hAp(u))[0][1:3], eigen(hAp(u))[1][1:3]
-    eigenvectorp2 = nonedimmerp(eigenvectorp2)
+    if projected_four_band_H0:
+        eigenvaluep2, eigenvectorp2 = eigen(hAp(u))[0][1:3], eigen(hAp(u))[1][1:3]
+        eigenvectorp2 = nonedimmerp(eigenvectorp2)
 
-    eigenvaluem2, eigenvectorm2 = eigen(hAp(-u))[0][1:3], eigen(hAp(-u))[1][1:3]
-    eigenvectorm2 = nonedimmerm(eigenvectorm2)
+        eigenvaluem2, eigenvectorm2 = eigen(hAp(-u))[0][1:3], eigen(hAp(-u))[1][1:3]
+        eigenvectorm2 = nonedimmerm(eigenvectorm2)
 
-    eigenvaluep1 = eigen(hBp(u))[0][3]
-    eigenvaluem1 = eigen(hBp(-u))[0][3]
-    # print(eigenvaluep1,eigenvaluem1)
+        eigenvaluep1 = eigen(hBp(u))[0][3]
+        eigenvaluem1 = eigen(hBp(-u))[0][3]
+        # print(eigenvaluep1,eigenvaluem1)
 
-    eigenvaluep0 = eigen(hCp(u))[0][2]
-    eigenvaluem0 = eigen(hCp(-u))[0][2]
-    # print(eigenvaluep0,eigenvaluem0)
+        eigenvaluep0 = eigen(hCp(u))[0][2]
+        eigenvaluem0 = eigen(hCp(-u))[0][2]
+        # print(eigenvaluep0,eigenvaluem0)
 
-    eigenvaluep = [eigenvaluep0] + [eigenvaluep1] + eigenvaluep2.tolist()
-    eigenvaluem = [eigenvaluem0] + [eigenvaluem1] + eigenvaluem2.tolist()
+        eigenvaluep = [eigenvaluep0] + [eigenvaluep1] + eigenvaluep2.tolist()
+        eigenvaluem = [eigenvaluem0] + [eigenvaluem1] + eigenvaluem2.tolist()
 
     #########################################################################################
 
     # ######################################
-    #     eigenvaluep2, eigenvectorp2 = eigen(h0p2(u))
-    #     eigenvaluem2, eigenvectorm2 = eigen(h0m2(u))
-    #     eigenvaluep = [h0p(u)[0][0]] + [h0p(u)[1][1]] + eigenvaluep2.tolist()
-    #     eigenvaluem = [h0m(u)[0][0]] + [h0m(u)[1][1]] + eigenvaluem2.tolist()
+    if effective_H0:
+        eigenvaluep2, eigenvectorp2 = eigen(h0p2(u))
+        eigenvaluem2, eigenvectorm2 = eigen(h0m2(u))
+        eigenvaluep = [h0p(u)[0][0]] + [h0p(u)[1][1]] + eigenvaluep2.tolist()
+        eigenvaluem = [h0m(u)[0][0]] + [h0m(u)[1][1]] + eigenvaluem2.tolist()
+
     # ######################################
     h0 = np.diag(eigenvaluep + eigenvaluem + eigenvaluep + eigenvaluem)  # none interacting matrix
 

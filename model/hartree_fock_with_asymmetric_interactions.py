@@ -3,7 +3,7 @@ from input.parameters import *
 from model.densities import density_by_model_regime
 from model.exchange_integrals import Xzs, Xzd, Xos, Xod, Xfs, Xfd, Xsts, Xstd, Xskm, Xskp
 # from model.exchange_integrals import Xskm, Xskp
-from model.hamiltonians import mZm, hAp, hBp, hCp, tau_func, idp, idps, idm, idms  # , asymmetric_h, taux, tauy, tauz
+from model.hamiltonians import h0p, h0p2, h0m, h0m2, mZm, hAp, hBp, hCp, tau_func, idp, idps, idm, idms  # , asymmetric_h, taux, tauy, tauz
 from utils import eigen, nonedimmerp, nonedimmerm, df_round, remove_small_imag, check_if_complex, occupation_band
 
 model_regime = 'no_LL2_mixing_and_asym'
@@ -177,30 +177,32 @@ def loopU0(u):
 
     rho = rho0
 
-    eigenvaluep2, eigenvectorp2 = eigen(hAp(u))[0][1:3], eigen(hAp(u))[1][1:3]
-    eigenvectorp2 = nonedimmerp(eigenvectorp2)
-    # print(eigenvectorp2)
+    if projected_four_band_H0:
+        eigenvaluep2, eigenvectorp2 = eigen(hAp(u))[0][1:3], eigen(hAp(u))[1][1:3]
+        eigenvectorp2 = nonedimmerp(eigenvectorp2)
 
-    eigenvaluem2, eigenvectorm2 = eigen(hAp(-u))[0][1:3], eigen(hAp(-u))[1][1:3]
-    eigenvectorm2 = nonedimmerm(eigenvectorm2)
+        eigenvaluem2, eigenvectorm2 = eigen(hAp(-u))[0][1:3], eigen(hAp(-u))[1][1:3]
+        eigenvectorm2 = nonedimmerm(eigenvectorm2)
 
-    # print(eigenvectorm2)
+        eigenvaluep1 = eigen(hBp(u))[0][3]
+        eigenvaluem1 = eigen(hBp(-u))[0][3]
+        # print(eigenvaluep1,eigenvaluem1)
 
-    eigenvaluep2 = eigen(hAp(u))[0][1:3]
-    eigenvaluem2 = eigen(hAp(-u))[0][1:3]
-    # print(eigenvaluep2,eigenvaluem2)
+        eigenvaluep0 = eigen(hCp(u))[0][2]
+        eigenvaluem0 = eigen(hCp(-u))[0][2]
+        # print(eigenvaluep0,eigenvaluem0)
 
-    # Delta_ab = dab
-    eigenvaluep1 = eigen(hBp(u))[0][3]
-    eigenvaluem1 = eigen(hBp(-u))[0][3]
-    # print(eigenvaluep1,eigenvaluem1)
+        eigenvaluep = [eigenvaluep0] + [eigenvaluep1] + eigenvaluep2.tolist()
+        eigenvaluem = [eigenvaluem0] + [eigenvaluem1] + eigenvaluem2.tolist()
 
-    eigenvaluep0 = eigen(hCp(u))[0][2]
-    eigenvaluem0 = eigen(hCp(-u))[0][2]
-    # print(eigenvaluep0,eigenvaluem0)
+    #########################################################################################
 
-    eigenvaluep = [eigenvaluep0] + [eigenvaluep1] + (eigenvaluep2).tolist()
-    eigenvaluem = [eigenvaluem0] + [eigenvaluem1] + (eigenvaluem2).tolist()
+    # ######################################
+    if effective_H0:
+        eigenvaluep2, eigenvectorp2 = eigen(h0p2(u))
+        eigenvaluem2, eigenvectorm2 = eigen(h0m2(u))
+        eigenvaluep = [h0p(u)[0][0]] + [h0p(u)[1][1]] + eigenvaluep2.tolist()
+        eigenvaluem = [h0m(u)[0][0]] + [h0m(u)[1][1]] + eigenvaluem2.tolist()
     # bands = ['0p-', '1p-', '-2p-', '2p-', '0m-', '1m-', '-2m-', '2m-', '0p+', '1p+', '-2p+', '2p+', '0m+', '1m+', '-2m+', '2m+']
     h0 = np.diag(eigenvaluep + eigenvaluem + eigenvaluep + eigenvaluem)  # follows notation order
 
