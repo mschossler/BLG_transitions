@@ -19,11 +19,11 @@ number_occupied_bands = nu + 8  # number_occupied_bands = 8 is the charge neutra
 u_critical = 9e-3  # value of u in eV for phase transition based on experiment data with screening factor of 0.26 for nu=0
 asym = 1
 alpha_Zm = 1  # 0.04227165829987071 # k / alpha_k
-alpha_int_H = 0  # 0 for none int calculations on the full_range model
-apha_H_asym = 0
+alpha_int_H = 1  # 0 for none int calculations on the full_range model
+apha_H_asym = 1
 valley_mixing = 0
 
-alpha_reg = 2.4
+alpha_reg = 1
 alpha_x = 1
 uz = 7e-3
 uperp = -2e-3
@@ -32,11 +32,11 @@ if (not apha_H_asym) or (abs(nu) > 3):
     uz = 0
     uperp = 0
 
-U0minD = -10e-3
-U0maxD = 60e-3
+U0minD = -1e-3
+U0maxD = 2e-3
 dU0D = 1e-3
 
-add_legend_curve = 1
+add_legend_curve = 0
 
 u_zero = 0.5
 u_zero = round(u_zero, 4)
@@ -45,7 +45,7 @@ tests_mode = 'on'
 save_folder_name = 1  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(1e1)
+itmax_full_range = int(5e2)
 alpha_rand_full_range_small_u = 0
 alpha_rand_full_range_high_u = 0
 same_rhoRandom = 1
@@ -105,11 +105,11 @@ Eh = x / np.sqrt(2 * np.pi)
 k = (np.sqrt(np.pi / 2) * el) / (4 * np.pi * ep0 * epr * Lb) * alpha_k
 couplings_dict = {'gamma0': gamma0, 'gamma1': gamma1, 'gamma4': gamma4, 'gamma3': gamma3, 'Delta': Delta, 'Delta_td': Delta_td, 'k': k}
 model_regime = 'full_range'
-effective_H0 = True
+effective_H0 = False
 projected_four_band_H0 = not effective_H0
 ######################################################################################################################
 ######################################### hartree_fock_with_asymmetric_interactions.py #############################
-model_regime = 'no_LL2_mixing_and_asym'
+# model_regime = 'no_LL2_mixing_and_asym'
 alpha_H_oct_int = 0
 itmax_asymmetric_calcs = int(1e1)
 alpha_reg_asym_calcs = 2.4

@@ -4,7 +4,7 @@ from model.densities import density_by_model_regime
 from model.exchange_integrals import Xzs, Xzd, Xos, Xod, Xfs, Xfd, Xsts, Xstd, Xskm, Xskp
 # from model.exchange_integrals import Xskm, Xskp
 from model.hamiltonians import h0p, h0p2, h0m, h0m2, mZm, hAp, hBp, hCp, tau_func, idp, idps, idm, idms  # , asymmetric_h, taux, tauy, tauz
-from utils import eigen, nonedimmerp, nonedimmerm, df_round, remove_small_imag, check_if_complex, occupation_band
+from utils import eigen, nonedimmerp, nonedimmerm, df_round, remove_small_imag, check_if_complex, occupation_band_regularization
 
 model_regime = 'no_LL2_mixing_and_asym'
 
@@ -77,10 +77,10 @@ def Hint_oct(rhotmp):
 
 def delta_e_kp(n, ll0, ll1, llm2, ll2, eigenvectorp):
     # Shizuya, PRB 2012 eq. 24 / Shizuya, PRB 2020 eq. 32  / and my notes
-    state_occupancy = {0: occupation_band(ll0),
-                       1: occupation_band(ll1),
-                       -2: occupation_band(llm2),
-                       2: occupation_band(ll2)}
+    state_occupancy = {0: occupation_band_regularization(ll0),
+                       1: occupation_band_regularization(ll1),
+                       -2: occupation_band_regularization(llm2),
+                       2: occupation_band_regularization(ll2)}
     # if nu==0: state_occupancy = {0: 1, 1: 0, -2: 1, 2: 0} #occupancy as of the LL porlarized state
     res = sum([(1 / 2 - state_occupancy[m]) * Xskp(n, m, m, n, eigenvectorp) for m in setH]) * k  # boxed equation on regularization.pdf
 
@@ -89,10 +89,10 @@ def delta_e_kp(n, ll0, ll1, llm2, ll2, eigenvectorp):
 
 def delta_e_km(n, ll0, ll1, llm2, ll2, eigenvectorm):
     # Shizuya, PRB 2012 eq. 24 / Shizuya, PRB 2020 eq. 32 / and my regularization notes
-    state_occupancy = {0: occupation_band(ll0),
-                       1: occupation_band(ll1),
-                       -2: occupation_band(llm2),
-                       2: occupation_band(ll2)}
+    state_occupancy = {0: occupation_band_regularization(ll0),
+                       1: occupation_band_regularization(ll1),
+                       -2: occupation_band_regularization(llm2),
+                       2: occupation_band_regularization(ll2)}
     # if nu==0: state_occupancy = {0: 1, 1: 0, -2: 1, 2: 0} #occupancy as of the LL porlarized state
     res = sum([(1 / 2 - state_occupancy[m]) * Xskm(n, m, m, n, eigenvectorm) for m in setH]) * k  # boxed equation on regularization.pdf
 
