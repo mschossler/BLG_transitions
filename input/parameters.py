@@ -21,7 +21,7 @@ asym = 1
 alpha_Zm = 1  # 0.04227165829987071 # k / alpha_k
 alpha_int_H = 1  # 0 for none int calculations on the full_range model
 apha_H_asym = 1
-valley_mixing = 0
+potential_asym_layers = 0
 
 alpha_reg = 1
 alpha_x = 1
@@ -148,7 +148,7 @@ parameters_to_save = {'nu': nu,
                       'range_meV': (U0minD * 1e3, U0maxD * 1e3, dU0D * 1e3),
                       'tests_mode': tests_mode,
                       'save_folder_name': save_folder_name,
-                      'valley_mixing': valley_mixing,
+                      'potential_asym_layers': potential_asym_layers,
                       'couplings_dict': couplings_dict,
                       'effective_H0': effective_H0
                       # 'add_int_to_bands_LLm2_LL2_low_u':add_int_to_bands_LLm2_LL2_low_u

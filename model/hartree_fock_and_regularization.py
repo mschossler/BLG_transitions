@@ -30,7 +30,7 @@ def hm(n, nprime, s1, s2):
 
 def hpm(n, nprime, s1, s2):
     """ interacting hamiltonian for valley k^p x k^m """
-    if valley_mixing:
+    if potential_asym_layers:
         return full_hpm(n, nprime, s1, s2, eigenvectorp, eigenvectorm, rho)
     else:
         return 0
@@ -38,7 +38,7 @@ def hpm(n, nprime, s1, s2):
 
 def hmp(n, nprime, s1, s2):
     """ interacting hamiltonian for valley k^m x k^p """
-    if valley_mixing:
+    if potential_asym_layers:
         return full_hmp(n, nprime, s1, s2, eigenvectorp, eigenvectorm, rho)
     else:
         return 0

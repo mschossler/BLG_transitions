@@ -52,7 +52,7 @@ def plot_energies(energies, nu):
         energies.plot(x='u', y=band, color=styleX['color'], style=styleX['line_shape'], markersize=3, linewidth=0.7, label=styleX['label'], ax=ax)  # , marker='o')
         if add_legend_curve:
             if '1_Kp' in band: k, rotation = 20, 15
-            if '1_Km' in band: k, rotation = 50, -15
+            if '1_Km' in band: k, rotation = 45, -15
             if '0_Km' in band: k, rotation = 30, -15
             if '0_Kp' in band: k, rotation = 30, 15
             if 'Sdown' in band: xytext, ha, va = (energies[energies['u'] == k]['u'], energies[energies['u'] == k][band] + 1), 'center', 'top'
