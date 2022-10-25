@@ -36,7 +36,7 @@ U0minD = -5e-3
 U0maxD = 30e-3
 dU0D = 1e-3
 
-add_legend_curve = 0
+add_legend_curve = 0  # if activated k values must be changed accordingly to possible values of u inside first for loop of plot.plot_energies
 
 u_zero = 0.5
 u_zero = round(u_zero, 4)
