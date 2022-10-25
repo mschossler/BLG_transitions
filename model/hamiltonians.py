@@ -174,8 +174,10 @@ def full_hpm(n, nprime, s1, s2, eigenvectorp, eigenvectorm, rho):
     def id2(n):
         return id_i(n, s2, idm, idms)
 
-    res = -sum([Xdkpm(n2, nprime, n, n1, eigenvectorp, eigenvectorm) * rho[id1(n2)][id2(n1)] for n1 in [0, 1] for n2 in [0, 1]] + [
-        Xdkpm(n2, nprime, n, n1, eigenvectorp, eigenvectorm) * rho[id1(n2)][id2(n1)] for n1 in [-2, 2] for n2 in [-2, 2]])
+    res = -sum([Xdkpm(n2, nprime, n, n1, eigenvectorp, eigenvectorm) * rho[id1(n2)][id2(n1)] for n1 in [0] for n2 in [0]] + \
+               [Xdkpm(n2, nprime, n, n1, eigenvectorp, eigenvectorm) * rho[id1(n2)][id2(n1)] for n1 in [1] for n2 in [1]] + \
+               [Xdkpm(n2, nprime, n, n1, eigenvectorp, eigenvectorm) * rho[id1(n2)][id2(n1)] for n1 in [-2] for n2 in [-2]] + \
+               [Xdkpm(n2, nprime, n, n1, eigenvectorp, eigenvectorm) * rho[id1(n2)][id2(n1)] for n1 in [2] for n2 in [2]])
     return res
 
 
@@ -188,8 +190,10 @@ def full_hmp(n, nprime, s1, s2, eigenvectorp, eigenvectorm, rho):
     def id2(n):
         return id_i(n, s2, idp, idps)
 
-    res = -sum([Xdkmp(n2, nprime, n, n1, eigenvectorm, eigenvectorp) * rho[id1(n2)][id2(n1)] for n1 in [0, 1] for n2 in [0, 1]] + [
-        Xdkmp(n2, nprime, n, n1, eigenvectorm, eigenvectorp) * rho[id1(n2)][id2(n1)] for n1 in [-2, 2] for n2 in [-2, 2]])
+    res = -sum([Xdkmp(n2, nprime, n, n1, eigenvectorm, eigenvectorp) * rho[id1(n2)][id2(n1)] for n1 in [0] for n2 in [0]] + \
+               [Xdkmp(n2, nprime, n, n1, eigenvectorm, eigenvectorp) * rho[id1(n2)][id2(n1)] for n1 in [1] for n2 in [1]] + \
+               [Xdkmp(n2, nprime, n, n1, eigenvectorm, eigenvectorp) * rho[id1(n2)][id2(n1)] for n1 in [-2] for n2 in [-2]] + \
+               [Xdkmp(n2, nprime, n, n1, eigenvectorm, eigenvectorp) * rho[id1(n2)][id2(n1)] for n1 in [2] for n2 in [2]])
     return res
 
 

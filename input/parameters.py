@@ -2,7 +2,7 @@ import sys
 
 import numpy as np
 
-nu_default = 4
+nu_default = 0
 
 if len(sys.argv) == 2:
     nu = int(sys.argv[1])
@@ -32,8 +32,8 @@ if (not apha_H_asym) or (abs(nu) > 3):
     uz = 0
     uperp = 0
 
-U0minD = -1e-3
-U0maxD = 2e-3
+U0minD = -5e-3
+U0maxD = 30e-3
 dU0D = 1e-3
 
 add_legend_curve = 0
@@ -46,7 +46,7 @@ save_folder_name = 1  # change this to off when done with tests
 # tests_mode = 'off'
 
 itmax_full_range = int(5e2)
-alpha_rand_full_range_small_u = 0
+alpha_rand_full_range_small_u = 0.01
 alpha_rand_full_range_high_u = 0
 same_rhoRandom = 1
 alpha_rho = 0.05 * 0  # controls numerical regularization for rho (small memory of rho from previews loop)
