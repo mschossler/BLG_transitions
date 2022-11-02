@@ -32,11 +32,11 @@ if (not apha_H_asym) or (abs(nu) > 3):
     uz = 0
     uperp = 0
 
-U0minD = -5e-3
-U0maxD = 30e-3
+U0minD = -8e-3
+U0maxD = 50e-3
 dU0D = 1e-3
 
-add_legend_curve = 0  # if activated k values must be changed accordingly to possible values of u inside first for loop of plot.plot_energies
+add_legend_curve = 1  # if activated k values must be changed accordingly to possible values of u inside first for loop of plot.plot_energies
 
 u_zero = 0.5
 u_zero = round(u_zero, 4)
@@ -110,9 +110,9 @@ projected_four_band_H0 = not effective_H0
 ######################################################################################################################
 ######################################### hartree_fock_with_asymmetric_interactions.py #############################
 # model_regime = 'no_LL2_mixing_and_asym'
-alpha_H_oct_int = 0
-itmax_asymmetric_calcs = int(1e1)
-alpha_reg_asym_calcs = 2.4
+alpha_H_oct_int = 1
+itmax_asymmetric_calcs = int(1e4)
+alpha_reg_asym_calcs = 1
 alpha_rand_asymmetric_calcs = 0  # 0 for Ferro, 0.1 for CAF phase and uperp_meV: -3.2 uz_meV: 14.0
 alpha_rho_asymmetric_calcs = 0.0001
 replace_LLm2_LL2_low_u = 0  # if false this is effectivelly equivalent to fast_none_interact mode for low u regime
