@@ -11,7 +11,7 @@ if __name__ == "__main__":
     sys.path.append('../')
 
 from config import bands, base_octet, input_dir_path, dir_path, current_date, tests_mode, results_dir_path_plot_vs_nu, current_time, results_dir_path
-from input.parameters import alpha_tilda, u_zero, parameters_to_plot_text, add_legend_curve
+from input.parameters import alpha_tilda, u_zero, parameters_to_plot_text, add_legend_curve, fraction_part
 
 if __name__ == '__main__':
     import os
@@ -51,10 +51,10 @@ def plot_energies(energies, nu):
         styleX = style_dict.get(band)
         energies.plot(x='u', y=band, color=styleX['color'], style=styleX['line_shape'], markersize=3, linewidth=0.7, label=styleX['label'], ax=ax)  # , marker='o')
         if add_legend_curve:
-            if '1_Kp' in band: k, rotation = 20, 15
-            if '1_Km' in band: k, rotation = 45, -15
-            if '0_Km' in band: k, rotation = 30, -15
-            if '0_Kp' in band: k, rotation = 30, 15
+            if '1_Kp' in band: k, rotation = 20 + fraction_part, 15
+            if '1_Km' in band: k, rotation = 45 + fraction_part, -15
+            if '0_Km' in band: k, rotation = 30 + fraction_part, -15
+            if '0_Kp' in band: k, rotation = 30 + fraction_part, 15
             if 'Sdown' in band: xytext, ha, va = (energies[energies['u'] == k]['u'], energies[energies['u'] == k][band] + 1), 'center', 'top'
             if 'Sup' in band: xytext, ha, va = (energies[energies['u'] == k]['u'], energies[energies['u'] == k][band] - 2), 'center', 'bottom'
             # ax.annotate(styleX['label'], color=styleX['color'], xy=(energies[energies['u'] == k]['u'], energies[energies['u'] == k][band]), xytext=xytext, arrowprops=dict(
@@ -170,7 +170,7 @@ def plot_energies_vs_nu():
         try:
             folder_names_file = open(results_dir_path_local + '/folder_list.txt', 'r').read()
         except FileNotFoundError:
-            print('add file folders to folder_list')
+            print('add file folders to folder_list for %i' % nu)
         else:
             folder_name = folder_names_file.splitlines()[-1]
             folder_names.append(folder_name)
@@ -231,7 +231,7 @@ def plot_transitions_vs_nu():
         try:
             folder_names_file = open(results_dir_path_local + '/folder_list.txt', 'r').read()
         except FileNotFoundError:
-            print('add file folders to folder_list')
+            print('add file folders to folder_list for %i' % nu)
         else:
             folder_name = folder_names_file.splitlines()[-1]
         tmp = pd.read_csv(results_dir_path_local + folder_name + 'transitions_' + 'nu_' + str(nu) + '.csv')  # ,header=None
@@ -347,7 +347,7 @@ def plot_total_hf_energy(nu):
     try:
         folder_names_file = open(results_dir_path_local + '/folder_list.txt', 'r').read()
     except FileNotFoundError:
-        print('add file folders to folder_list')
+        print('add file folders to folder_list for %i' % nu)
     else:
         folder_names_list = folder_names_file.splitlines()
         # print(folder_names_list)

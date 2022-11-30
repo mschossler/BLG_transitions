@@ -77,6 +77,21 @@ class Density_Seed:
     #                              'LLm2_Km_Sdown',  # -6
     #                              'LLm2_Kp_Sup',  # -5
     #                              'LLm2_Km_Sup',  # -4
+    #                              'LL0_Kp_Sdown',  # -2
+    #                              'LL0_Km_Sdown',  # -3
+    #                              'LL1_Kp_Sdown',  # 0
+    #                              'LL1_Km_Sdown',  # -1
+    #                              'LL1_Km_Sup',  # 3
+    #                              'LL1_Kp_Sup',  # 4
+    #                              'LL0_Km_Sup',  # 1
+    #                              'LL0_Kp_Sup',  # 2
+    #                              'LL2_Km_Sdown',  # 5
+    #                              'LL2_Kp_Sdown']  # 6
+
+    # filling_order_small_abs_u = ['LLm2_Kp_Sdown',  # -7
+    #                              'LLm2_Km_Sdown',  # -6
+    #                              'LLm2_Kp_Sup',  # -5
+    #                              'LLm2_Km_Sup',  # -4
     #                              'LL1_Km_Sdown',  # -1
     #                              'LL1_Kp_Sdown',  # 0
     #                              'LL0_Km_Sdown',  # -3
@@ -87,6 +102,7 @@ class Density_Seed:
     #                              'LL0_Km_Sup',  # 1
     #                              'LL2_Km_Sdown',  # 5
     #                              'LL2_Kp_Sdown']  # 6
+    # ### Orbital Polarized seed
     # filling_order_small_abs_u = ['LLm2_Kp_Sdown',  # -7
     #                              'LLm2_Km_Sdown',  # -6
     #                              'LLm2_Kp_Sup',  # -5
