@@ -28,7 +28,7 @@ alpha_x = 1
 uz = 7e-3
 uperp = -2e-3
 
-if (not apha_H_asym) or (abs(nu) > 3):
+if (not apha_H_asym) or (abs(nu) > 2):
     uz = 0
     uperp = 0
 
@@ -47,8 +47,8 @@ tests_mode = 'on'
 save_folder_name = 1  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(5e1)
-alpha_rand_full_range_small_u = 0.01 * 0
+itmax_full_range = int(5e3)
+alpha_rand_full_range_small_u = 0
 alpha_rand_full_range_high_u = 0
 same_rhoRandom = 1
 alpha_rho = 0.05 * 0  # controls numerical regularization for rho (small memory of rho from previews loop)
