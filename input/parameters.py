@@ -2,7 +2,7 @@ import sys
 
 import numpy as np
 
-nu_default = 0
+nu_default = 4
 
 if len(sys.argv) == 2:
     nu = int(sys.argv[1])
@@ -32,9 +32,9 @@ if (not apha_H_asym) or (abs(nu) > 1):
     uz = 0
     uperp = 0
 
-U0minD = -0.5e-3
-U0maxD = 1.5e-3
-dU0D = 0.5e-3
+U0minD = -10e-3
+U0maxD = 40e-3
+dU0D = 1e-3
 
 fraction_part = round(U0minD * 1e3 % 1, 2)
 
@@ -47,7 +47,7 @@ tests_mode = 'on'
 save_folder_name = 1  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(3e3)
+itmax_full_range = int(3e1)
 alpha_rand_full_range_small_u = 0
 alpha_rand_full_range_high_u = 0
 same_rhoRandom = 1
@@ -107,7 +107,7 @@ Eh = x / np.sqrt(2 * np.pi)
 k = (np.sqrt(np.pi / 2) * el) / (4 * np.pi * ep0 * epr * Lb) * alpha_k
 couplings_dict = {'gamma0': gamma0, 'gamma1': gamma1, 'gamma4': gamma4, 'gamma3': gamma3, 'Delta': Delta, 'Delta_td': Delta_td, 'k': k}
 model_regime = 'full_range'
-effective_H0 = False
+effective_H0 = True
 projected_four_band_H0 = not effective_H0
 ######################################################################################################################
 ######################################### hartree_fock_with_asymmetric_interactions.py #############################
