@@ -14,7 +14,8 @@ if __name__ == "__main__":
     sys.path.append('../')
     input_dir = '../input/'
 
-from input.parameters import nu, alpha_rand_full_range_small_u, alpha_rand_full_range_high_u, alpha_rand_asymmetric_calcs, file_seed  # , seed_large_u  # , model_regime
+from input.parameters import nu, alpha_rand_full_range_small_u, alpha_rand_full_range_high_u, alpha_rand_asymmetric_calcs, file_seed, \
+    Orbital_Polarized_seed  # , seed_large_u  # , model_regime
 from config import bands, tol
 from utils import eigen, remove_small_imag
 
@@ -102,21 +103,22 @@ class Density_Seed:
     #                              'LL0_Km_Sup',  # 1
     #                              'LL2_Km_Sdown',  # 5
     #                              'LL2_Kp_Sdown']  # 6
-    # ### Orbital Polarized seed
-    # filling_order_small_abs_u = ['LLm2_Kp_Sdown',  # -7
-    #                              'LLm2_Km_Sdown',  # -6
-    #                              'LLm2_Kp_Sup',  # -5
-    #                              'LLm2_Km_Sup',  # -4
-    #                              'LL0_Km_Sdown',  # -3
-    #                              'LL0_Kp_Sdown',  # -2
-    #                              'LL0_Km_Sup',  # -1
-    #                              'LL0_Kp_Sup',  # 0
-    #                              'LL1_Km_Sdown',  # 1
-    #                              'LL1_Kp_Sdown',  # 2
-    #                              'LL1_Km_Sup',  # 3
-    #                              'LL1_Kp_Sup',  # 4
-    #                              'LL2_Km_Sdown',  # 5
-    #                              'LL2_Kp_Sdown']  # 6
+    ### Orbital Polarized seed
+    if Orbital_Polarized_seed:
+        filling_order_small_abs_u = ['LLm2_Kp_Sdown',  # -7
+                                     'LLm2_Km_Sdown',  # -6
+                                     'LLm2_Kp_Sup',  # -5
+                                     'LLm2_Km_Sup',  # -4
+                                     'LL0_Km_Sdown',  # -3
+                                     'LL0_Kp_Sdown',  # -2
+                                     'LL0_Km_Sup',  # -1
+                                     'LL0_Kp_Sup',  # 0
+                                     'LL1_Km_Sdown',  # 1
+                                     'LL1_Kp_Sdown',  # 2
+                                     'LL1_Km_Sup',  # 3
+                                     'LL1_Kp_Sup',  # 4
+                                     'LL2_Km_Sdown',  # 5
+                                     'LL2_Kp_Sdown']  # 6
 
     # base_octet = ['LL0_Km_Sdown', 'LL0_Kp_Sdown', 'LL1_Km_Sdown', 'LL1_Kp_Sdown', 'LL0_Km_Sup', 'LL0_Kp_Sup', 'LL1_Km_Sup', 'LL1_Kp_Sup']
     # seed_oct_dict = {-4: (0, 0, 0, 0, 0, 0, 0, 0),

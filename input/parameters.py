@@ -2,7 +2,7 @@ import sys
 
 import numpy as np
 
-nu_default = 4
+nu_default = 0
 
 if len(sys.argv) == 2:
     nu = int(sys.argv[1])
@@ -27,13 +27,17 @@ alpha_reg = 1
 alpha_x = 1
 uz = 7e-3
 uperp = -2e-3
+Orbital_Polarized_seed = False
+if Orbital_Polarized_seed:
+    uz = 6e-3
+    uperp = -3e-3
 
 if (not apha_H_asym) or (abs(nu) > 1):
     uz = 0
     uperp = 0
 
-U0minD = -10e-3
-U0maxD = 40e-3
+U0minD = 1e-3
+U0maxD = 20e-3
 dU0D = 1e-3
 
 fraction_part = round(U0minD * 1e3 % 1, 2)
@@ -47,13 +51,13 @@ tests_mode = 'on'
 save_folder_name = 1  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(3e1)
+itmax_full_range = int(7e1)
 alpha_rand_full_range_small_u = 0
 alpha_rand_full_range_high_u = 0
 same_rhoRandom = 1
 alpha_rho = 0.05 * 0  # controls numerical regularization for rho (small memory of rho from previews loop)
 
-alpha_k_nu4 = 0.244
+alpha_k_nu4 = 0.24
 alpha_k_nu0 = 0.26
 
 
@@ -152,13 +156,14 @@ parameters_to_save = {'nu': nu,
                       'save_folder_name': save_folder_name,
                       'potential_asym_layers': potential_asym_layers,
                       'couplings_dict': couplings_dict,
-                      'effective_H0': effective_H0
+                      'effective_H0': effective_H0,
+                      'Orbital_Polarized_seed': Orbital_Polarized_seed
                       # 'add_int_to_bands_LLm2_LL2_low_u':add_int_to_bands_LLm2_LL2_low_u
                       }
 # Zm = k * 0.0178 #use def above, this is slightly off due to alpha_k
 if model_regime == 'full_range':
     parameters_in_plot_list = ['nu', 'asym', 'screening', 'alpha_int_H', 'apha_H_asym',
-                               'itmax_full_range', 'alpha_rand_full_range_small_u', 'alpha_rand_full_range_high_u', 'alpha_rho', 'alpha_reg', 'uz_meV', 'uperp_meV']
+                               'itmax_full_range', 'alpha_rand_full_range_small_u', 'alpha_rand_full_range_high_u', 'alpha_rho', 'alpha_reg', 'uz_meV', 'uperp_meV', 'effective_H0']
 elif model_regime == 'no_LL2_mixing_and_asym':
     parameters_in_plot_list = ['nu', 'asym', 'screening', 'alpha_int_H', 'apha_H_asym', 'alpha_H_oct_int', 'replace_LLm2_LL2_low_u',
                                'itmax_asymmetric_calcs', 'alpha_rand_asymmetric_calcs', 'alpha_rho_asymmetric_calcs', 'alpha_reg_asym_calcs', 'uz_meV', 'uperp_meV']
