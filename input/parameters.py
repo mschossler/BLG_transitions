@@ -57,7 +57,7 @@ alpha_rand_full_range_high_u = 0
 same_rhoRandom = 1
 alpha_rho = 0.05 * 0  # controls numerical regularization for rho (small memory of rho from previews loop)
 
-alpha_k_nu4 = 0.24
+alpha_k_nu4 = 0.244
 alpha_k_nu0 = 0.26
 
 
