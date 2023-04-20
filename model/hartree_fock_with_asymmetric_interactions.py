@@ -243,7 +243,7 @@ def loopU0(u):
                 # [2 * Hint[idm(n)][idms(nprime)] * rho[idm(nprime)][idms(n)] for n in setH for nprime in setH]
                 )
     Et = sum([eigenvalue[i] for i in range(number_occupied_bands)]) + ehf
-    eigenvector_octet = eigenvector[4:12, index_octet_on_bands_oct]
+    eigenvector_octet = eigenvector[4:12, index_octet_on_bands_oct]  # bases for eigenvector_octet is ['0p-', '1p-', '0m-', '1m-', '0p+', '1p+', '0m+', '1m+']
     # print(eigenvector_octet.shape)
     if check_if_complex(eigenvalue, u, nu):
         # print('here')
