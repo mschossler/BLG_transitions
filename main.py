@@ -74,7 +74,7 @@ def energies_and_observable_to_csv(quantities, model_regime_local=''):
         u_temp, eigenvalue_temp, eigenvector_temp = round(v['u'], 4), v['eigenvalue'], v['eigenvector']
         idx = idxcalc(eigenvector_temp)
         v['eigenvalue'] = eigenvalue_temp[idx]
-        v['eigenvector'] = eigenvector_temp[:, idx]
+        v['eigenvector'] = eigenvector_temp[idx, :]
         energies.append([u_temp] + v['eigenvalue'].tolist())
 
     select_quantities_and_save_to_file(quantities_dict, model_regime_local)
