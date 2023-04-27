@@ -1,10 +1,3 @@
-We model Coulomb interactions in the BLG using the two-dimensional electron gas (2DEG) theory [#Barlas2008, #ezawa2013quantum] and the Hartree-Fock approximation. We also consider
-asymmetric interactions that describe the electron-electron and electron-phonon interactions in the presence of isospin anisotropy [#Kharitonov2012a, #Kharitonov2012b, #Lee2014],
-regularization due to the infinitely deep sea of occupied states [#Shizuya2011, #Shizuya2012, #Shizuya2020a], Zeeman interaction, and an external electric field. Finally, we find
-energy levels for the three degrees of freedom, Landau level, valley, and spin, self-consistently with the screening factor and asymmetric interaction couplings as the only
-adjustable parameters.
-
-Results will be added to the results folder with a current date. Change the parameters.py file to the parameters you wish and run main.py for a default filling factor nu or
-execute_main to run all relevant filling factors. Change the number of cores you want to use for the computations in the config.py file.
-
-More instructions and descriptions will come soon.
+We calculate the transition energies between Landau levels in bilayer graphene. Using the four-band SWMc model with a magnetic field to calculate single-particle physics non-perturbatively to incorporate warping effects, we consider the energy asymmetry $\Delta'$ and interlayer couplings $\gamma_{1},\gamma_{4},\text{ and},\gamma_{3}$. We report a quantitative description of all Landau level indices involved in cyclotron resonance in better agreement than previews effective lower-band model.
+Moreover, we utilize the C2DEG theory to model Coulomb interactions in the bilayer graphene, employing the mean field Hartree-Fock approximation. We also account for asymmetric interactions to describe electron-electron and electron-phonon interactions in the presence of isospin anisotropy, as well as regularization due to the infinitely deep sea of filled states, Zeeman interaction, and an external electric field.
+We obtain energy bands self-consistently, using the screening factor and asymmetric interaction couplings (for $\nu=0$) as the adjustable parameters.
