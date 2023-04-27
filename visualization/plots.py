@@ -394,7 +394,7 @@ def plot_total_hf_energy(nu):
         plt.legend(bbox_to_anchor=(0.62, 1))
         plt.rcParams["figure.figsize"] = (10, 5)
         plt.title('total energies ', fontsize=19, y=-0.24, x=0.55)
-        plt.xlabel(r'$u$(meV)')
+        plt.xlabel('U(meV)')
         plt.ylabel('Total Hartree-Fock energy (meV)')
         f.savefig(results_dir_path_local + '/total_hf_energy.pdf', bbox_inches='tight')
 
