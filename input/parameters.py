@@ -36,9 +36,9 @@ if (not apha_H_asym) or (abs(nu) > 1):
     uz = 0
     uperp = 0
 
-U0minD = 1e-3
-U0maxD = 20e-3
-dU0D = 1e-3
+U0minD = -27e-3
+U0maxD = 58e-3
+dU0D = 0.5e-3
 
 fraction_part = round(U0minD * 1e3 % 1, 2)
 
