@@ -32,12 +32,12 @@ if Orbital_Polarized_seed:
     uz = 6e-3
     uperp = -3e-3
 
-if (not apha_H_asym) or (abs(nu) > 1):
+if (not apha_H_asym) or (abs(nu) > 2):
     uz = 0
     uperp = 0
 
-U0minD = -27e-3
-U0maxD = 58e-3
+U0minD = -0.5e-3
+U0maxD = 1e-3
 dU0D = 0.5e-3
 
 fraction_part = round(U0minD * 1e3 % 1, 2)
@@ -51,7 +51,7 @@ tests_mode = 'on'
 save_folder_name = 1  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(1e2)
+itmax_full_range = int(1e3)
 alpha_rand_full_range_small_u = 0
 alpha_rand_full_range_high_u = 0
 same_rhoRandom = 1
