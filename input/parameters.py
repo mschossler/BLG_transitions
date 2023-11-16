@@ -2,7 +2,7 @@ import sys
 
 import numpy as np
 
-nu_default = 0
+nu_default = 4
 
 if len(sys.argv) == 2:
     nu = int(sys.argv[1])
@@ -36,8 +36,8 @@ if (not apha_H_asym) or (abs(nu) > 1):
     uz = 0
     uperp = 0
 
-U0minD = -8.01e-3
-U0maxD = 50.01e-3
+U0minD = -27e-3
+U0maxD = 58e-3
 dU0D = 0.5e-3
 
 fraction_part = round(U0minD * 1e3 % 1, 2)
