@@ -25,8 +25,8 @@ potential_asym_layers = 0
 
 alpha_reg = 1
 alpha_x = 1
-uz = 6e-3
-uperp = -3e-3
+uz = 7e-3
+uperp = -2e-3
 
 if (not apha_H_asym) or (abs(nu) > 1):
     uz = 0
