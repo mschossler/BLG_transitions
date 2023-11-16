@@ -2,7 +2,7 @@ import sys
 
 import numpy as np
 
-nu_default = 4
+nu_default = 0
 
 if len(sys.argv) == 2:
     nu = int(sys.argv[1])
@@ -28,12 +28,12 @@ alpha_x = 1
 uz = 7e-3
 uperp = -2e-3
 
-if (not apha_H_asym) or (abs(nu) > 2):
+if (not apha_H_asym) or (abs(nu) > 1):
     uz = 0
     uperp = 0
 
-U0minD = -27e-3
-U0maxD = 58e-3
+U0minD = -8.01e-3
+U0maxD = 50.01e-3
 dU0D = 0.5e-3
 
 fraction_part = round(U0minD * 1e3 % 1, 2)
@@ -45,9 +45,9 @@ u_zero = round(u_zero, 4)
 
 tests_mode = 'on'
 save_folder_name = 1  # change this to off when done with tests
-#tests_mode = 'off'
+# tests_mode = 'off'
 
-itmax_full_range = int(1e3)
+itmax_full_range = int(1.5e3)
 alpha_rand_full_range_small_u = 0
 alpha_rand_full_range_high_u = 0
 same_rhoRandom = 1
