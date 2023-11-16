@@ -2,7 +2,7 @@ import sys
 
 import numpy as np
 
-nu_default = 4
+nu_default = 0
 
 if len(sys.argv) == 2:
     nu = int(sys.argv[1])
@@ -19,11 +19,11 @@ number_occupied_bands = nu + 8  # number_occupied_bands = 8 is the charge neutra
 u_critical = 9e-3  # value of u in eV for phase transition based on experiment data with screening factor of 0.26 for nu=0
 asym = 1
 alpha_Zm = 1  # 0.04227165829987071 # k / alpha_k
-alpha_int_H = 1  # 0 for none int calculations on the full_range model
-apha_H_asym = 1
+alpha_int_H = 0 # 0 for none int calculations on the full_range model
+apha_H_asym = 0
 potential_asym_layers = 0
 
-alpha_reg = 1
+alpha_reg = 0
 alpha_x = 1
 uz = 7e-3
 uperp = -2e-3
@@ -32,12 +32,12 @@ if Orbital_Polarized_seed:
     uz = 6e-3
     uperp = -3e-3
 
-if (not apha_H_asym) or (abs(nu) > 2):
+if (not apha_H_asym) or (abs(nu) > 1):
     uz = 0
     uperp = 0
 
-U0minD = -0.5e-3
-U0maxD = 1e-3
+U0minD = -8.01e-3
+U0maxD = 50.01e-3
 dU0D = 0.5e-3
 
 fraction_part = round(U0minD * 1e3 % 1, 2)
@@ -51,7 +51,7 @@ tests_mode = 'on'
 save_folder_name = 1  # change this to off when done with tests
 # tests_mode = 'off'
 
-itmax_full_range = int(5e3)
+itmax_full_range = int(1e2)
 alpha_rand_full_range_small_u = 0
 alpha_rand_full_range_high_u = 0
 same_rhoRandom = 1
