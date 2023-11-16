@@ -32,7 +32,7 @@ if Orbital_Polarized_seed:
     uz = 6e-3
     uperp = -3e-3
 
-if (not apha_H_asym) or (abs(nu) > 0):
+if (not apha_H_asym) or (abs(nu) > 6):
     uz = 0
     uperp = 0
 
