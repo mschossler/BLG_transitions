@@ -2,7 +2,7 @@ import sys
 
 import numpy as np
 
-nu_default = 4
+nu_default = 0
 
 if len(sys.argv) == 2:
     nu = int(sys.argv[1])
@@ -19,21 +19,25 @@ number_occupied_bands = nu + 8  # number_occupied_bands = 8 is the charge neutra
 u_critical = 9e-3  # value of u in eV for phase transition based on experiment data with screening factor of 0.26 for nu=0
 asym = 1
 alpha_Zm = 1  # 0.04227165829987071 # k / alpha_k
-alpha_int_H = 1  # 0 for none int calculations on the full_range model
-apha_H_asym = 1
+alpha_int_H = 1 # 0 for none int calculations on the full_range model
+apha_H_asym = 0
 potential_asym_layers = 0
 
 alpha_reg = 1
 alpha_x = 1
 uz = 7e-3
 uperp = -2e-3
+Orbital_Polarized_seed = False
+if Orbital_Polarized_seed:
+    uz = 6e-3
+    uperp = -3e-3
 
-if (not apha_H_asym) or (abs(nu) > 2):
+if (not apha_H_asym) or (abs(nu) > 1):
     uz = 0
     uperp = 0
 
-U0minD = -27e-3
-U0maxD = 58e-3
+U0minD = -8.01e-3
+U0maxD = 50.01e-3
 dU0D = 0.5e-3
 
 fraction_part = round(U0minD * 1e3 % 1, 2)
@@ -45,7 +49,7 @@ u_zero = round(u_zero, 4)
 
 tests_mode = 'on'
 save_folder_name = 1  # change this to off when done with tests
-#tests_mode = 'off'
+# tests_mode = 'off'
 
 itmax_full_range = int(1e3)
 alpha_rand_full_range_small_u = 0
@@ -152,13 +156,14 @@ parameters_to_save = {'nu': nu,
                       'save_folder_name': save_folder_name,
                       'potential_asym_layers': potential_asym_layers,
                       'couplings_dict': couplings_dict,
-                      'effective_H0': effective_H0
+                      'effective_H0': effective_H0,
+                      'Orbital_Polarized_seed': Orbital_Polarized_seed
                       # 'add_int_to_bands_LLm2_LL2_low_u':add_int_to_bands_LLm2_LL2_low_u
                       }
 # Zm = k * 0.0178 #use def above, this is slightly off due to alpha_k
 if model_regime == 'full_range':
     parameters_in_plot_list = ['nu', 'asym', 'screening', 'alpha_int_H', 'apha_H_asym',
-                               'itmax_full_range', 'alpha_rand_full_range_small_u', 'alpha_rand_full_range_high_u', 'alpha_rho', 'alpha_reg', 'uz_meV', 'uperp_meV','effective_H0']
+                               'itmax_full_range', 'alpha_rand_full_range_small_u', 'alpha_rand_full_range_high_u', 'alpha_rho', 'alpha_reg', 'uz_meV', 'uperp_meV', 'effective_H0']
 elif model_regime == 'no_LL2_mixing_and_asym':
     parameters_in_plot_list = ['nu', 'asym', 'screening', 'alpha_int_H', 'apha_H_asym', 'alpha_H_oct_int', 'replace_LLm2_LL2_low_u',
                                'itmax_asymmetric_calcs', 'alpha_rand_asymmetric_calcs', 'alpha_rho_asymmetric_calcs', 'alpha_reg_asym_calcs', 'uz_meV', 'uperp_meV']
